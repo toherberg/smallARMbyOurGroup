@@ -15,6 +15,28 @@ import java.net.UnknownHostException;
  */
 
 public class ARMClient {
+	
+	String fromuser = "";
+	String fromserver = "";
+	DataOutputStream dos;
+	DataInputStream dis;
+	
+	public ARMClient() throws UnknownHostException, IOException {
+		Socket socket = new Socket("localhost", 8315);
+		dos = new DataOutputStream(socket.getOutputStream());
+		dis = new DataInputStream(socket.getInputStream());
+	}
+	
+	public boolean sendMessageToServer(String s) throws IOException{
+		fromuser = s;
+		dos.writeUTF(fromuser);
+		fromserver = dis.readUTF();
+		if (fromserver.equals("true")){
+			return true;
+		}
+		return false;
+	}
+	
 
 	public static void main(String[] args) throws UnknownHostException, IOException {
 		System.out.println("Welcome to Client!");
