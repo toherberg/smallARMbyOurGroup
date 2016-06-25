@@ -381,6 +381,25 @@ public class MySQL {
 		}
 		return groupProductsData;
 	}
+	
+	/** Генерує стрічку з іменами продуктів певної групи */
+	public String getGroupProductNames(int groupID) {
+		String groupProductsNames = "";
+		try {
+			Statement st = con.createStatement();
+			ResultSet res = st.executeQuery("SELECT * FROM Products WHERE groupID = '" + groupID + "';");
+			while (res.next()) {
+				String name = res.getString("name");
+				groupProductsNames += name + ";";
+			}
+			res.close();
+			st.close();
+		} catch (SQLException e) {
+			System.out.println("Не вірний SQL запит на вибірку даних");
+			e.printStackTrace();
+		}
+		return groupProductsNames;
+	}
 
 	public String getGroupProductReport(int groupID) {
 		String groupProductsData = "";
