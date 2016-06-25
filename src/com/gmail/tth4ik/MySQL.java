@@ -91,8 +91,8 @@ public class MySQL {
 		}
 		return currentId;
 	}
-	
-	/**оновлення інформації і назви групи*/
+
+	/** оновлення інформації і назви групи */
 	public void updateGroupData(String groupName, String newName, String info) {
 		updateGroupInfo(groupName, info);
 		updateGroupName(groupName, newName);
@@ -100,7 +100,17 @@ public class MySQL {
 
 	/** метод дає можливість оновити інформацію про групу */
 	public void updateGroupInfo(String groupName, String info) {
-
+		if (info.equals(" "))
+			return;
+		try {
+			PreparedStatement statement = con.prepareStatement("UPDATE Groups set info = '" + info.toUpperCase()
+					+ "' where name = '" + groupName.toUpperCase() + "'; commit work;");
+			int result = statement.executeUpdate();
+			statement.close();
+		} catch (SQLException e) {
+			System.out.println("Не вірний SQL запит на редагування");
+			e.printStackTrace();
+		}
 	}
 
 	/** метод дозволяє змінити ім'я групи */
@@ -157,7 +167,21 @@ public class MySQL {
 	}
 
 	public String getGroupNames() {
-		return null;
+		String groupNames = "";
+		try {
+			Statement st = con.createStatement();
+			ResultSet res = st.executeQuery("SELECT name FROM Groups");
+			while (res.next()) {
+				String name = res.getString("name");
+				groupNames += name + ";";
+			}
+			res.close();
+			st.close();
+		} catch (SQLException e) {
+			System.out.println("Не вірний SQL запит на вибірку даних");
+			e.printStackTrace();
+		}
+		return groupNames;
 	}
 
 	/**
@@ -197,13 +221,21 @@ public class MySQL {
 	 * видаленні усіх продуктів відповідної групи
 	 */
 	private void deleteProductByID(int id) {
-
+		try {
+			PreparedStatement statement = con
+					.prepareStatement("DELETE FROM Products WHERE groupID = '" + id + "'; commit work;");
+			int result = statement.executeUpdate();
+			statement.close();
+		} catch (SQLException e) {
+			System.out.println("Не вірний SQL запит на видалення");
+			e.printStackTrace();
+		}
 	}
-	
+
 	/** Дозволяє редагувати назву продукта */
 	public void updateProductName(String productName, String newName) {
 		if (newName.equals(" "))
-				return;
+			return;
 		try {
 			PreparedStatement statement = con.prepareStatement("UPDATE Products set name = '" + newName.toUpperCase()
 					+ "' where name = '" + productName.toUpperCase() + "'; commit work;");
@@ -217,7 +249,17 @@ public class MySQL {
 
 	/** Дозволяє редагувати інформацію про продукт */
 	public void updateProductInfo(String productName, String info) {
-
+		if (info.equals(" "))
+			return;
+		try {
+			PreparedStatement statement = con.prepareStatement("UPDATE Products set info = '" + info.toUpperCase()
+					+ "' where name = '" + productName.toUpperCase() + "'; commit work;");
+			int result = statement.executeUpdate();
+			statement.close();
+		} catch (SQLException e) {
+			System.out.println("Не вірний SQL запит на редагування");
+			e.printStackTrace();
+		}
 	}
 
 	/** дозволяє редагувати інформацію про виробника */
@@ -234,10 +276,10 @@ public class MySQL {
 			e.printStackTrace();
 		}
 	}
-	
+
 	/** Дозволяє редагувати ціну продукта */
 	public void updateProductPrice(String productName, double price) {
-		if (price==-1)
+		if (price == -1)
 			return;
 		try {
 			PreparedStatement statement = con.prepareStatement("UPDATE Products set price = '" + price
@@ -249,13 +291,20 @@ public class MySQL {
 			e.printStackTrace();
 		}
 	}
-	
-	/** Редагування усієї інформації одночасно, поєднує у собі 4 методи */
-	public void editAllProductInfo(String productName,String newName,String newInfo,String newManufacturer,double newPrice) {
 
+	/** Редагування усієї інформації одночасно, поєднує у собі 4 методи */
+	public void editAllProductInfo(String productName, String newName, String newInfo, String newManufacturer,
+			double newPrice) {
+		updateProductInfo(productName, newInfo);
+		updateProductManufacturer(productName, newManufacturer);
+		updateProductPrice(productName, newPrice);
+		updateProductName(productName, newName);
 	}
 
-	/** Дозволяє редагувати кількість продуктів. Використовуємо його для реалізації додавання/списання продуктів */
+	/**
+	 * Дозволяє редагувати кількість продуктів. Використовуємо його для
+	 * реалізації додавання/списання продуктів
+	 */
 	public void updateProductQuantity(String productName, int quantity) {
 		try {
 			PreparedStatement statement = con.prepareStatement("UPDATE Products set quantity = '" + quantity
@@ -268,8 +317,7 @@ public class MySQL {
 		}
 	}
 
-
-	/** Генерує інформацію про усі продукти, які є у БД */
+	/** Генерує інформацію про усі продукти, які єу БД */
 	public String getProductData() {
 		String productData = "";
 		try {
@@ -362,11 +410,48 @@ public class MySQL {
 	}
 
 	public String getProductReport() {
-		return null;
+		String reportText = "FULL REPORT ABOUT ALL PRODUCTS \n";
+		int counter = 1; // щоб красиво виглядав список
+		double totalcost = 0;
+		try {
+			Statement st = con.createStatement();
+			ResultSet res = st.executeQuery("SELECT * FROM Products");
+			while (res.next()) {
+				String name = res.getString("name");
+				String info = res.getString("info");
+				String manufacturer = res.getString("manufacturer");
+				int quantity = res.getInt("quantity");
+				double price = res.getDouble("price");
+				reportText += counter++ + ". Product name: " + name + "; Info: " + info + "; Manufacturer: "
+						+ manufacturer + "; Current quantity: " + quantity + "; Price: " + price + "; Group: "
+						+ getGroupNameByID(res.getInt("groupID")) + "\n";
+				totalcost += price * quantity;
+			}
+			res.close();
+			st.close();
+		} catch (SQLException e) {
+			System.out.println("Не вірний SQL запит на вибірку даних");
+			e.printStackTrace();
+		}
+		reportText += "Total cost of products: " + totalcost;
+		return reportText;
 	}
 
 	public int getQuantityByName(String name) {
-		return 0;
+		int resquantity = 0;
+		try {
+			Statement st = con.createStatement();
+			ResultSet res = st.executeQuery("SELECT * FROM Products WHERE name LIKE '" + name.toUpperCase() + "';");
+			while (res.next()) {
+				int quantity = res.getInt("quantity");
+				resquantity = quantity;
+			}
+
+		} catch (SQLException e) {
+			System.out.println("Не вірний SQL запит на вибірку даних");
+			e.printStackTrace();
+		}
+		return resquantity;
 	}
 
 	/** Знаходить продукт у БД за іменем і генерує про нього інформацію */
@@ -394,3 +479,4 @@ public class MySQL {
 	}
 
 }
+

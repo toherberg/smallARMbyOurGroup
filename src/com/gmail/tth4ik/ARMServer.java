@@ -168,11 +168,36 @@ public class ARMServer implements Runnable {
 	}
 
 	private void searchProduct() {
+		try {
+			input = dis.readUTF();
+			if (input.equalsIgnoreCase("end1")) {
+				dos.writeUTF("process ended");
+				return;
+			}
+			dos.writeUTF(sql.searchProductByName(input));
 
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	private void editGroup() {
-		
+		try {
+			input = dis.readUTF();
+			if (input.equalsIgnoreCase("end1")) {
+				dos.writeUTF("process ended");
+				return;
+			}
+			String[] array = input.split(";");
+			if(isFreeName(array[1], groupNames)==false){
+				array[1]=" "; // щоб відредагувало усе, крім імені, якщо воно зайняте
+			}
+			sql.updateGroupData(array[0], array[1], array[2]);
+			dos.writeUTF("editing successfully ended");
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	private void editProduct() {
@@ -213,11 +238,45 @@ public class ARMServer implements Runnable {
 	}
 
 	private void deleteProduct() {
+		try {
+			input = dis.readUTF();
+			if (input.equalsIgnoreCase("end1")) {
+				dos.writeUTF("process ended");
+				return;
+			}
+			sql.deleteProduct(input);
+			dos.writeUTF("Product named " + input + " was sucessfully deleted from BD");
+			productNames = sql.getProductNames().split(";");
 
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	private void addGroup() {
+		while (true) {
+			try {
+				System.out.println("Input group info: ");
+				input = dis.readUTF();
+				if (input.equalsIgnoreCase("end1")) {
+					dos.writeUTF("process ended");
+					return;
+				}
+				String[] array = input.split(";");
+				if (isFreeName(array[0], groupNames) == false) {
+					input = "";
+					dos.writeUTF("Name is used, try to add it once more");
+					continue;
+				}
+				sql.insertGroupData(array[0], array[1]);
+				dos.writeUTF("Group with name: " + array[0] + " and info: " + array[1] + " successfully added to DB");
+				groupNames = sql.getGroupNames().split(";");
+				return;
 
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 	private boolean isFreeName(String string, String[] names) {
