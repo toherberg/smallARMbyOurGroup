@@ -8,5 +8,6 @@
 	<classpathentry kind="lib" path="C:/Users/tohermann/Downloads/sqlite-jdbc-3.7.2.jar"/>
 	<classpathentry kind="lib" path="C:/Users/tohermann/Downloads/sqlite-jdbc-3.7.2-sources.jar"/>
 	<classpathentry kind="lib" path="C:/Users/tohermann/Downloads/sqlite-jdbc-3.7.2-javadoc.jar"/>
+	<classpathentry kind="lib" path="/SmallArmMYOWN/miglayout15-swing.jar" sourcepath="/SmallArmMYOWN/miglayout-src.zip"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -41,9 +41,11 @@ import javax.swing.border.BevelBorder;
 import javax.swing.UIManager;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.JTextField;
+import java.awt.Label;
+import javax.swing.JLayeredPane;
 
 public class InterfaceTest {
-	private JFrame frame;
+	private JFrame frmWarehouseManagementSystem;
 	private static ARMClient client;
 	private static MySQL msql;
 	private JTextField textField;
@@ -62,7 +64,7 @@ public class InterfaceTest {
 			public void run() {
 				try {
 					InterfaceTest window = new InterfaceTest();
-					window.frame.setVisible(true);
+					window.frmWarehouseManagementSystem.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -81,39 +83,42 @@ public class InterfaceTest {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		frame = new JFrame();
-		frame.setBounds(100, 100, 715, 459);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frmWarehouseManagementSystem = new JFrame();
+		frmWarehouseManagementSystem.setTitle("Warehouse Management System");
+		frmWarehouseManagementSystem.setBounds(100, 100, 715, 459);
+		frmWarehouseManagementSystem.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		SpringLayout springLayout = new SpringLayout();
-		frame.getContentPane().setLayout(springLayout);
+		frmWarehouseManagementSystem.getContentPane().setLayout(springLayout);
 
 		JPanel panel = new JPanel();
-		springLayout.putConstraint(SpringLayout.NORTH, panel, 0, SpringLayout.NORTH, frame.getContentPane());
-		springLayout.putConstraint(SpringLayout.WEST, panel, 0, SpringLayout.WEST, frame.getContentPane());
-		springLayout.putConstraint(SpringLayout.SOUTH, panel, 0, SpringLayout.SOUTH, frame.getContentPane());
-		springLayout.putConstraint(SpringLayout.EAST, panel, 225, SpringLayout.WEST, frame.getContentPane());
-		frame.getContentPane().add(panel);
+		springLayout.putConstraint(SpringLayout.NORTH, panel, 0, SpringLayout.NORTH, frmWarehouseManagementSystem.getContentPane());
+		springLayout.putConstraint(SpringLayout.WEST, panel, 0, SpringLayout.WEST, frmWarehouseManagementSystem.getContentPane());
+		springLayout.putConstraint(SpringLayout.SOUTH, panel, 0, SpringLayout.SOUTH, frmWarehouseManagementSystem.getContentPane());
+		springLayout.putConstraint(SpringLayout.EAST, panel, 225, SpringLayout.WEST, frmWarehouseManagementSystem.getContentPane());
+		frmWarehouseManagementSystem.getContentPane().add(panel);
 
 		JPanel panel_1 = new JPanel();
-		springLayout.putConstraint(SpringLayout.NORTH, panel_1, 0, SpringLayout.NORTH, frame.getContentPane());
+		springLayout.putConstraint(SpringLayout.NORTH, panel_1, 10, SpringLayout.NORTH, frmWarehouseManagementSystem.getContentPane());
 		springLayout.putConstraint(SpringLayout.WEST, panel_1, 3, SpringLayout.EAST, panel);
-		springLayout.putConstraint(SpringLayout.SOUTH, panel_1, -85, SpringLayout.SOUTH, frame.getContentPane());
-		frame.getContentPane().add(panel_1);
+		springLayout.putConstraint(SpringLayout.SOUTH, panel_1, -85, SpringLayout.SOUTH, frmWarehouseManagementSystem.getContentPane());
+		frmWarehouseManagementSystem.getContentPane().add(panel_1);
 
 		JPanel panel_2 = new JPanel();
 		springLayout.putConstraint(SpringLayout.EAST, panel_1, -6, SpringLayout.WEST, panel_2);
-		springLayout.putConstraint(SpringLayout.NORTH, panel_2, 0, SpringLayout.NORTH, frame.getContentPane());
-		springLayout.putConstraint(SpringLayout.WEST, panel_2, 576, SpringLayout.WEST, frame.getContentPane());
-		springLayout.putConstraint(SpringLayout.SOUTH, panel_2, 0, SpringLayout.SOUTH, frame.getContentPane());
-		springLayout.putConstraint(SpringLayout.EAST, panel_2, 0, SpringLayout.EAST, frame.getContentPane());
+		springLayout.putConstraint(SpringLayout.NORTH, panel_2, 0, SpringLayout.NORTH, frmWarehouseManagementSystem.getContentPane());
+		springLayout.putConstraint(SpringLayout.WEST, panel_2, 576, SpringLayout.WEST, frmWarehouseManagementSystem.getContentPane());
+		springLayout.putConstraint(SpringLayout.SOUTH, panel_2, 0, SpringLayout.SOUTH, frmWarehouseManagementSystem.getContentPane());
+		springLayout.putConstraint(SpringLayout.EAST, panel_2, 0, SpringLayout.EAST, frmWarehouseManagementSystem.getContentPane());
 		SpringLayout sl_panel_1 = new SpringLayout();
 		panel_1.setLayout(sl_panel_1);
 		SpringLayout sl_panel = new SpringLayout();
 		panel.setLayout(sl_panel);
 
 		DefaultMutableTreeNode top = new DefaultMutableTreeNode("Groups of Items");
-		createNodes(top);
 		JTree tree = new JTree(top);
+		tree.setToolTipText("This is information about current group");
+		tree.setBackground(Color.WHITE);
+		tree.setEditable(true);
 		sl_panel.putConstraint(SpringLayout.NORTH, tree, 10, SpringLayout.NORTH, panel);
 		sl_panel.putConstraint(SpringLayout.WEST, tree, 10, SpringLayout.WEST, panel);
 		sl_panel.putConstraint(SpringLayout.EAST, tree, 215, SpringLayout.WEST, panel);
@@ -128,7 +133,7 @@ public class InterfaceTest {
 		sl_panel.putConstraint(SpringLayout.EAST, button, 181, SpringLayout.WEST, panel);
 		button.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		panel.add(button);
-		frame.getContentPane().add(panel_2);
+		frmWarehouseManagementSystem.getContentPane().add(panel_2);
 		SpringLayout sl_panel_2 = new SpringLayout();
 		panel_2.setLayout(sl_panel_2);
 
@@ -158,12 +163,71 @@ public class InterfaceTest {
 		sl_panel_2.putConstraint(SpringLayout.EAST, btnConnect, 0, SpringLayout.EAST, btnAddProduct);
 		panel_2.add(btnConnect);
 		
+		JButton btnGroupReport = new JButton("Group report");
+		sl_panel_2.putConstraint(SpringLayout.NORTH, btnGroupReport, 21, SpringLayout.SOUTH, btnRefresh);
+		sl_panel_2.putConstraint(SpringLayout.EAST, btnGroupReport, 0, SpringLayout.EAST, btnAddProduct);
+		panel_2.add(btnGroupReport);
+		
+		JButton btnFullReport = new JButton("Full report");
+		sl_panel_2.putConstraint(SpringLayout.NORTH, btnFullReport, 18, SpringLayout.SOUTH, btnGroupReport);
+		sl_panel_2.putConstraint(SpringLayout.WEST, btnFullReport, 0, SpringLayout.WEST, btnGroupReport);
+		sl_panel_2.putConstraint(SpringLayout.SOUTH, btnFullReport, 46, SpringLayout.SOUTH, btnGroupReport);
+		sl_panel_2.putConstraint(SpringLayout.EAST, btnFullReport, 0, SpringLayout.EAST, btnAddProduct);
+		panel_2.add(btnFullReport);
+		
 		JPanel panel_3 = new JPanel();
 		springLayout.putConstraint(SpringLayout.NORTH, panel_3, 6, SpringLayout.SOUTH, panel_1);
+		
+		JButton btnDeleteProduct = new JButton("Delete Product");
+		sl_panel_1.putConstraint(SpringLayout.WEST, btnDeleteProduct, 37, SpringLayout.WEST, panel_1);
+		sl_panel_1.putConstraint(SpringLayout.SOUTH, btnDeleteProduct, -40, SpringLayout.SOUTH, panel_1);
+		panel_1.add(btnDeleteProduct);
+		
+		JButton btnEditProduct = new JButton("Edit Product");
+		sl_panel_1.putConstraint(SpringLayout.NORTH, btnEditProduct, 0, SpringLayout.NORTH, btnDeleteProduct);
+		sl_panel_1.putConstraint(SpringLayout.WEST, btnEditProduct, -149, SpringLayout.EAST, panel_1);
+		sl_panel_1.putConstraint(SpringLayout.EAST, btnEditProduct, -40, SpringLayout.EAST, panel_1);
+		panel_1.add(btnEditProduct);
+		
+		JButton btnSelladd = new JButton("Sell/Add Products");
+		sl_panel_1.putConstraint(SpringLayout.NORTH, btnSelladd, 6, SpringLayout.SOUTH, btnDeleteProduct);
+		sl_panel_1.putConstraint(SpringLayout.WEST, btnSelladd, 106, SpringLayout.WEST, panel_1);
+		panel_1.add(btnSelladd);
+		
+		Label label = new Label("Name: ");
+		sl_panel_1.putConstraint(SpringLayout.NORTH, label, 22, SpringLayout.NORTH, panel_1);
+		sl_panel_1.putConstraint(SpringLayout.WEST, label, 10, SpringLayout.WEST, panel_1);
+		sl_panel_1.putConstraint(SpringLayout.EAST, label, 318, SpringLayout.WEST, panel_1);
+		panel_1.add(label);
+		
+		Label label_1 = new Label("Manufacturer");
+		sl_panel_1.putConstraint(SpringLayout.NORTH, label_1, 6, SpringLayout.SOUTH, label);
+		sl_panel_1.putConstraint(SpringLayout.WEST, label_1, 0, SpringLayout.WEST, label);
+		sl_panel_1.putConstraint(SpringLayout.EAST, label_1, 0, SpringLayout.EAST, label);
+		panel_1.add(label_1);
+		
+		Label label_2 = new Label("Quantity:");
+		sl_panel_1.putConstraint(SpringLayout.NORTH, label_2, 6, SpringLayout.SOUTH, label_1);
+		sl_panel_1.putConstraint(SpringLayout.WEST, label_2, 0, SpringLayout.WEST, label);
+		sl_panel_1.putConstraint(SpringLayout.EAST, label_2, 0, SpringLayout.EAST, label);
+		panel_1.add(label_2);
+		
+		Label label_3 = new Label("Price:");
+		sl_panel_1.putConstraint(SpringLayout.NORTH, label_3, 6, SpringLayout.SOUTH, label_2);
+		sl_panel_1.putConstraint(SpringLayout.WEST, label_3, 0, SpringLayout.WEST, label);
+		sl_panel_1.putConstraint(SpringLayout.EAST, label_3, 0, SpringLayout.EAST, label);
+		panel_1.add(label_3);
+		
+		Label label_4 = new Label("Description:");
+		sl_panel_1.putConstraint(SpringLayout.NORTH, label_4, 6, SpringLayout.SOUTH, label_3);
+		sl_panel_1.putConstraint(SpringLayout.WEST, label_4, 0, SpringLayout.WEST, label);
+		sl_panel_1.putConstraint(SpringLayout.SOUTH, label_4, -88, SpringLayout.NORTH, btnDeleteProduct);
+		sl_panel_1.putConstraint(SpringLayout.EAST, label_4, 0, SpringLayout.EAST, label);
+		panel_1.add(label_4);
 		springLayout.putConstraint(SpringLayout.WEST, panel_3, 6, SpringLayout.EAST, panel);
-		springLayout.putConstraint(SpringLayout.SOUTH, panel_3, 75, SpringLayout.SOUTH, panel_1);
-		springLayout.putConstraint(SpringLayout.EAST, panel_3, 0, SpringLayout.EAST, panel_1);
-		frame.getContentPane().add(panel_3);
+		springLayout.putConstraint(SpringLayout.SOUTH, panel_3, -10, SpringLayout.SOUTH, frmWarehouseManagementSystem.getContentPane());
+		springLayout.putConstraint(SpringLayout.EAST, panel_3, -6, SpringLayout.WEST, panel_2);
+		frmWarehouseManagementSystem.getContentPane().add(panel_3);
 		SpringLayout sl_panel_3 = new SpringLayout();
 		panel_3.setLayout(sl_panel_3);
 		
@@ -179,6 +243,9 @@ public class InterfaceTest {
 		sl_panel_3.putConstraint(SpringLayout.WEST, btnSearch, 3, SpringLayout.EAST, textField);
 		sl_panel_3.putConstraint(SpringLayout.EAST, btnSearch, -10, SpringLayout.EAST, panel_3);
 		panel_3.add(btnSearch);
+		
+		JLayeredPane layeredPane = new JLayeredPane();
+		frmWarehouseManagementSystem.getContentPane().add(layeredPane);
 	}
 
 	private void createNodes(DefaultMutableTreeNode top) {
@@ -197,4 +264,8 @@ public class InterfaceTest {
 		}
 
 	}
+	
+	
+	
+	
 }
