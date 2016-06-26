@@ -186,6 +186,10 @@ public class ARMServer implements Runnable {
 				dos.writeUTF("process ended");
 				return;
 			}
+			if (sql.searchProductByName(input).equalsIgnoreCase("false")){
+			dos.writeUTF(input);
+			return;
+			}
 			dos.writeUTF(sql.searchProductByName(input));
 
 		} catch (IOException e) {

@@ -126,7 +126,7 @@ public class InterfaceTest {
 				frmWarehouseManagementSystem.getContentPane());
 		frmWarehouseManagementSystem.getContentPane().add(panel);
 
-		JPanel panel_1 = new JPanel();
+		final JPanel panel_1 = new JPanel();
 		springLayout.putConstraint(SpringLayout.NORTH, panel_1, 10, SpringLayout.NORTH,
 				frmWarehouseManagementSystem.getContentPane());
 		springLayout.putConstraint(SpringLayout.WEST, panel_1, 3, SpringLayout.EAST, panel);
@@ -265,40 +265,78 @@ public class InterfaceTest {
 		panel_1.add(btnSelladd);
 
 		Label label = new Label("Name: ");
-		label.setFont(new Font("Dialog", Font.BOLD, 12));
 		sl_panel_1.putConstraint(SpringLayout.NORTH, label, 22, SpringLayout.NORTH, panel_1);
 		sl_panel_1.putConstraint(SpringLayout.WEST, label, 10, SpringLayout.WEST, panel_1);
-		sl_panel_1.putConstraint(SpringLayout.EAST, label, 318, SpringLayout.WEST, panel_1);
+		sl_panel_1.putConstraint(SpringLayout.EAST, label, 112, SpringLayout.WEST, panel_1);
+		label.setFont(new Font("Dialog", Font.BOLD, 12));
 		panel_1.add(label);
 
 		Label label_1 = new Label("Manufacturer");
-		label_1.setFont(new Font("Dialog", Font.BOLD, 12));
 		sl_panel_1.putConstraint(SpringLayout.NORTH, label_1, 6, SpringLayout.SOUTH, label);
-		sl_panel_1.putConstraint(SpringLayout.WEST, label_1, 0, SpringLayout.WEST, label);
-		sl_panel_1.putConstraint(SpringLayout.EAST, label_1, 0, SpringLayout.EAST, label);
+		sl_panel_1.putConstraint(SpringLayout.WEST, label_1, 10, SpringLayout.WEST, panel_1);
+		sl_panel_1.putConstraint(SpringLayout.EAST, label_1, -224, SpringLayout.EAST, panel_1);
+		label_1.setFont(new Font("Dialog", Font.BOLD, 12));
 		panel_1.add(label_1);
 
 		Label label_2 = new Label("Quantity:");
-		label_2.setFont(new Font("Dialog", Font.BOLD, 12));
 		sl_panel_1.putConstraint(SpringLayout.NORTH, label_2, 6, SpringLayout.SOUTH, label_1);
-		sl_panel_1.putConstraint(SpringLayout.WEST, label_2, 0, SpringLayout.WEST, label);
-		sl_panel_1.putConstraint(SpringLayout.EAST, label_2, 0, SpringLayout.EAST, label);
+		sl_panel_1.putConstraint(SpringLayout.WEST, label_2, 10, SpringLayout.WEST, panel_1);
+		sl_panel_1.putConstraint(SpringLayout.EAST, label_2, -224, SpringLayout.EAST, panel_1);
+		label_2.setFont(new Font("Dialog", Font.BOLD, 12));
 		panel_1.add(label_2);
 
 		Label label_3 = new Label("Price:");
-		label_3.setFont(new Font("Dialog", Font.BOLD, 12));
 		sl_panel_1.putConstraint(SpringLayout.NORTH, label_3, 6, SpringLayout.SOUTH, label_2);
-		sl_panel_1.putConstraint(SpringLayout.WEST, label_3, 0, SpringLayout.WEST, label);
-		sl_panel_1.putConstraint(SpringLayout.EAST, label_3, 0, SpringLayout.EAST, label);
+		sl_panel_1.putConstraint(SpringLayout.WEST, label_3, 10, SpringLayout.WEST, panel_1);
+		sl_panel_1.putConstraint(SpringLayout.EAST, label_3, -224, SpringLayout.EAST, panel_1);
+		label_3.setFont(new Font("Dialog", Font.BOLD, 12));
 		panel_1.add(label_3);
 
 		Label label_4 = new Label("Description:");
-		label_4.setFont(new Font("Dialog", Font.BOLD, 12));
 		sl_panel_1.putConstraint(SpringLayout.NORTH, label_4, 6, SpringLayout.SOUTH, label_3);
-		sl_panel_1.putConstraint(SpringLayout.WEST, label_4, 0, SpringLayout.WEST, label);
+		sl_panel_1.putConstraint(SpringLayout.WEST, label_4, 10, SpringLayout.WEST, panel_1);
 		sl_panel_1.putConstraint(SpringLayout.SOUTH, label_4, -88, SpringLayout.NORTH, btnDeleteProduct);
-		sl_panel_1.putConstraint(SpringLayout.EAST, label_4, 0, SpringLayout.EAST, label);
+		sl_panel_1.putConstraint(SpringLayout.EAST, label_4, -224, SpringLayout.EAST, panel_1);
+		label_4.setFont(new Font("Dialog", Font.BOLD, 12));
 		panel_1.add(label_4);
+
+		final JTextPane textPane = new JTextPane();
+		textPane.setEditable(false); // name
+		sl_panel_1.putConstraint(SpringLayout.WEST, textPane, 25, SpringLayout.EAST, label);
+		sl_panel_1.putConstraint(SpringLayout.SOUTH, textPane, 0, SpringLayout.SOUTH, label);
+		sl_panel_1.putConstraint(SpringLayout.EAST, textPane, -10, SpringLayout.EAST, panel_1);
+		panel_1.add(textPane);
+
+		final JTextPane textPane_1 = new JTextPane(); // manufacturer
+		textPane_1.setEditable(false);
+		sl_panel_1.putConstraint(SpringLayout.NORTH, textPane_1, 6, SpringLayout.SOUTH, textPane);
+		sl_panel_1.putConstraint(SpringLayout.WEST, textPane_1, -205, SpringLayout.EAST, panel_1);
+		sl_panel_1.putConstraint(SpringLayout.EAST, textPane_1, -10, SpringLayout.EAST, panel_1);
+		panel_1.add(textPane_1);
+
+		final JTextPane textPane_2 = new JTextPane(); //
+		textPane_2.setEditable(false); // quantity
+		sl_panel_1.putConstraint(SpringLayout.NORTH, textPane_2, 7, SpringLayout.SOUTH, textPane_1);
+		sl_panel_1.putConstraint(SpringLayout.WEST, textPane_2, 19, SpringLayout.EAST, label_2);
+		sl_panel_1.putConstraint(SpringLayout.EAST, textPane_2, -10, SpringLayout.EAST, panel_1);
+		panel_1.add(textPane_2);
+
+		final JTextPane textPane_3 = new JTextPane();
+		textPane_3.setEditable(false);
+		sl_panel_1.putConstraint(SpringLayout.NORTH, textPane_3, 8, SpringLayout.SOUTH, textPane_2);
+		sl_panel_1.putConstraint(SpringLayout.WEST, textPane_3, 19, SpringLayout.EAST, label_3);
+		sl_panel_1.putConstraint(SpringLayout.EAST, textPane_3, -10, SpringLayout.EAST, panel_1);
+		panel_1.add(textPane_3);
+
+		final JTextPane textPane_4 = new JTextPane();
+		textPane_4.setEditable(false);
+		JScrollPane jsp2 = new JScrollPane(textPane_4);
+		jsp2.setBorder(null);
+		sl_panel_1.putConstraint(SpringLayout.NORTH, jsp2, 10, SpringLayout.SOUTH, textPane_3);
+		sl_panel_1.putConstraint(SpringLayout.WEST, jsp2, 19, SpringLayout.EAST, label_4);
+		sl_panel_1.putConstraint(SpringLayout.SOUTH, jsp2, -47, SpringLayout.NORTH, btnEditProduct);
+		sl_panel_1.putConstraint(SpringLayout.EAST, jsp2, -10, SpringLayout.EAST, panel_1);
+		panel_1.add(jsp2);
 		springLayout.putConstraint(SpringLayout.WEST, panel_3, 6, SpringLayout.EAST, panel);
 		springLayout.putConstraint(SpringLayout.SOUTH, panel_3, -10, SpringLayout.SOUTH,
 				frmWarehouseManagementSystem.getContentPane());
@@ -347,7 +385,7 @@ public class InterfaceTest {
 		SpringLayout sl_panel_3 = new SpringLayout();
 		panel_3.setLayout(sl_panel_3);
 
-		JTextField textField = new JTextField();
+		final JTextField textField = new JTextField();
 		sl_panel_3.putConstraint(SpringLayout.NORTH, textField, 20, SpringLayout.NORTH, panel_3);
 		sl_panel_3.putConstraint(SpringLayout.WEST, textField, 0, SpringLayout.WEST, panel_3);
 		sl_panel_3.putConstraint(SpringLayout.EAST, textField, 219, SpringLayout.WEST, panel_3);
@@ -355,6 +393,34 @@ public class InterfaceTest {
 		textField.setColumns(10);
 
 		JButton btnSearch = new JButton("Search");
+		btnSearch.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					if (client == null)
+						return;
+					if (textField.getText().isEmpty())
+						return;
+					client.sendCommandToServer("search");
+					String productName = textField.getText();
+					String response = client.sendMessageToServerAndGetResponse(productName);
+					if (response.equalsIgnoreCase("")) {
+
+						return;
+					}
+					String[] array = response.split(";");
+					textPane.setText(array[1]);
+					textPane_1.setText(array[3]);
+					textPane_2.setText(array[4]);
+					textPane_3.setText(array[5]);
+					textPane_4.setText(array[2]);
+					panel_1.repaint();
+
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+
+			}
+		});
 		sl_panel_3.putConstraint(SpringLayout.NORTH, btnSearch, 20, SpringLayout.NORTH, panel_3);
 		sl_panel_3.putConstraint(SpringLayout.WEST, btnSearch, 3, SpringLayout.EAST, textField);
 		sl_panel_3.putConstraint(SpringLayout.EAST, btnSearch, -10, SpringLayout.EAST, panel_3);
@@ -395,8 +461,8 @@ public class InterfaceTest {
 			tree.repaint();
 		}
 	}
-	
-	public void initializeDialogReportF(){
+
+	public void initializeDialogReportF() {
 		JDialog dialGroupF = new JDialog();
 		JPanel contentPanel = new JPanel();
 		final JTextPane textPane;
@@ -419,53 +485,49 @@ public class InterfaceTest {
 			contentPanel.add(sp);
 			contentPanel.repaint();
 		}
-			dialGroupF.setVisible(true);
+		dialGroupF.setVisible(true);
+		{
+			JPanel buttonPanel = new JPanel();
+			buttonPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
+			dialGroupF.getContentPane().add(buttonPanel, BorderLayout.SOUTH);
 			{
-				JPanel buttonPanel = new JPanel();
-				buttonPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
-				dialGroupF.getContentPane().add(buttonPanel, BorderLayout.SOUTH);
-				{
-					JButton genButton = new JButton("Generate report");
-					genButton.addActionListener(new ActionListener() {
-						String response;
+				JButton genButton = new JButton("Generate report");
+				genButton.addActionListener(new ActionListener() {
+					String response;
 
-						public void actionPerformed(ActionEvent e) {
-							try {
-								String response = client.sendCommandToServer("fullreport");
-								textPane.setText(response);
-								textPane.repaint();
-							} catch (IOException e1) {
-								e1.printStackTrace();
-							}
+					public void actionPerformed(ActionEvent e) {
+						try {
+							String response = client.sendCommandToServer("fullreport");
+							textPane.setText(response);
+							textPane.repaint();
+						} catch (IOException e1) {
+							e1.printStackTrace();
 						}
-					});
+					}
+				});
 
-					genButton.setActionCommand("Generate");
-					buttonPanel.add(genButton);
-					dialGroupF.getRootPane().setDefaultButton(genButton);
+				genButton.setActionCommand("Generate");
+				buttonPanel.add(genButton);
+				dialGroupF.getRootPane().setDefaultButton(genButton);
 
-				}
-				{
-					JButton saveButton = new JButton("Save as TXT file\r\n");
-					saveButton.addActionListener(new ActionListener() {
-						public void actionPerformed(ActionEvent e) {
-							String report = textPane.getText();
-							try {
-								writeFullReport(report);
-							} catch (IOException e1) {
-								e1.printStackTrace();
-							}
+			}
+			{
+				JButton saveButton = new JButton("Save as TXT file\r\n");
+				saveButton.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						String report = textPane.getText();
+						try {
+							writeFullReport(report);
+						} catch (IOException e1) {
+							e1.printStackTrace();
 						}
-					});
-					saveButton.setActionCommand("Save");
-					buttonPanel.add(saveButton);
-				}
+					}
+				});
+				saveButton.setActionCommand("Save");
+				buttonPanel.add(saveButton);
 			}
 		}
-		
-		
-	
-		
+	}
 
 	public void initalizeJDialogReportG() throws IOException {
 		JDialog dialGroupR = new JDialog();
@@ -510,7 +572,7 @@ public class InterfaceTest {
 			sp.setVisible(true);
 			textPane.setEditable(false);
 			contentPanel.add(sp);
-			
+
 			contentPanel.repaint();
 		}
 		{
@@ -559,12 +621,12 @@ public class InterfaceTest {
 		}
 		dialGroupR.setVisible(true);
 	}
-	
-	
+
 	private void writeFullReport(String report) throws IOException {
 		Date date = new Date();
 		@SuppressWarnings("deprecation")
-		File reportfile = new File("FULL_REPORT_"+date.getDate()+"-"+date.getMonth()+"-"+date.getHours()+"-"+date.getSeconds()+".txt");
+		File reportfile = new File("FULL_REPORT_" + date.getDate() + "-" + date.getMonth() + "-" + date.getHours() + "-"
+				+ date.getSeconds() + ".txt");
 		reportfile.createNewFile();
 		FileWriter fwr = new FileWriter(reportfile);
 		BufferedWriter bwr = new BufferedWriter(fwr);
@@ -574,10 +636,11 @@ public class InterfaceTest {
 		date = null;
 	}
 
-	private void writeGroupReport(String report,String groupName) throws IOException {
+	private void writeGroupReport(String report, String groupName) throws IOException {
 		Date date = new Date();
 		@SuppressWarnings("deprecation")
-		File reportfile = new File("GROUP_REPORT_"+groupName+"_"+date.getDate()+"-"+date.getMonth()+"-"+date.getHours()+"-"+date.getSeconds()+".txt");
+		File reportfile = new File("GROUP_REPORT_" + groupName + "_" + date.getDate() + "-" + date.getMonth() + "-"
+				+ date.getHours() + "-" + date.getSeconds() + ".txt");
 		reportfile.createNewFile();
 		FileWriter fwr = new FileWriter(reportfile);
 		BufferedWriter bwr = new BufferedWriter(fwr);
@@ -586,7 +649,6 @@ public class InterfaceTest {
 		fwr.close();
 		date = null;
 	}
-	
 
 	public void initalizeJDialogAddingP() throws IOException {
 		final JDialog dialog = new JDialog();

@@ -479,7 +479,12 @@ public class MySQL {
 		String product = "";
 		try {
 			Statement st = con.createStatement();
-			ResultSet res = st.executeQuery("SELECT * FROM Products WHERE name LIKE '" + name.toUpperCase() + "';");
+			ResultSet res = st.executeQuery("SELECT * FROM Products WHERE name = '" + name.toUpperCase() + "';");
+			if (res == null){
+				product = "false";
+				return product;
+			}
+				
 			while (res.next()) {
 				String realName = res.getString("name");
 				int groupID = res.getInt("groupID");
