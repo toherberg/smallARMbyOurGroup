@@ -229,6 +229,8 @@ public class InterfaceTest {
 		JButton btnFullReport = new JButton("Full report");
 		btnFullReport.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				if (client == null)
+					return;
 				initializeDialogReportF();
 			}
 		});
