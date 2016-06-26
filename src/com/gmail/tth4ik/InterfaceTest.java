@@ -227,6 +227,11 @@ public class InterfaceTest {
 		panel_2.add(btnGroupReport);
 
 		JButton btnFullReport = new JButton("Full report");
+		btnFullReport.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				initializeDialogReportF();
+			}
+		});
 		btnFullReport.setFont(new Font("Dialog", Font.PLAIN, 12));
 		sl_panel_2.putConstraint(SpringLayout.NORTH, btnFullReport, 18, SpringLayout.SOUTH, btnGroupReport);
 		sl_panel_2.putConstraint(SpringLayout.WEST, btnFullReport, 0, SpringLayout.WEST, btnGroupReport);
@@ -386,6 +391,77 @@ public class InterfaceTest {
 			tree.repaint();
 		}
 	}
+	
+	public void initializeDialogReportF(){
+		JDialog dialGroupF = new JDialog();
+		JPanel contentPanel = new JPanel();
+		final JTextPane textPane;
+		dialGroupF.setTitle("Full Report");
+		dialGroupF.setBounds(100, 100, 686, 438);
+		dialGroupF.getContentPane().setLayout(new BorderLayout());
+		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
+		dialGroupF.getContentPane().add(contentPanel, BorderLayout.CENTER);
+		SpringLayout sl_contentPanel = new SpringLayout();
+		contentPanel.setLayout(sl_contentPanel);
+		{
+			textPane = new JTextPane();
+			JScrollPane sp = new JScrollPane(textPane);
+			sl_contentPanel.putConstraint(SpringLayout.NORTH, sp, 10, SpringLayout.NORTH, contentPanel);
+			sl_contentPanel.putConstraint(SpringLayout.WEST, sp, 10, SpringLayout.WEST, contentPanel);
+			sl_contentPanel.putConstraint(SpringLayout.SOUTH, sp, -15, SpringLayout.SOUTH, contentPanel);
+			sl_contentPanel.putConstraint(SpringLayout.EAST, sp, -17, SpringLayout.EAST, contentPanel);
+			textPane.setFont(new Font("Times New Roman", Font.PLAIN, 12));
+			textPane.setEditable(false);
+			contentPanel.add(sp);
+			contentPanel.repaint();
+		}
+			dialGroupF.setVisible(true);
+			{
+				JPanel buttonPanel = new JPanel();
+				buttonPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
+				dialGroupF.getContentPane().add(buttonPanel, BorderLayout.SOUTH);
+				{
+					JButton genButton = new JButton("Generate report");
+					genButton.addActionListener(new ActionListener() {
+						String response;
+
+						public void actionPerformed(ActionEvent e) {
+							try {
+								String response = client.sendCommandToServer("fullreport");
+								textPane.setText(response);
+								textPane.repaint();
+							} catch (IOException e1) {
+								e1.printStackTrace();
+							}
+						}
+					});
+
+					genButton.setActionCommand("Generate");
+					buttonPanel.add(genButton);
+					dialGroupF.getRootPane().setDefaultButton(genButton);
+
+				}
+				{
+					JButton saveButton = new JButton("Save as TXT file\r\n");
+					saveButton.addActionListener(new ActionListener() {
+						public void actionPerformed(ActionEvent e) {
+							String report = textPane.getText();
+							try {
+								writeFullReport(report);
+							} catch (IOException e1) {
+								e1.printStackTrace();
+							}
+						}
+					});
+					saveButton.setActionCommand("Save");
+					buttonPanel.add(saveButton);
+				}
+			}
+		}
+		
+		
+	
+		
 
 	public void initalizeJDialogReportG() throws IOException {
 		JDialog dialGroupR = new JDialog();
@@ -434,9 +510,9 @@ public class InterfaceTest {
 			contentPanel.repaint();
 		}
 		{
-			JPanel savetxtButton = new JPanel();
-			savetxtButton.setLayout(new FlowLayout(FlowLayout.RIGHT));
-			dialGroupR.getContentPane().add(savetxtButton, BorderLayout.SOUTH);
+			JPanel buttonPanel = new JPanel();
+			buttonPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
+			dialGroupR.getContentPane().add(buttonPanel, BorderLayout.SOUTH);
 			{
 				JButton genButton = new JButton("Generate report");
 				genButton.addActionListener(new ActionListener() {
@@ -456,13 +532,13 @@ public class InterfaceTest {
 				});
 
 				genButton.setActionCommand("OK");
-				savetxtButton.add(genButton);
+				buttonPanel.add(genButton);
 				dialGroupR.getRootPane().setDefaultButton(genButton);
 
 			}
 			{
-				JButton cancelButton = new JButton("Save as TXT file\r\n");
-				cancelButton.addActionListener(new ActionListener() {
+				JButton saveButton = new JButton("Save as TXT file\r\n");
+				saveButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						String group = comboBox1.getSelectedItem().toString();
 						String report = textPane.getText();
@@ -473,8 +549,8 @@ public class InterfaceTest {
 						}
 					}
 				});
-				cancelButton.setActionCommand("Cancel");
-				savetxtButton.add(cancelButton);
+				saveButton.setActionCommand("Cancel");
+				buttonPanel.add(saveButton);
 			}
 		}
 		dialGroupR.setVisible(true);

@@ -18,7 +18,6 @@ import javax.swing.JScrollBar;
 public class DialogGroupR extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();
-	private JComboBox comboBox;
 
 	/**
 	 * Launch the application.
@@ -45,18 +44,11 @@ public class DialogGroupR extends JDialog {
 		SpringLayout sl_contentPanel = new SpringLayout();
 		contentPanel.setLayout(sl_contentPanel);
 		{
-			comboBox = new JComboBox();
-			sl_contentPanel.putConstraint(SpringLayout.NORTH, comboBox, 10, SpringLayout.NORTH, contentPanel);
-			sl_contentPanel.putConstraint(SpringLayout.WEST, comboBox, 10, SpringLayout.WEST, contentPanel);
-			sl_contentPanel.putConstraint(SpringLayout.EAST, comboBox, 249, SpringLayout.WEST, contentPanel);
-			contentPanel.add(comboBox);
-		}
-		{
 			JTextPane textPane = new JTextPane();
-			sl_contentPanel.putConstraint(SpringLayout.NORTH, textPane, 18, SpringLayout.SOUTH, comboBox);
-			sl_contentPanel.putConstraint(SpringLayout.WEST, textPane, 7, SpringLayout.WEST, comboBox);
-			sl_contentPanel.putConstraint(SpringLayout.SOUTH, textPane, -10, SpringLayout.SOUTH, contentPanel);
-			sl_contentPanel.putConstraint(SpringLayout.EAST, textPane, -10, SpringLayout.EAST, contentPanel);
+			sl_contentPanel.putConstraint(SpringLayout.NORTH, textPane, 10, SpringLayout.NORTH, contentPanel);
+			sl_contentPanel.putConstraint(SpringLayout.WEST, textPane, 10, SpringLayout.WEST, contentPanel);
+			sl_contentPanel.putConstraint(SpringLayout.SOUTH, textPane, -15, SpringLayout.SOUTH, contentPanel);
+			sl_contentPanel.putConstraint(SpringLayout.EAST, textPane, -17, SpringLayout.EAST, contentPanel);
 			textPane.setFont(new Font("Times New Roman", Font.PLAIN, 12));
 			textPane.setEditable(false);
 			contentPanel.add(textPane);
