@@ -86,6 +86,7 @@ public class InterfaceTest {
 	JTextPane textPane_3;
 	JTextPane textPane_4;
 	JScrollPane jspt;
+	DefaultTreeModel model;
 
 	/**
 	 * Launch the application.
@@ -164,6 +165,8 @@ public class InterfaceTest {
 
 		top = new DefaultMutableTreeNode("Groups of Items");
 		tree = new JTree(top);
+		model = (DefaultTreeModel) tree.getModel();
+		
 		jspt = new JScrollPane(tree);
 		jspt.setBorder(null);
 		tree.addTreeSelectionListener(new TreeSelectionListener() {
@@ -171,6 +174,8 @@ public class InterfaceTest {
 			@Override
 			public void valueChanged(TreeSelectionEvent e) {
 				if (client == null)
+					return;
+				if (e.getNewLeadSelectionPath().getLastPathComponent() == null)
 					return;
 				try {
 					client.sendCommandToServer("search");
@@ -474,9 +479,10 @@ public class InterfaceTest {
 	}
 
 	private void createNodes(DefaultMutableTreeNode top) throws IOException {
-		tree = new JTree(top);
 		if (client == null)
 			return;
+		top.removeAllChildren();
+		tree = new JTree(top);
 		client.sendCommandToServer("groupnames");
 		String response = client.sendMessageToServerAndGetResponse("go");
 		String[] array = response.split(";");
@@ -487,7 +493,7 @@ public class InterfaceTest {
 			}
 			System.out.println(category);
 			category = new DefaultMutableTreeNode(groupName);
-			top.add(category);
+			model.insertNodeInto(category, top, top.getChildCount());
 			System.out.println(client.sendCommandToServer("groupnames1"));
 			String s1 = client.sendCommandToServer(groupName);
 			System.out.println(groupName);
@@ -496,11 +502,13 @@ public class InterfaceTest {
 				if (productname == null)
 					continue;
 				product = new DefaultMutableTreeNode(productname);
-				category.add(product);
+				model.insertNodeInto(product, category, category.getChildCount());
 				System.out.println(product.toString());
 			}
+			model.reload();
+			tree.repaint();
+			jspt.revalidate();
 			
-			jspt.repaint();
 		}
 	}
 
