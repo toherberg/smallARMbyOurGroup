@@ -1,0 +1,52 @@
+FULL REPORT ABOUT ALL PRODUCTS 
+1. Product name: PRODUCT; Info: INFO; Manufacturer: MAN; Current quantity: 25; Price: 17.0; Group: GROUP1
+2. Product name: PRODUCT25; Info: INFORMATION ABOUT PRODUCT; Manufacturer: MANUFACTURER; Current quantity: 350; Price: 14.5; Group: GROUP1
+3. Product name: DSA; Info: 5521; Manufacturer: DSAD; Current quantity: 220; Price: 15.0; Group: GROUP1
+4. Product name: DSAD; Info: DDDSADSA; Manufacturer: DSADSA; Current quantity: 250; Price: 15.0; Group: GROUP1
+5. Product name: DSADSADSA; Info: DSADSADSADA; Manufacturer: DSADSADAS; Current quantity: 250; Price: 15.0; Group: GROUP1
+6. Product name: PRODUCTION; Info: DSADSAD; Manufacturer: SUPERMANU; Current quantity: 230; Price: 15.0; Group: GROUP1
+7. Product name: ADDPRODUCT; Info: DSADSA; Manufacturer: SUPER; Current quantity: 20; Price: 15.0; Group: GROUP1
+8. Product name: PRODUCTO; Info: 321321; Manufacturer: PRODUCTIOS; Current quantity: 2310; Price: 15.0; Group: GROUP1
+9. Product name: SDSA; Info: 2SDAS; Manufacturer: DSADA; Current quantity: 20; Price: 15.0; Group: GROUP1
+10. Product name: GROUPDSDSA; Info: DSADSADA; Manufacturer: DSADSADSA; Current quantity: 2320; Price: 15.0; Group: GROUP1
+11. Product name: PRODUCTICCC; Info: DSADASD; Manufacturer: DSADSAD; Current quantity: 250; Price: 15.0; Group: GROUP#2
+12. Product name: PRODUCTIOSSSC; Info: DSADAS; Manufacturer: DSADSA2; Current quantity: 220; Price: 15.0; Group: GROUP#2
+13. Product name: DSADSA213; Info: DSADSADAS; Manufacturer: DSADSADAS; Current quantity: 250; Price: 15.0; Group: GROUP#2
+14. Product name: DSADA; Info: 2SD; Manufacturer: DSAD; Current quantity: 20; Price: 15.0; Group: GROUP1
+15. Product name: PRODUCTSDSS; Info: DSA; Manufacturer: DSADAS; Current quantity: 250; Price: 15.0; Group: GROUP#2
+16. Product name: PRODUCT1; Info: DSADAS; Manufacturer: DSAD; Current quantity: 2220; Price: 15.0; Group: GROUP1
+17. Product name: 1; Info: ; Manufacturer: ; Current quantity: 0; Price: 15.0; Group: GROUP1
+18. Product name: DSADSA; Info:  ; Manufacturer:  ; Current quantity: 10; Price: 15.0; Group: GROUP1
+19. Product name:  ; Info:  ; Manufacturer:  ; Current quantity: 0; Price: 15.0; Group: GROUP1
+20. Product name: œ–Œƒ” “» ; Info: 257; Manufacturer: 2517; Current quantity: 250; Price: 250.0; Group: GROUP#2
+21. Product name: DSSSAA; Info: DADAS; Manufacturer: DSA; Current quantity: 0; Price: 0.0; Group: GROUP#2
+22. Product name: 2321; Info: 321321321; Manufacturer: 321321; Current quantity: 220; Price: 220.0; Group: GROUP#2
+23. Product name: PRODUCCCCC; Info: DSADSA; Manufacturer: 21321; Current quantity: 2320; Price: 2320.0; Group: GROUP#2
+24. Product name: DSADSA213321; Info:  ; Manufacturer:  ; Current quantity: 220; Price: 220.0; Group: GROUP1
+25. Product name: DSADSADSA21321; Info: SADSADAD; Manufacturer: DSADSADSAD; Current quantity: 220; Price: 2220.0; Group: GROUP1
+26. Product name: NEWPRODUCT; Info: SSDS; Manufacturer: MANUF; Current quantity: 220; Price: 220.0; Group: GROUP3
+27. Product name: DSADSADSADSA; Info: DSADSA; Manufacturer: DASDAS; Current quantity: 20; Price: 7.0; Group: GROUP3
+28. Product name: PRODUCT25DS; Info: DSADSA; Manufacturer: DSADA; Current quantity: 2540; Price: 321310.0; Group: GROUP3
+29. Product name: DSAD254232; Info: DSDSA; Manufacturer: DSAD; Current quantity: 22220; Price: 22220.0; Group: GROUP3
+30. Product name: DSADA123; Info: DSADAS; Manufacturer: DSADSA; Current quantity: 40; Price: 10.0; Group: GROUP3
+31. Product name: 2551512; Info: 323; Manufacturer: 321321; Current quantity: 2310; Price: 2320.0; Group: GROUP3
+32. Product name: QWEWQE; Info: 2EWQEWQ; Manufacturer: EWQEWQ; Current quantity: 220; Price: 220.0; Group: GROUP3
+33. Product name: VBVBVB; Info: DSADSADSADAS; Manufacturer: VBVBV2; Current quantity: 220; Price: 220.0; Group: GROUP3
+34. Product name: GHGHGH; Info: DSADSA; Manufacturer: DSADSA; Current quantity: 2220; Price: 2220.0; Group: GROUP3
+35. Product name: JOINT; Info: JOINTER; Manufacturer: JOINT; Current quantity: 2130; Price: 2310.0; Group: GROUP3
+36. Product name: NEWEEEE; Info: DSADSA; Manufacturer: DSADSAD; Current quantity: 2321; Price: 213120.0; Group: GROUP3
+37. Product name: NEWE; Info: DSA; Manufacturer: DSA; Current quantity: 20; Price: 20.0; Group: GROUP3
+38. Product name: SWESE; Info: 2; Manufacturer: DSA; Current quantity: 20; Price: 20.0; Group: GROUP3
+39. Product name: NEW; Info: DSDS; Manufacturer: DSADA; Current quantity: 220; Price: 220.0; Group: GROUP3
+40. Product name: DSEWQRTY; Info: 111; Manufacturer: 14; Current quantity: 10; Price: 10.0; Group: GROUP#2
+41. Product name: DSADA145; Info:  ; Manufacturer:  ; Current quantity: 220; Price: 220.0; Group: GROUP3
+42. Product name: DSAD213441; Info: DSADSA; Manufacturer: DSADSA; Current quantity: 220; Price: 220.0; Group: GROUP3
+43. Product name: SUOPOOER; Info: DSADSA; Manufacturer: 241; Current quantity: 2310; Price: 321310.0; Group: GROUP1
+44. Product name: DSADSA2321321; Info: SDADAS; Manufacturer: DSADSADSA; Current quantity: 22220; Price: 220.0; Group: GROUP1
+45. Product name: INTEREST; Info: DSADASDSADA; Manufacturer: DSAD; Current quantity: 250; Price: 240.0; Group: GROUP1
+46. Product name: NEWDSDSA; Info: 22DSADSA; Manufacturer: DSADA; Current quantity: 220; Price: 220.0; Group: GROUP3
+47. Product name: NEWNEWNEWS; Info: DSA; Manufacturer: 231; Current quantity: 20; Price: 20.0; Group: GROUP1
+48. Product name: DSADS3321321; Info: DSADSA; Manufacturer: DSADAS; Current quantity: 220; Price: 220.0; Group: GROUP3
+49. Product name: TESINGPRODUCT; Info: DSADSAD; Manufacturer: 231; Current quantity: 2320; Price: 2310.0; Group: GROUP1
+50. Product name: SDSA22112; Info: S; Manufacturer: DSADSA; Current quantity: 20; Price: 2.0; Group: GROUP#2
+Total cost of products: 2.5788062E9

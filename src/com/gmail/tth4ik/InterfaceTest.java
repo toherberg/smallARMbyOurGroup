@@ -87,6 +87,7 @@ public class InterfaceTest {
 	JTextPane textPane_4;
 	JScrollPane jspt;
 	DefaultTreeModel model;
+	private boolean isFreeTree = true;
 
 	/**
 	 * Launch the application.
@@ -173,12 +174,13 @@ public class InterfaceTest {
 			
 			@Override
 			public void valueChanged(TreeSelectionEvent e) {
+				if (isFreeTree == false)
+					return;
 				if (client == null)
-					return;
-				if (e.getNewLeadSelectionPath().getLastPathComponent() == null)
-					return;
+					return; 
 				try {
 					client.sendCommandToServer("search");
+					System.out.println(e.getNewLeadSelectionPath().getLastPathComponent().toString());
 					String node = e.getNewLeadSelectionPath().getLastPathComponent().toString();
 					String response = client.sendMessageToServerAndGetResponse(node);
 					if (response.equalsIgnoreCase("")) {
@@ -479,6 +481,7 @@ public class InterfaceTest {
 	}
 
 	private void createNodes(DefaultMutableTreeNode top) throws IOException {
+		isFreeTree = false;
 		if (client == null)
 			return;
 		top.removeAllChildren();
@@ -508,7 +511,8 @@ public class InterfaceTest {
 			model.reload();
 			tree.repaint();
 			jspt.revalidate();
-			
+			isFreeTree = true;
+
 		}
 	}
 
@@ -723,7 +727,7 @@ public class InterfaceTest {
 		client.sendCommandToServer("groupnames");
 		String response = client.sendMessageToServerAndGetResponse("go");
 		String[] array = response.split(";");
-		for (String group : array) 
+		for (String group : array)
 			comboBox.addItem(group);
 		contentPanel.add(comboBox);
 
