@@ -392,6 +392,7 @@ public class MySQL {
 				String name = res.getString("name");
 				groupProductsNames += name + ";";
 			}
+			
 			res.close();
 			st.close();
 		} catch (SQLException e) {

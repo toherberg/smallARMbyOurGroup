@@ -69,11 +69,18 @@ public class ARMServer implements Runnable {
 					addGroup();
 					continue;
 				case "addproduct":
-					dos.writeUTF("adding product");
+					dos.writeUTF("true");
 					addProduct();
 					continue;
-				case "update":
-					dos.writeUTF(sql.getGroupsData() + "\n" + sql.getProductData());
+				case "groupnames":
+					dos.writeUTF("true");
+					sendGroupNames();
+					continue;
+				case "groupnames1":
+					dos.writeUTF("true");
+					String s = dis.readUTF();
+					System.out.println(s);
+					dos.writeUTF(sql.getGroupProductNames(sql.getGroupID(s)));
 					continue;
 				case "editgroup":
 					dos.writeUTF("editing group");
@@ -118,6 +125,11 @@ public class ARMServer implements Runnable {
 			e.printStackTrace();
 		}
 
+	}
+
+	private void sendGroupNames() throws IOException {
+		System.out.println(dis.readUTF());
+		dos.writeUTF(sql.getGroupNames());
 	}
 
 	private void makeGroupReport() {
@@ -252,6 +264,12 @@ public class ARMServer implements Runnable {
 			e.printStackTrace();
 		}
 	}
+	
+	private String getGroupNames(){
+		String groupNames = sql.getProductNames();
+		return groupNames;
+	}
+	
 
 	private void addGroup() {
 		while (true) {
@@ -301,9 +319,10 @@ public class ARMServer implements Runnable {
 					dos.writeUTF("Name is used, try to add it once more");
 					continue;
 				}
+				int groupID = sql.getGroupID(array[0]);
 				sql.insertProductData(Integer.parseInt(array[0]), array[1], array[2], array[3],
 						Integer.parseInt(array[4]), Double.parseDouble(array[5]));
-				dos.writeUTF("Product from group ¹ " + array[0] + " named " + array[1] + " with info: " + array[2]
+				dos.writeUTF("Product from group ¹ " + groupID + " named " + array[1] + " with info: " + array[2]
 						+ " which manufatured by: " + array[3] + ", it's quantity: " + array[4] + " and price: "
 						+ array[5] + " was added to product list");
 				productNames = sql.getProductNames().split(";");
