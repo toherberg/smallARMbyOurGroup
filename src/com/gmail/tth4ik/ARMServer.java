@@ -107,7 +107,7 @@ public class ARMServer implements Runnable {
 					changeQuantity();
 					continue;
 				case "groupreport":
-					dos.writeUTF("trying to do group report,enter groupname");
+					dos.writeUTF("true");
 					makeGroupReport();
 					continue;
 				case "fullreport":

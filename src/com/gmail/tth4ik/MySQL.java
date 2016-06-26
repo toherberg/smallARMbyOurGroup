@@ -415,7 +415,7 @@ public class MySQL {
 				String manufacturer = res.getString("manufacturer");
 				int quantity = res.getInt("quantity");
 				double price = res.getDouble("price");
-				groupProductsData += counter++ + "Product name: " + name + "; Info: " + info + "; Manufacturer: "
+				groupProductsData += counter++ + ". Product name: " + name + "; Info: " + info + "; Manufacturer: "
 						+ manufacturer + "; Current quantity: " + quantity + "; Price: " + price + "\n";
 				totalcost += price * quantity;
 			}

@@ -1,0 +1,19 @@
+Group name: GROUP1
+1. Product name: PRODUCT; Info: INFO; Manufacturer: MAN; Current quantity: 25; Price: 17.0
+2. Product name: PRODUCT25; Info: INFORMATION ABOUT PRODUCT; Manufacturer: MANUFACTURER; Current quantity: 350; Price: 14.5
+3. Product name: DSA; Info: 5521; Manufacturer: DSAD; Current quantity: 220; Price: 15.0
+4. Product name: DSAD; Info: DDDSADSA; Manufacturer: DSADSA; Current quantity: 250; Price: 15.0
+5. Product name: DSADSADSA; Info: DSADSADSADA; Manufacturer: DSADSADAS; Current quantity: 250; Price: 15.0
+6. Product name: PRODUCTION; Info: DSADSAD; Manufacturer: SUPERMANU; Current quantity: 230; Price: 15.0
+7. Product name: ADDPRODUCT; Info: DSADSA; Manufacturer: SUPER; Current quantity: 20; Price: 15.0
+8. Product name: PRODUCTO; Info: 321321; Manufacturer: PRODUCTIOS; Current quantity: 2310; Price: 15.0
+9. Product name: SDSA; Info: 2SDAS; Manufacturer: DSADA; Current quantity: 20; Price: 15.0
+10. Product name: GROUPDSDSA; Info: DSADSADA; Manufacturer: DSADSADSA; Current quantity: 2320; Price: 15.0
+11. Product name: DSADA; Info: 2SD; Manufacturer: DSAD; Current quantity: 20; Price: 15.0
+12. Product name: PRODUCT1; Info: DSADAS; Manufacturer: DSAD; Current quantity: 2220; Price: 15.0
+13. Product name: 1; Info: ; Manufacturer: ; Current quantity: 0; Price: 15.0
+14. Product name: DSADSA; Info:  ; Manufacturer:  ; Current quantity: 10; Price: 15.0
+15. Product name:  ; Info:  ; Manufacturer:  ; Current quantity: 0; Price: 15.0
+16. Product name: DSADSA213321; Info:  ; Manufacturer:  ; Current quantity: 220; Price: 220.0
+17. Product name: DSADSADSA21321; Info: SADSADAD; Manufacturer: DSADSADSAD; Current quantity: 220; Price: 2220.0
+Total cost of product in group: 660350.0

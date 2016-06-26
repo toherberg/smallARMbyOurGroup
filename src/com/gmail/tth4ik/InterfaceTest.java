@@ -8,6 +8,8 @@ import java.awt.BorderLayout;
 import java.awt.GridBagLayout;
 import java.awt.FlowLayout;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+
 import net.miginfocom.swing.MigLayout;
 import javax.swing.BoxLayout;
 import java.awt.CardLayout;
@@ -23,9 +25,13 @@ import javax.swing.JComboBox;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.net.UnknownHostException;
 import java.rmi.server.Operation;
+import java.util.Date;
 import java.awt.event.ActionEvent;
 import java.awt.Font;
 import javax.swing.SwingConstants;
@@ -52,7 +58,11 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.UIManager;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.JTextField;
+import javax.swing.JTextPane;
+
 import java.awt.Label;
+import java.awt.SecondaryLoop;
+
 import javax.swing.JLayeredPane;
 import javax.swing.JToggleButton;
 import java.awt.Window.Type;
@@ -61,6 +71,7 @@ public class InterfaceTest {
 	private JFrame frmWarehouseManagementSystem;
 	private static ARMClient client;
 	private int countclickconnect = 0;
+	DefaultMutableTreeNode top;
 	JTree tree;
 
 	/**
@@ -138,7 +149,7 @@ public class InterfaceTest {
 		SpringLayout sl_panel = new SpringLayout();
 		panel.setLayout(sl_panel);
 
-		final DefaultMutableTreeNode top = new DefaultMutableTreeNode("Groups of Items");
+		top = new DefaultMutableTreeNode("Groups of Items");
 		tree = new JTree(top);
 		tree.setToolTipText("This is information about current group");
 		tree.setBackground(Color.WHITE);
@@ -162,12 +173,13 @@ public class InterfaceTest {
 		panel_2.setLayout(sl_panel_2);
 
 		JButton btnAddProduct = new JButton("Add product");
+		btnAddProduct.setFont(new Font("Dialog", Font.PLAIN, 12));
 		btnAddProduct.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if (client == null)
 					return;
 				try {
-					initalizeJDialog();
+					initalizeJDialogAddingP();
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
@@ -181,6 +193,7 @@ public class InterfaceTest {
 		panel_2.add(btnAddProduct);
 
 		JButton btnRefresh = new JButton("Refresh");
+		btnRefresh.setFont(new Font("Dialog", Font.PLAIN, 12));
 		sl_panel_2.putConstraint(SpringLayout.NORTH, btnRefresh, 17, SpringLayout.SOUTH, btnAddProduct);
 		sl_panel_2.putConstraint(SpringLayout.WEST, btnRefresh, 10, SpringLayout.WEST, panel_2);
 		sl_panel_2.putConstraint(SpringLayout.SOUTH, btnRefresh, -263, SpringLayout.SOUTH, panel_2);
@@ -197,11 +210,24 @@ public class InterfaceTest {
 		panel_2.add(btnRefresh);
 
 		JButton btnGroupReport = new JButton("Group report");
+		btnGroupReport.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				try {
+					if (client == null)
+						return;
+					initalizeJDialogReportG();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		});
+		btnGroupReport.setFont(new Font("Dialog", Font.PLAIN, 12));
 		sl_panel_2.putConstraint(SpringLayout.NORTH, btnGroupReport, 21, SpringLayout.SOUTH, btnRefresh);
 		sl_panel_2.putConstraint(SpringLayout.EAST, btnGroupReport, 0, SpringLayout.EAST, btnAddProduct);
 		panel_2.add(btnGroupReport);
 
 		JButton btnFullReport = new JButton("Full report");
+		btnFullReport.setFont(new Font("Dialog", Font.PLAIN, 12));
 		sl_panel_2.putConstraint(SpringLayout.NORTH, btnFullReport, 18, SpringLayout.SOUTH, btnGroupReport);
 		sl_panel_2.putConstraint(SpringLayout.WEST, btnFullReport, 0, SpringLayout.WEST, btnGroupReport);
 		sl_panel_2.putConstraint(SpringLayout.SOUTH, btnFullReport, 46, SpringLayout.SOUTH, btnGroupReport);
@@ -272,6 +298,7 @@ public class InterfaceTest {
 		springLayout.putConstraint(SpringLayout.EAST, panel_3, -6, SpringLayout.WEST, panel_2);
 
 		final JButton btnConnect = new JButton("Connect");
+		btnConnect.setFont(new Font("Dialog", Font.PLAIN, 12));
 		btnConnect.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if (countclickconnect == 0) {
@@ -280,6 +307,7 @@ public class InterfaceTest {
 					try {
 						client = new ARMClient();
 						countclickconnect = 1;
+						createNodes(top);
 						return;
 					} catch (UnknownHostException e) {
 						// TODO Auto-generated catch block
@@ -320,9 +348,11 @@ public class InterfaceTest {
 		textField.setColumns(10);
 
 		JButton btnSearch = new JButton("Search");
-		sl_panel_3.putConstraint(SpringLayout.NORTH, btnSearch, 0, SpringLayout.NORTH, textField);
+		sl_panel_3.putConstraint(SpringLayout.NORTH, btnSearch, 20, SpringLayout.NORTH, panel_3);
 		sl_panel_3.putConstraint(SpringLayout.WEST, btnSearch, 3, SpringLayout.EAST, textField);
 		sl_panel_3.putConstraint(SpringLayout.EAST, btnSearch, -10, SpringLayout.EAST, panel_3);
+		sl_panel_3.putConstraint(SpringLayout.SOUTH, textField, 0, SpringLayout.SOUTH, btnSearch);
+		btnSearch.setFont(new Font("Dialog", Font.PLAIN, 12));
 		panel_3.add(btnSearch);
 	}
 
@@ -352,13 +382,133 @@ public class InterfaceTest {
 					continue;
 				product = new DefaultMutableTreeNode(productname);
 				category.add(product);
-				tree.repaint();
 			}
 			tree.repaint();
 		}
 	}
 
-	public void initalizeJDialog() throws IOException {
+	public void initalizeJDialogReportG() throws IOException {
+		JDialog dialGroupR = new JDialog();
+		JPanel contentPanel = new JPanel();
+		final JTextPane textPane;
+		final JComboBox<String> comboBox1;
+		dialGroupR.setTitle("Group Report");
+		dialGroupR.setBounds(100, 100, 686, 438);
+		dialGroupR.getContentPane().setLayout(new BorderLayout());
+		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
+		dialGroupR.getContentPane().add(contentPanel, BorderLayout.CENTER);
+		SpringLayout sl_contentPanel = new SpringLayout();
+		contentPanel.setLayout(sl_contentPanel);
+		{
+			comboBox1 = new JComboBox();
+			sl_contentPanel.putConstraint(SpringLayout.NORTH, comboBox1, 10, SpringLayout.NORTH, contentPanel);
+			sl_contentPanel.putConstraint(SpringLayout.WEST, comboBox1, 10, SpringLayout.WEST, contentPanel);
+			sl_contentPanel.putConstraint(SpringLayout.EAST, comboBox1, 249, SpringLayout.WEST, contentPanel);
+			client.sendCommandToServer("groupnames");
+			String response = client.sendCommandToServer("go");
+			String[] array;
+			if (response != null) {
+				array = response.split(";");
+				for (String name : array) {
+					if (name == null)
+						continue;
+					comboBox1.addItem(name);
+					comboBox1.repaint();
+				}
+
+			}
+			contentPanel.add(comboBox1);
+		}
+		{
+			textPane = new JTextPane();
+			JScrollPane sp = new JScrollPane(textPane);
+			sl_contentPanel.putConstraint(SpringLayout.NORTH, sp, 18, SpringLayout.SOUTH, comboBox1);
+			sl_contentPanel.putConstraint(SpringLayout.WEST, sp, 7, SpringLayout.WEST, comboBox1);
+			sl_contentPanel.putConstraint(SpringLayout.SOUTH, sp, -10, SpringLayout.SOUTH, contentPanel);
+			sl_contentPanel.putConstraint(SpringLayout.EAST, sp, -10, SpringLayout.EAST, contentPanel);
+			textPane.setFont(new Font("Times New Roman", Font.PLAIN, 12));
+			sp.setVisible(true);
+			textPane.setEditable(false);
+			contentPanel.add(sp);
+			
+			contentPanel.repaint();
+		}
+		{
+			JPanel savetxtButton = new JPanel();
+			savetxtButton.setLayout(new FlowLayout(FlowLayout.RIGHT));
+			dialGroupR.getContentPane().add(savetxtButton, BorderLayout.SOUTH);
+			{
+				JButton genButton = new JButton("Generate report");
+				genButton.addActionListener(new ActionListener() {
+					String response;
+
+					public void actionPerformed(ActionEvent e) {
+						try {
+							System.out.println(client.sendCommandToServer("groupreport"));
+							String response = client
+									.sendMessageToServerAndGetResponse(comboBox1.getSelectedItem().toString());
+							textPane.setText(response);
+							textPane.repaint();
+						} catch (IOException e1) {
+							e1.printStackTrace();
+						}
+					}
+				});
+
+				genButton.setActionCommand("OK");
+				savetxtButton.add(genButton);
+				dialGroupR.getRootPane().setDefaultButton(genButton);
+
+			}
+			{
+				JButton cancelButton = new JButton("Save as TXT file\r\n");
+				cancelButton.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						String group = comboBox1.getSelectedItem().toString();
+						String report = textPane.getText();
+						try {
+							writeGroupReport(report, group);
+						} catch (IOException e1) {
+							e1.printStackTrace();
+						}
+					}
+				});
+				cancelButton.setActionCommand("Cancel");
+				savetxtButton.add(cancelButton);
+			}
+		}
+		dialGroupR.setVisible(true);
+	}
+	
+	
+	private void writeFullReport(String report) throws IOException {
+		Date date = new Date();
+		@SuppressWarnings("deprecation")
+		File reportfile = new File("FULL_REPORT_"+date.getDate()+"-"+date.getMonth()+"-"+date.getHours()+"-"+date.getSeconds()+".txt");
+		reportfile.createNewFile();
+		FileWriter fwr = new FileWriter(reportfile);
+		BufferedWriter bwr = new BufferedWriter(fwr);
+		bwr.write(report);
+		bwr.close();
+		fwr.close();
+		date = null;
+	}
+
+	private void writeGroupReport(String report,String groupName) throws IOException {
+		Date date = new Date();
+		@SuppressWarnings("deprecation")
+		File reportfile = new File("GROUP_REPORT_"+groupName+"_"+date.getDate()+"-"+date.getMonth()+"-"+date.getHours()+"-"+date.getSeconds()+".txt");
+		reportfile.createNewFile();
+		FileWriter fwr = new FileWriter(reportfile);
+		BufferedWriter bwr = new BufferedWriter(fwr);
+		bwr.write(report);
+		bwr.close();
+		fwr.close();
+		date = null;
+	}
+	
+
+	public void initalizeJDialogAddingP() throws IOException {
 		final JDialog dialog = new JDialog();
 		JPanel contentPanel = new JPanel();
 		final JTextField textField_2;
@@ -436,6 +586,12 @@ public class InterfaceTest {
 		contentPanel.add(textField);
 		textField.setColumns(10);
 
+		final JSpinner spinner_1 = new JSpinner();
+		sl_contentPanel.putConstraint(SpringLayout.NORTH, spinner_1, 6, SpringLayout.SOUTH, lblPrice);
+		sl_contentPanel.putConstraint(SpringLayout.WEST, spinner_1, 0, SpringLayout.WEST, spinner);
+		sl_contentPanel.putConstraint(SpringLayout.EAST, spinner_1, 0, SpringLayout.EAST, comboBox);
+		contentPanel.add(spinner_1);
+
 		textField_1 = new JTextField();
 		sl_contentPanel.putConstraint(SpringLayout.NORTH, lblQuantity, 22, SpringLayout.SOUTH, textField_1);
 		sl_contentPanel.putConstraint(SpringLayout.NORTH, textField_1, 72, SpringLayout.NORTH, contentPanel);
@@ -463,11 +619,11 @@ public class InterfaceTest {
 					String groupName = comboBox.getSelectedItem().toString();
 					if (textField_1.getText().isEmpty())
 						textField_1.setText(" ");
-					if (textField_2.getText().isEmpty()){
+					if (textField_2.getText().isEmpty()) {
 						textField_2.setText(" ");
 					}
 					s = groupName + ";" + textField.getText() + ";" + textField_2.getText() + ";"
-							+ textField_1.getText() + ";" + spinner.getValue() + ";15";
+							+ textField_1.getText() + ";" + spinner.getValue() + ";" + spinner_1.getValue();
 					try {
 						String response = client.sendMessageToServerAndGetResponse(s);
 						JFrame parent = new JFrame();
@@ -490,6 +646,7 @@ public class InterfaceTest {
 							return;
 						}
 						dialog.dispose();
+						createNodes(top);
 						JOptionPane.showMessageDialog(parent, response);
 					} catch (IOException e) {
 						e.printStackTrace();
