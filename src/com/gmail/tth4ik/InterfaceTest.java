@@ -85,6 +85,7 @@ public class InterfaceTest {
 	JTextPane textPane_2;
 	JTextPane textPane_3;
 	JTextPane textPane_4;
+	JScrollPane jspt;
 
 	/**
 	 * Launch the application.
@@ -163,7 +164,7 @@ public class InterfaceTest {
 
 		top = new DefaultMutableTreeNode("Groups of Items");
 		tree = new JTree(top);
-		JScrollPane jspt = new JScrollPane(tree);
+		jspt = new JScrollPane(tree);
 		jspt.setBorder(null);
 		tree.addTreeSelectionListener(new TreeSelectionListener() {
 			
@@ -195,7 +196,7 @@ public class InterfaceTest {
 			
 		});
 
-		tree.setToolTipText("This is information about current group");
+		tree.setToolTipText("");
 		tree.setBackground(Color.WHITE);
 		tree.setEditable(true);
 		sl_panel.putConstraint(SpringLayout.NORTH, jspt, 10, SpringLayout.NORTH, panel);
@@ -473,7 +474,6 @@ public class InterfaceTest {
 	}
 
 	private void createNodes(DefaultMutableTreeNode top) throws IOException {
-		tree = null;
 		tree = new JTree(top);
 		if (client == null)
 			return;
@@ -487,9 +487,8 @@ public class InterfaceTest {
 			}
 			System.out.println(category);
 			category = new DefaultMutableTreeNode(groupName);
-			System.out.println(client.sendCommandToServer("groupnames1"));
-			System.out.println(category);
 			top.add(category);
+			System.out.println(client.sendCommandToServer("groupnames1"));
 			String s1 = client.sendCommandToServer(groupName);
 			System.out.println(groupName);
 			String[] array1 = s1.split(";");
@@ -498,8 +497,10 @@ public class InterfaceTest {
 					continue;
 				product = new DefaultMutableTreeNode(productname);
 				category.add(product);
+				System.out.println(product.toString());
 			}
-			tree.repaint();
+			
+			jspt.repaint();
 		}
 	}
 
@@ -714,10 +715,8 @@ public class InterfaceTest {
 		client.sendCommandToServer("groupnames");
 		String response = client.sendMessageToServerAndGetResponse("go");
 		String[] array = response.split(";");
-		for (String group : array) {
+		for (String group : array) 
 			comboBox.addItem(group);
-		}
-
 		contentPanel.add(comboBox);
 
 		textField_2 = new JTextArea();
@@ -833,11 +832,11 @@ public class InterfaceTest {
 						}
 						dialog.dispose();
 						createNodes(top);
+						tree.repaint();
 						JOptionPane.showMessageDialog(parent, response);
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
-					dialog.dispose();
 				}
 			});
 		}

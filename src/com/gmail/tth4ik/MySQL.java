@@ -381,7 +381,7 @@ public class MySQL {
 		}
 		return groupProductsData;
 	}
-	
+
 	/** Генерує стрічку з іменами продуктів певної групи */
 	public String getGroupProductNames(int groupID) {
 		String groupProductsNames = "";
@@ -392,7 +392,7 @@ public class MySQL {
 				String name = res.getString("name");
 				groupProductsNames += name + ";";
 			}
-			
+
 			res.close();
 			st.close();
 		} catch (SQLException e) {
@@ -480,11 +480,11 @@ public class MySQL {
 		try {
 			Statement st = con.createStatement();
 			ResultSet res = st.executeQuery("SELECT * FROM Products WHERE name = '" + name.toUpperCase() + "';");
-			if (res == null){
+			if (res == null) {
 				product = "false";
 				return product;
 			}
-				
+
 			while (res.next()) {
 				String realName = res.getString("name");
 				int groupID = res.getInt("groupID");
@@ -504,4 +504,3 @@ public class MySQL {
 	}
 
 }
-
