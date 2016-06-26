@@ -461,16 +461,29 @@ public class InterfaceTest {
 					}
 					String s = "";
 					String groupName = comboBox.getSelectedItem().toString();
-					System.out.println(groupName);
+					if (textField_1.getText().isEmpty())
+						textField_1.setText(" ");
+					if (textField_2.getText().isEmpty()){
+						textField_2.setText(" ");
+					}
 					s = groupName + ";" + textField.getText() + ";" + textField_2.getText() + ";"
 							+ textField_1.getText() + ";" + spinner.getValue() + ";15";
-					System.out.println(s);
 					try {
 						String response = client.sendMessageToServerAndGetResponse(s);
-						System.out.println(response);
 						JFrame parent = new JFrame();
+						if (response.equalsIgnoreCase("Can't create product with empty name")) {
+							dialog.setVisible(false);
+							JOptionPane.showMessageDialog(parent, response);
+							textField_1.setText("");
+							textField_2.setText("");
+							client.sendCommandToServer("end1");
+							dialog.setVisible(true);
+							return;
+						}
 						if (response.equalsIgnoreCase("Name is used, try to add it once more")) {
 							dialog.setVisible(false);
+							textField_1.setText("");
+							textField_2.setText("");
 							JOptionPane.showMessageDialog(parent, response);
 							client.sendCommandToServer("end1");
 							dialog.setVisible(true);

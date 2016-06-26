@@ -204,6 +204,7 @@ public class ARMServer implements Runnable {
 			if(isFreeName(array[1], groupNames)==false){
 				array[1]=" "; // щоб відредагувало усе, крім імені, якщо воно зайняте
 			}
+			System.out.println(array.length);
 			sql.updateGroupData(array[0], array[1], array[2]);
 			dos.writeUTF("editing successfully ended");
 
@@ -314,6 +315,11 @@ public class ARMServer implements Runnable {
 					return;
 				}
 				String[] array = input.split(";");
+				if (array[1].isEmpty()){
+					input = "";
+					dos.writeUTF("Can't create product with empty name");
+					continue;
+				}
 				if (isFreeName(array[1], productNames) == false) {
 					input = "";
 					dos.writeUTF("Name is used, try to add it once more");
