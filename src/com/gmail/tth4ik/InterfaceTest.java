@@ -270,11 +270,11 @@ public class InterfaceTest {
 		springLayout.putConstraint(SpringLayout.SOUTH, panel_3, -10, SpringLayout.SOUTH,
 				frmWarehouseManagementSystem.getContentPane());
 		springLayout.putConstraint(SpringLayout.EAST, panel_3, -6, SpringLayout.WEST, panel_2);
-		
+
 		final JButton btnConnect = new JButton("Connect");
 		btnConnect.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				if(countclickconnect == 0){
+				if (countclickconnect == 0) {
 					btnConnect.setText("Disconnect");
 					btnConnect.repaint();
 					try {
@@ -288,8 +288,7 @@ public class InterfaceTest {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-				}
-				else if(countclickconnect == 1){
+				} else if (countclickconnect == 1) {
 					btnConnect.setText("Connect");
 					btnConnect.repaint();
 					try {
@@ -302,7 +301,6 @@ public class InterfaceTest {
 					}
 				}
 
-				
 			}
 		});
 		sl_panel_2.putConstraint(SpringLayout.NORTH, btnConnect, -59, SpringLayout.SOUTH, panel_2);
@@ -350,12 +348,13 @@ public class InterfaceTest {
 			System.out.println(groupName);
 			String[] array1 = s1.split(";");
 			for (String productname : array1) {
-			if (productname == null)
-				continue;
-			product = new DefaultMutableTreeNode(productname);
-			category.add(product);
-			tree.repaint();
+				if (productname == null)
+					continue;
+				product = new DefaultMutableTreeNode(productname);
+				category.add(product);
+				tree.repaint();
 			}
+			tree.repaint();
 		}
 	}
 
@@ -455,18 +454,25 @@ public class InterfaceTest {
 			dialog.getRootPane().setDefaultButton(okButton);
 			okButton.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
+					try {
+						client.sendCommandToServer("addproduct");
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					}
 					String s = "";
-					String groupName = (String) comboBox.getSelectedItem();
+					String groupName = comboBox.getSelectedItem().toString();
 					System.out.println(groupName);
-					s = 1 + ";" + textField.getText() + ";" + textField_2.getText() + ";" + textField_1.getText() + ";"
-							+ spinner.getValue() + ";15";
+					s = groupName + ";" + textField.getText() + ";" + textField_2.getText() + ";"
+							+ textField_1.getText() + ";" + spinner.getValue() + ";15";
 					System.out.println(s);
 					try {
 						String response = client.sendMessageToServerAndGetResponse(s);
+						System.out.println(response);
 						JFrame parent = new JFrame();
 						if (response.equalsIgnoreCase("Name is used, try to add it once more")) {
 							dialog.setVisible(false);
 							JOptionPane.showMessageDialog(parent, response);
+							client.sendCommandToServer("end1");
 							dialog.setVisible(true);
 							return;
 						}

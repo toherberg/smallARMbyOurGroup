@@ -320,7 +320,7 @@ public class ARMServer implements Runnable {
 					continue;
 				}
 				int groupID = sql.getGroupID(array[0]);
-				sql.insertProductData(Integer.parseInt(array[0]), array[1], array[2], array[3],
+				sql.insertProductData(groupID, array[1], array[2], array[3],
 						Integer.parseInt(array[4]), Double.parseDouble(array[5]));
 				dos.writeUTF("Product from group ¹ " + groupID + " named " + array[1] + " with info: " + array[2]
 						+ " which manufatured by: " + array[3] + ", it's quantity: " + array[4] + " and price: "
