@@ -25,10 +25,13 @@ import javax.swing.JComboBox;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.ObjectInputStream.GetField;
 import java.net.UnknownHostException;
 import java.rmi.server.Operation;
 import java.util.Date;
@@ -46,6 +49,8 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.border.TitledBorder;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
 import javax.swing.ListSelectionModel;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.border.LineBorder;
@@ -72,7 +77,14 @@ public class InterfaceTest {
 	private static ARMClient client;
 	private int countclickconnect = 0;
 	DefaultMutableTreeNode top;
+	DefaultMutableTreeNode category = null;
+	DefaultMutableTreeNode product = null;
 	JTree tree;
+	JTextPane textPane;
+	JTextPane textPane_1;
+	JTextPane textPane_2;
+	JTextPane textPane_3;
+	JTextPane textPane_4;
 
 	/**
 	 * Launch the application.
@@ -151,17 +163,49 @@ public class InterfaceTest {
 
 		top = new DefaultMutableTreeNode("Groups of Items");
 		tree = new JTree(top);
+		JScrollPane jspt = new JScrollPane(tree);
+		jspt.setBorder(null);
+		tree.addTreeSelectionListener(new TreeSelectionListener() {
+			
+			@Override
+			public void valueChanged(TreeSelectionEvent e) {
+				if (client == null)
+					return;
+				try {
+					client.sendCommandToServer("search");
+					String node = e.getNewLeadSelectionPath().getLastPathComponent().toString();
+					String response = client.sendMessageToServerAndGetResponse(node);
+					if (response.equalsIgnoreCase("")) {
+						return;
+					}
+					String[] array = response.split(";");
+					textPane.setText(array[1]);
+					textPane_1.setText(array[3]);
+					textPane_2.setText(array[4]);
+					textPane_3.setText(array[5]);
+					textPane_4.setText(array[2]);
+					panel_1.repaint();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+
+				}
+				
+			
+		});
+
 		tree.setToolTipText("This is information about current group");
 		tree.setBackground(Color.WHITE);
 		tree.setEditable(true);
-		sl_panel.putConstraint(SpringLayout.NORTH, tree, 10, SpringLayout.NORTH, panel);
-		sl_panel.putConstraint(SpringLayout.WEST, tree, 10, SpringLayout.WEST, panel);
-		sl_panel.putConstraint(SpringLayout.EAST, tree, 215, SpringLayout.WEST, panel);
+		sl_panel.putConstraint(SpringLayout.NORTH, jspt, 10, SpringLayout.NORTH, panel);
+		sl_panel.putConstraint(SpringLayout.WEST, jspt, 10, SpringLayout.WEST, panel);
+		sl_panel.putConstraint(SpringLayout.EAST, jspt, 215, SpringLayout.WEST, panel);
 		tree.setBorder(UIManager.getBorder("List.focusCellHighlightBorder"));
-		panel.add(tree);
+		panel.add(jspt);
 
 		JButton button = new JButton("Add group");
-		sl_panel.putConstraint(SpringLayout.SOUTH, tree, -23, SpringLayout.NORTH, button);
+		sl_panel.putConstraint(SpringLayout.SOUTH, jspt, -23, SpringLayout.NORTH, button);
 		sl_panel.putConstraint(SpringLayout.NORTH, button, 352, SpringLayout.NORTH, panel);
 		sl_panel.putConstraint(SpringLayout.SOUTH, button, -32, SpringLayout.SOUTH, panel);
 		sl_panel.putConstraint(SpringLayout.WEST, button, 43, SpringLayout.WEST, panel);
@@ -300,35 +344,35 @@ public class InterfaceTest {
 		label_4.setFont(new Font("Dialog", Font.BOLD, 12));
 		panel_1.add(label_4);
 
-		final JTextPane textPane = new JTextPane();
+		textPane = new JTextPane();
 		textPane.setEditable(false); // name
 		sl_panel_1.putConstraint(SpringLayout.WEST, textPane, 25, SpringLayout.EAST, label);
 		sl_panel_1.putConstraint(SpringLayout.SOUTH, textPane, 0, SpringLayout.SOUTH, label);
 		sl_panel_1.putConstraint(SpringLayout.EAST, textPane, -10, SpringLayout.EAST, panel_1);
 		panel_1.add(textPane);
 
-		final JTextPane textPane_1 = new JTextPane(); // manufacturer
+		textPane_1 = new JTextPane(); // manufacturer
 		textPane_1.setEditable(false);
 		sl_panel_1.putConstraint(SpringLayout.NORTH, textPane_1, 6, SpringLayout.SOUTH, textPane);
 		sl_panel_1.putConstraint(SpringLayout.WEST, textPane_1, -205, SpringLayout.EAST, panel_1);
 		sl_panel_1.putConstraint(SpringLayout.EAST, textPane_1, -10, SpringLayout.EAST, panel_1);
 		panel_1.add(textPane_1);
 
-		final JTextPane textPane_2 = new JTextPane(); //
+		textPane_2 = new JTextPane(); //
 		textPane_2.setEditable(false); // quantity
 		sl_panel_1.putConstraint(SpringLayout.NORTH, textPane_2, 7, SpringLayout.SOUTH, textPane_1);
 		sl_panel_1.putConstraint(SpringLayout.WEST, textPane_2, 19, SpringLayout.EAST, label_2);
 		sl_panel_1.putConstraint(SpringLayout.EAST, textPane_2, -10, SpringLayout.EAST, panel_1);
 		panel_1.add(textPane_2);
 
-		final JTextPane textPane_3 = new JTextPane();
+		textPane_3 = new JTextPane();
 		textPane_3.setEditable(false);
 		sl_panel_1.putConstraint(SpringLayout.NORTH, textPane_3, 8, SpringLayout.SOUTH, textPane_2);
 		sl_panel_1.putConstraint(SpringLayout.WEST, textPane_3, 19, SpringLayout.EAST, label_3);
 		sl_panel_1.putConstraint(SpringLayout.EAST, textPane_3, -10, SpringLayout.EAST, panel_1);
 		panel_1.add(textPane_3);
 
-		final JTextPane textPane_4 = new JTextPane();
+		textPane_4 = new JTextPane();
 		textPane_4.setEditable(false);
 		JScrollPane jsp2 = new JScrollPane(textPane_4);
 		jsp2.setBorder(null);
@@ -404,7 +448,6 @@ public class InterfaceTest {
 					String productName = textField.getText();
 					String response = client.sendMessageToServerAndGetResponse(productName);
 					if (response.equalsIgnoreCase("")) {
-
 						return;
 					}
 					String[] array = response.split(";");
@@ -430,8 +473,6 @@ public class InterfaceTest {
 	}
 
 	private void createNodes(DefaultMutableTreeNode top) throws IOException {
-		DefaultMutableTreeNode category = null;
-		DefaultMutableTreeNode product = null;
 		tree = null;
 		tree = new JTree(top);
 		if (client == null)
