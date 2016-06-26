@@ -364,6 +364,8 @@ public class InterfaceTest {
 	private void createNodes(DefaultMutableTreeNode top) throws IOException {
 		DefaultMutableTreeNode category = null;
 		DefaultMutableTreeNode product = null;
+		tree = null;
+		tree = new JTree(top);
 		if (client == null)
 			return;
 		client.sendCommandToServer("groupnames");
@@ -587,7 +589,7 @@ public class InterfaceTest {
 	public void initalizeJDialogAddingP() throws IOException {
 		final JDialog dialog = new JDialog();
 		JPanel contentPanel = new JPanel();
-		final JTextField textField_2;
+		final JTextArea textField_2;
 		final JTextField textField;
 		final JTextField textField_1;
 		dialog.setModalityType(ModalityType.TOOLKIT_MODAL);
@@ -613,15 +615,18 @@ public class InterfaceTest {
 
 		contentPanel.add(comboBox);
 
-		textField_2 = new JTextField();
-		sl_contentPanel.putConstraint(SpringLayout.WEST, textField_2, 20, SpringLayout.WEST, contentPanel);
-		sl_contentPanel.putConstraint(SpringLayout.SOUTH, textField_2, -13, SpringLayout.SOUTH, contentPanel);
-		sl_contentPanel.putConstraint(SpringLayout.EAST, textField_2, -69, SpringLayout.EAST, contentPanel);
-		contentPanel.add(textField_2);
+		textField_2 = new JTextArea();
+		textField_2.setLineWrap(true);
+		textField_2.setColumns(10);
+		JScrollPane jsp1 = new JScrollPane(textField_2);
+		sl_contentPanel.putConstraint(SpringLayout.WEST, jsp1, 20, SpringLayout.WEST, contentPanel);
+		sl_contentPanel.putConstraint(SpringLayout.SOUTH, jsp1, -13, SpringLayout.SOUTH, contentPanel);
+		sl_contentPanel.putConstraint(SpringLayout.EAST, jsp1, -69, SpringLayout.EAST, contentPanel);
+		contentPanel.add(jsp1);
 		textField_2.setColumns(10);
 
 		Label label_2 = new Label("Info:");
-		sl_contentPanel.putConstraint(SpringLayout.NORTH, textField_2, 6, SpringLayout.SOUTH, label_2);
+		sl_contentPanel.putConstraint(SpringLayout.NORTH, jsp1, 6, SpringLayout.SOUTH, label_2);
 		sl_contentPanel.putConstraint(SpringLayout.SOUTH, label_2, -81, SpringLayout.SOUTH, contentPanel);
 		sl_contentPanel.putConstraint(SpringLayout.WEST, label_2, 24, SpringLayout.WEST, contentPanel);
 		label_2.setFont(new Font("Dialog", Font.BOLD, 12));
@@ -671,7 +676,7 @@ public class InterfaceTest {
 		textField_1 = new JTextField();
 		sl_contentPanel.putConstraint(SpringLayout.NORTH, lblQuantity, 22, SpringLayout.SOUTH, textField_1);
 		sl_contentPanel.putConstraint(SpringLayout.NORTH, textField_1, 72, SpringLayout.NORTH, contentPanel);
-		sl_contentPanel.putConstraint(SpringLayout.SOUTH, textField, -1, SpringLayout.NORTH, textField_1);
+		sl_contentPanel.putConstraint(SpringLayout.SOUTH, textField, -10, SpringLayout.NORTH, textField_1);
 		sl_contentPanel.putConstraint(SpringLayout.SOUTH, label_1, 0, SpringLayout.SOUTH, textField_1);
 		sl_contentPanel.putConstraint(SpringLayout.EAST, textField_1, 0, SpringLayout.EAST, comboBox);
 		contentPanel.add(textField_1);
