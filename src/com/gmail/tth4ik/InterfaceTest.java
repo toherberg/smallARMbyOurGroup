@@ -71,6 +71,8 @@ import java.awt.SecondaryLoop;
 import javax.swing.JLayeredPane;
 import javax.swing.JToggleButton;
 import java.awt.Window.Type;
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
 
 public class InterfaceTest {
 	private JFrame frmWarehouseManagementSystem;
@@ -128,35 +130,12 @@ public class InterfaceTest {
 		frmWarehouseManagementSystem.setTitle("Warehouse Management System");
 		frmWarehouseManagementSystem.setBounds(100, 100, 715, 459);
 		frmWarehouseManagementSystem.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		SpringLayout springLayout = new SpringLayout();
-		frmWarehouseManagementSystem.getContentPane().setLayout(springLayout);
 
 		JPanel panel = new JPanel();
-		springLayout.putConstraint(SpringLayout.NORTH, panel, 0, SpringLayout.NORTH,
-				frmWarehouseManagementSystem.getContentPane());
-		springLayout.putConstraint(SpringLayout.WEST, panel, 0, SpringLayout.WEST,
-				frmWarehouseManagementSystem.getContentPane());
-		springLayout.putConstraint(SpringLayout.SOUTH, panel, 0, SpringLayout.SOUTH,
-				frmWarehouseManagementSystem.getContentPane());
-		springLayout.putConstraint(SpringLayout.EAST, panel, 225, SpringLayout.WEST, frmWarehouseManagementSystem.getContentPane());
-		frmWarehouseManagementSystem.getContentPane().add(panel);
 
 		final JPanel panel_1 = new JPanel();
-		springLayout.putConstraint(SpringLayout.NORTH, panel_1, 10, SpringLayout.NORTH,
-				frmWarehouseManagementSystem.getContentPane());
-		springLayout.putConstraint(SpringLayout.SOUTH, panel_1, -85, SpringLayout.SOUTH,
-				frmWarehouseManagementSystem.getContentPane());
-		frmWarehouseManagementSystem.getContentPane().add(panel_1);
 
 		JPanel panel_2 = new JPanel();
-		springLayout.putConstraint(SpringLayout.WEST, panel_1, -348, SpringLayout.WEST, panel_2);
-		springLayout.putConstraint(SpringLayout.EAST, panel_1, -6, SpringLayout.WEST, panel_2);
-		springLayout.putConstraint(SpringLayout.NORTH, panel_2, -412, SpringLayout.SOUTH, frmWarehouseManagementSystem.getContentPane());
-		springLayout.putConstraint(SpringLayout.WEST, panel_2, -121, SpringLayout.EAST, frmWarehouseManagementSystem.getContentPane());
-		springLayout.putConstraint(SpringLayout.SOUTH, panel_2, 0, SpringLayout.SOUTH,
-				frmWarehouseManagementSystem.getContentPane());
-		springLayout.putConstraint(SpringLayout.EAST, panel_2, 0, SpringLayout.EAST,
-				frmWarehouseManagementSystem.getContentPane());
 		SpringLayout sl_panel_1 = new SpringLayout();
 		panel_1.setLayout(sl_panel_1);
 		SpringLayout sl_panel = new SpringLayout();
@@ -214,7 +193,6 @@ public class InterfaceTest {
 		sl_panel.putConstraint(SpringLayout.EAST, button, -46, SpringLayout.EAST, panel);
 		button.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		panel.add(button);
-		frmWarehouseManagementSystem.getContentPane().add(panel_2);
 		SpringLayout sl_panel_2 = new SpringLayout();
 		panel_2.setLayout(sl_panel_2);
 
@@ -288,10 +266,6 @@ public class InterfaceTest {
 		panel_2.add(btnFullReport);
 
 		JPanel panel_3 = new JPanel();
-		springLayout.putConstraint(SpringLayout.NORTH, panel_3, 6, SpringLayout.SOUTH, panel_1);
-		springLayout.putConstraint(SpringLayout.WEST, panel_3, -345, SpringLayout.WEST, panel_2);
-		springLayout.putConstraint(SpringLayout.SOUTH, panel_3, -10, SpringLayout.SOUTH, frmWarehouseManagementSystem.getContentPane());
-		springLayout.putConstraint(SpringLayout.EAST, panel_3, -6, SpringLayout.WEST, panel_2);
 
 		JButton btnDeleteProduct = new JButton("Delete Product");
 		sl_panel_1.putConstraint(SpringLayout.WEST, btnDeleteProduct, 0, SpringLayout.WEST, panel_1);
@@ -463,7 +437,6 @@ public class InterfaceTest {
 		});
 		sl_panel_2.putConstraint(SpringLayout.SOUTH, btnConnect, -31, SpringLayout.SOUTH, panel_2);
 		panel_2.add(btnConnect);
-		frmWarehouseManagementSystem.getContentPane().add(panel_3);
 		SpringLayout sl_panel_3 = new SpringLayout();
 		panel_3.setLayout(sl_panel_3);
 
@@ -508,6 +481,31 @@ public class InterfaceTest {
 		sl_panel_3.putConstraint(SpringLayout.NORTH, btnSearch, 20, SpringLayout.NORTH, panel_3);
 		btnSearch.setFont(new Font("Dialog", Font.PLAIN, 12));
 		panel_3.add(btnSearch);
+		GroupLayout groupLayout = new GroupLayout(frmWarehouseManagementSystem.getContentPane());
+		groupLayout.setHorizontalGroup(
+			groupLayout.createParallelGroup(Alignment.LEADING)
+				.addGroup(groupLayout.createSequentialGroup()
+					.addComponent(panel, GroupLayout.PREFERRED_SIZE, 225, GroupLayout.PREFERRED_SIZE)
+					.addGap(3)
+					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+						.addComponent(panel_1, GroupLayout.PREFERRED_SIZE, 342, GroupLayout.PREFERRED_SIZE)
+						.addGroup(groupLayout.createSequentialGroup()
+							.addGap(3)
+							.addComponent(panel_3, GroupLayout.PREFERRED_SIZE, 339, GroupLayout.PREFERRED_SIZE)))
+					.addGap(6)
+					.addComponent(panel_2, GroupLayout.PREFERRED_SIZE, 121, GroupLayout.PREFERRED_SIZE))
+		);
+		groupLayout.setVerticalGroup(
+			groupLayout.createParallelGroup(Alignment.LEADING)
+				.addComponent(panel, GroupLayout.PREFERRED_SIZE, 412, GroupLayout.PREFERRED_SIZE)
+				.addGroup(groupLayout.createSequentialGroup()
+					.addGap(10)
+					.addComponent(panel_1, GroupLayout.PREFERRED_SIZE, 317, GroupLayout.PREFERRED_SIZE)
+					.addGap(6)
+					.addComponent(panel_3, GroupLayout.PREFERRED_SIZE, 69, GroupLayout.PREFERRED_SIZE))
+				.addComponent(panel_2, GroupLayout.PREFERRED_SIZE, 412, GroupLayout.PREFERRED_SIZE)
+		);
+		frmWarehouseManagementSystem.getContentPane().setLayout(groupLayout);
 	}
 
 	private void createNodes(DefaultMutableTreeNode top) throws IOException {
