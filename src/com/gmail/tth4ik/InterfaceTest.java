@@ -268,6 +268,47 @@ public class InterfaceTest {
 		JPanel panel_3 = new JPanel();
 
 		JButton btnDeleteProduct = new JButton("Delete Product");
+		btnDeleteProduct.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				if (client == null)
+					return;
+				if (textPane.getText().isEmpty())
+					return;
+				String toDelete = textPane.getText();
+				JFrame frm = new JFrame();
+				int n = JOptionPane.showConfirmDialog(
+					    frm,
+					    "Would you delete this product from BD??",
+					    "Delete product",
+					    JOptionPane.YES_NO_OPTION);
+				if (n == 1)
+					return;
+				if (n==0){
+					try {
+						JFrame jrm = new JFrame();
+						client.sendCommandToServer("deleteproduct");
+						String response = client.sendMessageToServerAndGetResponse(toDelete);
+						JOptionPane.showMessageDialog(jrm, response);
+						createNodes(top);
+						model.reload();
+						tree.repaint();
+						textPane.setText("");
+						textPane_1.setText("");
+						textPane_2.setText("");
+						textPane_3.setText("");
+						textPane_4.setText("");
+						panel_1.repaint();
+						return;
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+					
+				}
+			}
+
+				
+			}
+		);
 		sl_panel_1.putConstraint(SpringLayout.WEST, btnDeleteProduct, 0, SpringLayout.WEST, panel_1);
 		sl_panel_1.putConstraint(SpringLayout.SOUTH, btnDeleteProduct, -40, SpringLayout.SOUTH, panel_1);
 		sl_panel_1.putConstraint(SpringLayout.EAST, btnDeleteProduct, 108, SpringLayout.WEST, panel_1);
@@ -593,10 +634,8 @@ public class InterfaceTest {
 						createNodes(top);
 						return;
 					} catch (UnknownHostException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					} catch (IOException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 				} else if (countclickconnect == 1) {
@@ -702,7 +741,7 @@ public class InterfaceTest {
 			}
 			category = new DefaultMutableTreeNode(groupName);
 			model.insertNodeInto(category, top, top.getChildCount());
-			System.out.println(client.sendCommandToServer("groupnames1"));
+			client.sendCommandToServer("groupnames1");
 			String s1 = client.sendCommandToServer(groupName);
 			String[] array1 = s1.split(";");
 			for (String productname : array1) {
