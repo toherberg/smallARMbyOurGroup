@@ -377,7 +377,6 @@ public class InterfaceTest {
 				textField_2 = new JTextArea();
 				textField_2.setLineWrap(true);
 				JScrollPane jsp = new JScrollPane(textField_2);
-				jsp.setBorder(null);
 				sl_contentPanel.putConstraint(SpringLayout.NORTH, jsp, 17, SpringLayout.SOUTH, textField_1);
 				sl_contentPanel.putConstraint(SpringLayout.WEST, jsp, 152, SpringLayout.WEST, contentPanel);
 				sl_contentPanel.putConstraint(SpringLayout.EAST, jsp, 0, SpringLayout.EAST, textField);
