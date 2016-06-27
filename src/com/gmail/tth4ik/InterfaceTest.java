@@ -290,7 +290,7 @@ public class InterfaceTest {
 			}
 
 			private void initializeEditProductDialog() throws IOException {
-			
+
 			}
 
 		});
