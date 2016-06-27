@@ -124,7 +124,7 @@ public class InterfaceTest {
 	 */
 	private void initialize() throws IOException {
 		frmWarehouseManagementSystem = new JFrame();
-		frmWarehouseManagementSystem.setResizable(false);
+		frmWarehouseManagementSystem.setResizable(true);
 		frmWarehouseManagementSystem.setTitle("Warehouse Management System");
 		frmWarehouseManagementSystem.setBounds(100, 100, 715, 459);
 		frmWarehouseManagementSystem.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -138,24 +138,21 @@ public class InterfaceTest {
 				frmWarehouseManagementSystem.getContentPane());
 		springLayout.putConstraint(SpringLayout.SOUTH, panel, 0, SpringLayout.SOUTH,
 				frmWarehouseManagementSystem.getContentPane());
-		springLayout.putConstraint(SpringLayout.EAST, panel, 225, SpringLayout.WEST,
-				frmWarehouseManagementSystem.getContentPane());
+		springLayout.putConstraint(SpringLayout.EAST, panel, 225, SpringLayout.WEST, frmWarehouseManagementSystem.getContentPane());
 		frmWarehouseManagementSystem.getContentPane().add(panel);
 
 		final JPanel panel_1 = new JPanel();
 		springLayout.putConstraint(SpringLayout.NORTH, panel_1, 10, SpringLayout.NORTH,
 				frmWarehouseManagementSystem.getContentPane());
-		springLayout.putConstraint(SpringLayout.WEST, panel_1, 3, SpringLayout.EAST, panel);
 		springLayout.putConstraint(SpringLayout.SOUTH, panel_1, -85, SpringLayout.SOUTH,
 				frmWarehouseManagementSystem.getContentPane());
 		frmWarehouseManagementSystem.getContentPane().add(panel_1);
 
 		JPanel panel_2 = new JPanel();
+		springLayout.putConstraint(SpringLayout.WEST, panel_1, -348, SpringLayout.WEST, panel_2);
 		springLayout.putConstraint(SpringLayout.EAST, panel_1, -6, SpringLayout.WEST, panel_2);
-		springLayout.putConstraint(SpringLayout.NORTH, panel_2, 0, SpringLayout.NORTH,
-				frmWarehouseManagementSystem.getContentPane());
-		springLayout.putConstraint(SpringLayout.WEST, panel_2, 576, SpringLayout.WEST,
-				frmWarehouseManagementSystem.getContentPane());
+		springLayout.putConstraint(SpringLayout.NORTH, panel_2, -412, SpringLayout.SOUTH, frmWarehouseManagementSystem.getContentPane());
+		springLayout.putConstraint(SpringLayout.WEST, panel_2, -121, SpringLayout.EAST, frmWarehouseManagementSystem.getContentPane());
 		springLayout.putConstraint(SpringLayout.SOUTH, panel_2, 0, SpringLayout.SOUTH,
 				frmWarehouseManagementSystem.getContentPane());
 		springLayout.putConstraint(SpringLayout.EAST, panel_2, 0, SpringLayout.EAST,
@@ -214,7 +211,6 @@ public class InterfaceTest {
 		JButton button = new JButton("Add group");
 		sl_panel.putConstraint(SpringLayout.NORTH, button, 16, SpringLayout.SOUTH, jspt);
 		sl_panel.putConstraint(SpringLayout.WEST, button, 41, SpringLayout.WEST, panel);
-		sl_panel.putConstraint(SpringLayout.SOUTH, button, -74, SpringLayout.SOUTH, panel);
 		sl_panel.putConstraint(SpringLayout.EAST, button, -46, SpringLayout.EAST, panel);
 		button.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		panel.add(button);
@@ -223,6 +219,7 @@ public class InterfaceTest {
 		panel_2.setLayout(sl_panel_2);
 
 		JButton btnAddProduct = new JButton("Add product");
+		sl_panel_2.putConstraint(SpringLayout.SOUTH, btnAddProduct, 71, SpringLayout.NORTH, panel_2);
 		btnAddProduct.setFont(new Font("Dialog", Font.PLAIN, 12));
 		btnAddProduct.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -238,16 +235,15 @@ public class InterfaceTest {
 		});
 		sl_panel_2.putConstraint(SpringLayout.NORTH, btnAddProduct, 10, SpringLayout.NORTH, panel_2);
 		sl_panel_2.putConstraint(SpringLayout.WEST, btnAddProduct, 10, SpringLayout.WEST, panel_2);
-		sl_panel_2.putConstraint(SpringLayout.SOUTH, btnAddProduct, -341, SpringLayout.SOUTH, panel_2);
 		sl_panel_2.putConstraint(SpringLayout.EAST, btnAddProduct, -10, SpringLayout.EAST, panel_2);
 		panel_2.add(btnAddProduct);
 
 		JButton btnRefresh = new JButton("Refresh");
-		btnRefresh.setFont(new Font("Dialog", Font.PLAIN, 12));
 		sl_panel_2.putConstraint(SpringLayout.NORTH, btnRefresh, 17, SpringLayout.SOUTH, btnAddProduct);
 		sl_panel_2.putConstraint(SpringLayout.WEST, btnRefresh, 10, SpringLayout.WEST, panel_2);
-		sl_panel_2.putConstraint(SpringLayout.SOUTH, btnRefresh, -263, SpringLayout.SOUTH, panel_2);
-		sl_panel_2.putConstraint(SpringLayout.EAST, btnRefresh, 0, SpringLayout.EAST, btnAddProduct);
+		sl_panel_2.putConstraint(SpringLayout.SOUTH, btnRefresh, 78, SpringLayout.SOUTH, btnAddProduct);
+		sl_panel_2.putConstraint(SpringLayout.EAST, btnRefresh, -10, SpringLayout.EAST, panel_2);
+		btnRefresh.setFont(new Font("Dialog", Font.PLAIN, 12));
 		btnRefresh.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -260,6 +256,8 @@ public class InterfaceTest {
 		panel_2.add(btnRefresh);
 
 		JButton btnGroupReport = new JButton("Group report");
+		sl_panel_2.putConstraint(SpringLayout.NORTH, btnGroupReport, 170, SpringLayout.NORTH, panel_2);
+		sl_panel_2.putConstraint(SpringLayout.EAST, btnGroupReport, -10, SpringLayout.EAST, panel_2);
 		btnGroupReport.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				try {
@@ -272,11 +270,13 @@ public class InterfaceTest {
 			}
 		});
 		btnGroupReport.setFont(new Font("Dialog", Font.PLAIN, 12));
-		sl_panel_2.putConstraint(SpringLayout.NORTH, btnGroupReport, 21, SpringLayout.SOUTH, btnRefresh);
-		sl_panel_2.putConstraint(SpringLayout.EAST, btnGroupReport, 0, SpringLayout.EAST, btnAddProduct);
 		panel_2.add(btnGroupReport);
 
 		JButton btnFullReport = new JButton("Full report");
+		sl_panel_2.putConstraint(SpringLayout.NORTH, btnFullReport, 18, SpringLayout.SOUTH, btnGroupReport);
+		sl_panel_2.putConstraint(SpringLayout.WEST, btnFullReport, 8, SpringLayout.WEST, panel_2);
+		sl_panel_2.putConstraint(SpringLayout.SOUTH, btnFullReport, 46, SpringLayout.SOUTH, btnGroupReport);
+		sl_panel_2.putConstraint(SpringLayout.EAST, btnFullReport, -10, SpringLayout.EAST, panel_2);
 		btnFullReport.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (client == null)
@@ -285,21 +285,23 @@ public class InterfaceTest {
 			}
 		});
 		btnFullReport.setFont(new Font("Dialog", Font.PLAIN, 12));
-		sl_panel_2.putConstraint(SpringLayout.NORTH, btnFullReport, 18, SpringLayout.SOUTH, btnGroupReport);
-		sl_panel_2.putConstraint(SpringLayout.WEST, btnFullReport, 0, SpringLayout.WEST, btnGroupReport);
-		sl_panel_2.putConstraint(SpringLayout.SOUTH, btnFullReport, 46, SpringLayout.SOUTH, btnGroupReport);
-		sl_panel_2.putConstraint(SpringLayout.EAST, btnFullReport, 0, SpringLayout.EAST, btnAddProduct);
 		panel_2.add(btnFullReport);
 
 		JPanel panel_3 = new JPanel();
 		springLayout.putConstraint(SpringLayout.NORTH, panel_3, 6, SpringLayout.SOUTH, panel_1);
+		springLayout.putConstraint(SpringLayout.WEST, panel_3, -345, SpringLayout.WEST, panel_2);
+		springLayout.putConstraint(SpringLayout.SOUTH, panel_3, -10, SpringLayout.SOUTH, frmWarehouseManagementSystem.getContentPane());
+		springLayout.putConstraint(SpringLayout.EAST, panel_3, -6, SpringLayout.WEST, panel_2);
 
 		JButton btnDeleteProduct = new JButton("Delete Product");
 		sl_panel_1.putConstraint(SpringLayout.WEST, btnDeleteProduct, 0, SpringLayout.WEST, panel_1);
+		sl_panel_1.putConstraint(SpringLayout.SOUTH, btnDeleteProduct, -40, SpringLayout.SOUTH, panel_1);
+		sl_panel_1.putConstraint(SpringLayout.EAST, btnDeleteProduct, 108, SpringLayout.WEST, panel_1);
 		btnDeleteProduct.setFont(new Font("SansSerif", Font.PLAIN, 11));
 		panel_1.add(btnDeleteProduct);
 
 		JButton btnEditProduct = new JButton("Edit Product");
+		sl_panel_1.putConstraint(SpringLayout.WEST, btnEditProduct, -102, SpringLayout.EAST, panel_1);
 		btnEditProduct.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				try {
@@ -320,16 +322,14 @@ public class InterfaceTest {
 		});
 
 		sl_panel_1.putConstraint(SpringLayout.SOUTH, btnEditProduct, -40, SpringLayout.SOUTH, panel_1);
-		sl_panel_1.putConstraint(SpringLayout.NORTH, btnDeleteProduct, 0, SpringLayout.NORTH, btnEditProduct);
 		sl_panel_1.putConstraint(SpringLayout.EAST, btnEditProduct, 0, SpringLayout.EAST, panel_1);
 		btnEditProduct.setFont(new Font("SansSerif", Font.PLAIN, 11));
 		panel_1.add(btnEditProduct);
 
 		JButton btnSelladd = new JButton("Sell/Add Products");
-		sl_panel_1.putConstraint(SpringLayout.WEST, btnSelladd, 114, SpringLayout.WEST, panel_1);
-		sl_panel_1.putConstraint(SpringLayout.EAST, btnDeleteProduct, -6, SpringLayout.WEST, btnSelladd);
+		sl_panel_1.putConstraint(SpringLayout.WEST, btnSelladd, 6, SpringLayout.EAST, btnDeleteProduct);
 		sl_panel_1.putConstraint(SpringLayout.SOUTH, btnSelladd, -40, SpringLayout.SOUTH, panel_1);
-		sl_panel_1.putConstraint(SpringLayout.WEST, btnEditProduct, 6, SpringLayout.EAST, btnSelladd);
+		sl_panel_1.putConstraint(SpringLayout.EAST, btnSelladd, -6, SpringLayout.WEST, btnEditProduct);
 		btnSelladd.setFont(new Font("SansSerif", Font.PLAIN, 11));
 		panel_1.add(btnSelladd);
 
@@ -340,24 +340,24 @@ public class InterfaceTest {
 		label.setFont(new Font("Dialog", Font.BOLD, 12));
 		panel_1.add(label);
 
-		Label label_1 = new Label("Manufacturer");
+		Label label_1 = new Label("Manufacturer:");
 		sl_panel_1.putConstraint(SpringLayout.NORTH, label_1, 6, SpringLayout.SOUTH, label);
 		sl_panel_1.putConstraint(SpringLayout.WEST, label_1, 10, SpringLayout.WEST, panel_1);
-		sl_panel_1.putConstraint(SpringLayout.EAST, label_1, -224, SpringLayout.EAST, panel_1);
+		sl_panel_1.putConstraint(SpringLayout.EAST, label_1, 118, SpringLayout.WEST, panel_1);
 		label_1.setFont(new Font("Dialog", Font.BOLD, 12));
 		panel_1.add(label_1);
 
 		Label label_2 = new Label("Quantity:");
 		sl_panel_1.putConstraint(SpringLayout.NORTH, label_2, 6, SpringLayout.SOUTH, label_1);
 		sl_panel_1.putConstraint(SpringLayout.WEST, label_2, 10, SpringLayout.WEST, panel_1);
-		sl_panel_1.putConstraint(SpringLayout.EAST, label_2, -224, SpringLayout.EAST, panel_1);
+		sl_panel_1.putConstraint(SpringLayout.EAST, label_2, 118, SpringLayout.WEST, panel_1);
 		label_2.setFont(new Font("Dialog", Font.BOLD, 12));
 		panel_1.add(label_2);
 
 		Label label_3 = new Label("Price:");
 		sl_panel_1.putConstraint(SpringLayout.NORTH, label_3, 6, SpringLayout.SOUTH, label_2);
 		sl_panel_1.putConstraint(SpringLayout.WEST, label_3, 10, SpringLayout.WEST, panel_1);
-		sl_panel_1.putConstraint(SpringLayout.EAST, label_3, -224, SpringLayout.EAST, panel_1);
+		sl_panel_1.putConstraint(SpringLayout.EAST, label_3, 118, SpringLayout.WEST, panel_1);
 		label_3.setFont(new Font("Dialog", Font.BOLD, 12));
 		panel_1.add(label_3);
 
@@ -365,69 +365,69 @@ public class InterfaceTest {
 		sl_panel_1.putConstraint(SpringLayout.NORTH, label_4, 6, SpringLayout.SOUTH, label_3);
 		sl_panel_1.putConstraint(SpringLayout.WEST, label_4, 10, SpringLayout.WEST, panel_1);
 		sl_panel_1.putConstraint(SpringLayout.SOUTH, label_4, -88, SpringLayout.NORTH, btnDeleteProduct);
-		sl_panel_1.putConstraint(SpringLayout.EAST, label_4, -224, SpringLayout.EAST, panel_1);
+		sl_panel_1.putConstraint(SpringLayout.EAST, label_4, 118, SpringLayout.WEST, panel_1);
 		label_4.setFont(new Font("Dialog", Font.BOLD, 12));
 		panel_1.add(label_4);
 
 		textPane = new JTextPane();
-		textPane.setEditable(false); // name
-		sl_panel_1.putConstraint(SpringLayout.WEST, textPane, 25, SpringLayout.EAST, label);
-		sl_panel_1.putConstraint(SpringLayout.SOUTH, textPane, 0, SpringLayout.SOUTH, label);
+		sl_panel_1.putConstraint(SpringLayout.WEST, textPane, -205, SpringLayout.EAST, panel_1);
+		textPane.setEditable(false);
 		sl_panel_1.putConstraint(SpringLayout.EAST, textPane, -10, SpringLayout.EAST, panel_1);
 		panel_1.add(textPane);
 
-		textPane_1 = new JTextPane(); // manufacturer
+		textPane_1 = new JTextPane();
+		sl_panel_1.putConstraint(SpringLayout.NORTH, textPane_1, 51, SpringLayout.NORTH, panel_1);
+		sl_panel_1.putConstraint(SpringLayout.SOUTH, textPane, -6, SpringLayout.NORTH, textPane_1);
 		textPane_1.setEditable(false);
-		sl_panel_1.putConstraint(SpringLayout.NORTH, textPane_1, 6, SpringLayout.SOUTH, textPane);
 		sl_panel_1.putConstraint(SpringLayout.WEST, textPane_1, -205, SpringLayout.EAST, panel_1);
 		sl_panel_1.putConstraint(SpringLayout.EAST, textPane_1, -10, SpringLayout.EAST, panel_1);
 		panel_1.add(textPane_1);
 
 		textPane_2 = new JTextPane(); //
-		textPane_2.setEditable(false); // quantity
 		sl_panel_1.putConstraint(SpringLayout.NORTH, textPane_2, 7, SpringLayout.SOUTH, textPane_1);
 		sl_panel_1.putConstraint(SpringLayout.WEST, textPane_2, 19, SpringLayout.EAST, label_2);
 		sl_panel_1.putConstraint(SpringLayout.EAST, textPane_2, -10, SpringLayout.EAST, panel_1);
+		textPane_2.setEditable(false);
 		panel_1.add(textPane_2);
 
 		textPane_3 = new JTextPane();
-		textPane_3.setEditable(false);
 		sl_panel_1.putConstraint(SpringLayout.NORTH, textPane_3, 8, SpringLayout.SOUTH, textPane_2);
 		sl_panel_1.putConstraint(SpringLayout.WEST, textPane_3, 19, SpringLayout.EAST, label_3);
 		sl_panel_1.putConstraint(SpringLayout.EAST, textPane_3, -10, SpringLayout.EAST, panel_1);
+		textPane_3.setEditable(false);
 		panel_1.add(textPane_3);
 
 		textPane_4 = new JTextPane();
 		textPane_4.setEditable(false);
 		JScrollPane jsp2 = new JScrollPane(textPane_4);
-		jsp2.setBorder(null);
 		sl_panel_1.putConstraint(SpringLayout.NORTH, jsp2, 10, SpringLayout.SOUTH, textPane_3);
 		sl_panel_1.putConstraint(SpringLayout.WEST, jsp2, 19, SpringLayout.EAST, label_4);
 		sl_panel_1.putConstraint(SpringLayout.SOUTH, jsp2, -47, SpringLayout.NORTH, btnEditProduct);
 		sl_panel_1.putConstraint(SpringLayout.EAST, jsp2, -10, SpringLayout.EAST, panel_1);
+		jsp2.setBorder(null);
 		panel_1.add(jsp2);
-		springLayout.putConstraint(SpringLayout.WEST, panel_3, 6, SpringLayout.EAST, panel);
 
 		JButton btnNewButton = new JButton("Delete group");
+		sl_panel.putConstraint(SpringLayout.NORTH, btnNewButton, -43, SpringLayout.SOUTH, panel);
 		sl_panel.putConstraint(SpringLayout.WEST, btnNewButton, 41, SpringLayout.WEST, panel);
 		sl_panel.putConstraint(SpringLayout.SOUTH, btnNewButton, -24, SpringLayout.SOUTH, panel);
-		sl_panel.putConstraint(SpringLayout.EAST, btnNewButton, 0, SpringLayout.EAST, button);
+		sl_panel.putConstraint(SpringLayout.EAST, btnNewButton, -46, SpringLayout.EAST, panel);
 		btnNewButton.setFont(new Font("Dialog", Font.PLAIN, 12));
 		panel.add(btnNewButton);
 
 		JButton btnGroupsInformation = new JButton("Group Info");
-		sl_panel.putConstraint(SpringLayout.NORTH, btnNewButton, 6, SpringLayout.SOUTH, btnGroupsInformation);
-		sl_panel.putConstraint(SpringLayout.NORTH, btnGroupsInformation, 6, SpringLayout.SOUTH, button);
-		sl_panel.putConstraint(SpringLayout.WEST, btnGroupsInformation, 0, SpringLayout.WEST, button);
-		sl_panel.putConstraint(SpringLayout.SOUTH, btnGroupsInformation, -49, SpringLayout.SOUTH, panel);
+		sl_panel.putConstraint(SpringLayout.SOUTH, button, -6, SpringLayout.NORTH, btnGroupsInformation);
+		sl_panel.putConstraint(SpringLayout.NORTH, btnGroupsInformation, -68, SpringLayout.SOUTH, panel);
+		sl_panel.putConstraint(SpringLayout.WEST, btnGroupsInformation, 41, SpringLayout.WEST, panel);
 		sl_panel.putConstraint(SpringLayout.EAST, btnGroupsInformation, -46, SpringLayout.EAST, panel);
+		sl_panel.putConstraint(SpringLayout.SOUTH, btnGroupsInformation, -49, SpringLayout.SOUTH, panel);
 		btnGroupsInformation.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		panel.add(btnGroupsInformation);
-		springLayout.putConstraint(SpringLayout.SOUTH, panel_3, -10, SpringLayout.SOUTH,
-				frmWarehouseManagementSystem.getContentPane());
-		springLayout.putConstraint(SpringLayout.EAST, panel_3, -6, SpringLayout.WEST, panel_2);
 
 		final JButton btnConnect = new JButton("Connect");
+		sl_panel_2.putConstraint(SpringLayout.NORTH, btnConnect, -59, SpringLayout.SOUTH, panel_2);
+		sl_panel_2.putConstraint(SpringLayout.WEST, btnConnect, 10, SpringLayout.WEST, panel_2);
+		sl_panel_2.putConstraint(SpringLayout.EAST, btnConnect, -10, SpringLayout.EAST, panel_2);
 		btnConnect.setFont(new Font("Dialog", Font.PLAIN, 12));
 		btnConnect.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -461,10 +461,7 @@ public class InterfaceTest {
 
 			}
 		});
-		sl_panel_2.putConstraint(SpringLayout.NORTH, btnConnect, -59, SpringLayout.SOUTH, panel_2);
-		sl_panel_2.putConstraint(SpringLayout.WEST, btnConnect, 0, SpringLayout.WEST, btnAddProduct);
 		sl_panel_2.putConstraint(SpringLayout.SOUTH, btnConnect, -31, SpringLayout.SOUTH, panel_2);
-		sl_panel_2.putConstraint(SpringLayout.EAST, btnConnect, 0, SpringLayout.EAST, btnAddProduct);
 		panel_2.add(btnConnect);
 		frmWarehouseManagementSystem.getContentPane().add(panel_3);
 		SpringLayout sl_panel_3 = new SpringLayout();
@@ -473,11 +470,14 @@ public class InterfaceTest {
 		final JTextField textField = new JTextField();
 		sl_panel_3.putConstraint(SpringLayout.NORTH, textField, 20, SpringLayout.NORTH, panel_3);
 		sl_panel_3.putConstraint(SpringLayout.WEST, textField, 0, SpringLayout.WEST, panel_3);
+		sl_panel_3.putConstraint(SpringLayout.SOUTH, textField, -23, SpringLayout.SOUTH, panel_3);
 		sl_panel_3.putConstraint(SpringLayout.EAST, textField, 219, SpringLayout.WEST, panel_3);
 		panel_3.add(textField);
 		textField.setColumns(10);
 
 		JButton btnSearch = new JButton("Search");
+		sl_panel_3.putConstraint(SpringLayout.WEST, btnSearch, -117, SpringLayout.EAST, panel_3);
+		sl_panel_3.putConstraint(SpringLayout.EAST, btnSearch, -10, SpringLayout.EAST, panel_3);
 		btnSearch.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -506,9 +506,6 @@ public class InterfaceTest {
 			}
 		});
 		sl_panel_3.putConstraint(SpringLayout.NORTH, btnSearch, 20, SpringLayout.NORTH, panel_3);
-		sl_panel_3.putConstraint(SpringLayout.WEST, btnSearch, 3, SpringLayout.EAST, textField);
-		sl_panel_3.putConstraint(SpringLayout.EAST, btnSearch, -10, SpringLayout.EAST, panel_3);
-		sl_panel_3.putConstraint(SpringLayout.SOUTH, textField, 0, SpringLayout.SOUTH, btnSearch);
 		btnSearch.setFont(new Font("Dialog", Font.PLAIN, 12));
 		panel_3.add(btnSearch);
 	}
