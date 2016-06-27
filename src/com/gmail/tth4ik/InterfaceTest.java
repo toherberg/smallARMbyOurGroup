@@ -290,7 +290,186 @@ public class InterfaceTest {
 			}
 
 			private void initializeEditProductDialog() throws IOException {
+				final JDialog dialEdit = new JDialog();
+				final JPanel contentPanel = new JPanel();
+				final JTextField textField;
+				final JTextField textField_1;
+				final JTextArea textField_2;
+				dialEdit.setTitle("Edit product");
+				dialEdit.setBounds(100, 100, 450, 300);
+				dialEdit.getContentPane().setLayout(new BorderLayout());
+				dialEdit.getContentPane().add(contentPanel, BorderLayout.CENTER);
+				SpringLayout sl_contentPanel = new SpringLayout();
+				contentPanel.setLayout(sl_contentPanel);
 
+				JTextArea txtrEditingProductProduct = new JTextArea();
+				sl_contentPanel.putConstraint(SpringLayout.SOUTH, txtrEditingProductProduct, 32, SpringLayout.NORTH,
+						contentPanel);
+				txtrEditingProductProduct.setLineWrap(true);
+				txtrEditingProductProduct.setEditable(false);
+				sl_contentPanel.putConstraint(SpringLayout.NORTH, txtrEditingProductProduct, 10, SpringLayout.NORTH,
+						contentPanel);
+				sl_contentPanel.putConstraint(SpringLayout.WEST, txtrEditingProductProduct, 10, SpringLayout.WEST,
+						contentPanel);
+				sl_contentPanel.putConstraint(SpringLayout.EAST, txtrEditingProductProduct, -10, SpringLayout.EAST,
+						contentPanel);
+				txtrEditingProductProduct.setFont(new Font("Dialog", Font.BOLD, 12));
+				txtrEditingProductProduct.setBackground(UIManager.getColor("Button.background"));
+				txtrEditingProductProduct.setText("Editing product: " + textPane.getText());
+				contentPanel.add(txtrEditingProductProduct);
+
+				textField = new JTextField();
+				sl_contentPanel.putConstraint(SpringLayout.NORTH, textField, 11, SpringLayout.SOUTH,
+						txtrEditingProductProduct);
+				sl_contentPanel.putConstraint(SpringLayout.WEST, textField, -280, SpringLayout.EAST, contentPanel);
+				sl_contentPanel.putConstraint(SpringLayout.EAST, textField, -56, SpringLayout.EAST, contentPanel);
+				contentPanel.add(textField);
+
+				textField.setColumns(10);
+
+				textField_1 = new JTextField();
+				sl_contentPanel.putConstraint(SpringLayout.WEST, textField_1, 0, SpringLayout.WEST, textField);
+				sl_contentPanel.putConstraint(SpringLayout.EAST, textField_1, -56, SpringLayout.EAST, contentPanel);
+				textField_1.setColumns(10);
+				contentPanel.add(textField_1);
+
+				textField_2 = new JTextArea();
+				textField_2.setLineWrap(true);
+				JScrollPane jsp = new JScrollPane(textField_2);
+				jsp.setBorder(null);
+				sl_contentPanel.putConstraint(SpringLayout.NORTH, jsp, 17, SpringLayout.SOUTH, textField_1);
+				sl_contentPanel.putConstraint(SpringLayout.WEST, jsp, 152, SpringLayout.WEST, contentPanel);
+				sl_contentPanel.putConstraint(SpringLayout.EAST, jsp, 0, SpringLayout.EAST, textField);
+				textField_2.setColumns(10);
+				contentPanel.add(jsp);
+
+				final JSpinner spinner = new JSpinner();
+				spinner.setToolTipText("If you don't want to change price leave \"-1\" value");
+				spinner.setModel(new SpinnerNumberModel(new Integer(-1), new Integer(-1), null, new Integer(10)));
+				sl_contentPanel.putConstraint(SpringLayout.WEST, spinner, 278, SpringLayout.WEST, contentPanel);
+				sl_contentPanel.putConstraint(SpringLayout.EAST, spinner, -10, SpringLayout.EAST, contentPanel);
+				sl_contentPanel.putConstraint(SpringLayout.SOUTH, jsp, -19, SpringLayout.NORTH, spinner);
+				sl_contentPanel.putConstraint(SpringLayout.SOUTH, spinner, -10, SpringLayout.SOUTH, contentPanel);
+				contentPanel.add(spinner);
+
+				JLabel lblNewName = new JLabel("New name:");
+				sl_contentPanel.putConstraint(SpringLayout.NORTH, lblNewName, 11, SpringLayout.SOUTH,
+						txtrEditingProductProduct);
+				sl_contentPanel.putConstraint(SpringLayout.WEST, lblNewName, 32, SpringLayout.WEST, contentPanel);
+				contentPanel.add(lblNewName);
+
+				JLabel lblNewManufacturer = new JLabel("New manufacturer:");
+				sl_contentPanel.putConstraint(SpringLayout.NORTH, lblNewManufacturer, 21, SpringLayout.SOUTH,
+						lblNewName);
+				sl_contentPanel.putConstraint(SpringLayout.NORTH, textField_1, -3, SpringLayout.NORTH,
+						lblNewManufacturer);
+				sl_contentPanel.putConstraint(SpringLayout.WEST, lblNewManufacturer, 0, SpringLayout.WEST, lblNewName);
+				contentPanel.add(lblNewManufacturer);
+
+				JLabel lblNewLabel = new JLabel("New info:");
+				sl_contentPanel.putConstraint(SpringLayout.NORTH, lblNewLabel, 21, SpringLayout.SOUTH,
+						lblNewManufacturer);
+				sl_contentPanel.putConstraint(SpringLayout.WEST, lblNewLabel, 0, SpringLayout.WEST, lblNewName);
+				contentPanel.add(lblNewLabel);
+
+				JLabel lblNewPrice = new JLabel("New price:");
+				sl_contentPanel.putConstraint(SpringLayout.WEST, lblNewPrice, 201, SpringLayout.WEST, contentPanel);
+				sl_contentPanel.putConstraint(SpringLayout.SOUTH, lblNewPrice, 0, SpringLayout.SOUTH, spinner);
+				sl_contentPanel.putConstraint(SpringLayout.EAST, lblNewPrice, -11, SpringLayout.WEST, spinner);
+				contentPanel.add(lblNewPrice);
+				{
+					JPanel buttonPane = new JPanel();
+					buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
+					dialEdit.getContentPane().add(buttonPane, BorderLayout.SOUTH);
+					{
+						JButton okButton = new JButton("OK");
+						okButton.setActionCommand("OK");
+						buttonPane.add(okButton);
+						dialEdit.getRootPane().setDefaultButton(okButton);
+						okButton.addActionListener(new ActionListener() {
+
+							@Override
+							public void actionPerformed(ActionEvent e) {
+								JFrame parent = new JFrame();
+								if ((textField_1.getText().isEmpty())&&(textField_2.getText().isEmpty())&&(textField_1.getText().isEmpty())&&(spinner.getValue().toString().equals("-1"))){
+									JOptionPane.showMessageDialog(parent, "You didn't add new information. Closing...");
+									dialEdit.dispose();
+									return;
+								}
+								try {
+									client.sendCommandToServer("editproduct");
+								} catch (IOException e1) {
+									e1.printStackTrace();
+								}
+								if (textField_1.getText().isEmpty())
+									textField_1.setText(" ");
+								if (textField_2.getText().isEmpty())
+									textField_2.setText(" ");
+								if (textField.getText().isEmpty())
+									textField.setText(" ");
+								String s = "";
+								s += textPane.getText() + ";" + textField.getText() + ";" + textField_2.getText() + ";"
+										+ textField_1.getText() + ";" + spinner.getValue();
+								try {
+									String response = client.sendMessageToServerAndGetResponse(s);
+									if (response.equalsIgnoreCase("Name is used, try to add it once more")) {
+										dialEdit.setVisible(false);
+										textField.setText("");
+										textField_1.setText("");
+										textField_2.setText("");
+										JOptionPane.showMessageDialog(parent, response);
+										client.sendCommandToServer("end1");
+										dialEdit.setVisible(true);
+										return;
+									}
+									if (response.equalsIgnoreCase("Can't create product with empty name")) {
+										dialEdit.setVisible(false);
+										textField.setText("");
+										textField_1.setText("");
+										textField_2.setText("");
+										JOptionPane.showMessageDialog(parent, response);
+										client.sendCommandToServer("end1");
+										dialEdit.setVisible(true);
+										return;
+									}
+									dialEdit.dispose();
+									createNodes(top);
+									model.reload();
+									tree.repaint();
+									JOptionPane.showMessageDialog(parent, response);
+									client.sendCommandToServer("search");
+									String res;
+									if (textField.getText().equalsIgnoreCase(" ")){
+									res = client.sendMessageToServerAndGetResponse(textPane.getText());
+									}
+									else{
+										res = client.sendMessageToServerAndGetResponse(textField.getText());
+									}
+									String[] array1 = res.split(";");
+									textPane.setText(array1[1]);
+									textPane_1.setText(array1[3]);
+									textPane_2.setText(array1[4]);
+									textPane_3.setText(array1[5]);
+									textPane_4.setText(array1[2]);
+									panel_1.repaint();
+								} catch (IOException e1) {
+									e1.printStackTrace();
+								}
+							}
+						});
+					}
+					{
+						JButton cancelButton = new JButton("Cancel");
+						cancelButton.addActionListener(new ActionListener() {
+							public void actionPerformed(ActionEvent arg0) {
+								dialEdit.dispose();
+							}
+						});
+						cancelButton.setActionCommand("Cancel");
+						buttonPane.add(cancelButton);
+					}
+				}
+				dialEdit.setVisible(true);
 			}
 
 		});
