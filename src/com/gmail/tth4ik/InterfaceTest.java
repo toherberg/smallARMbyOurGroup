@@ -124,6 +124,7 @@ public class InterfaceTest {
 	 */
 	private void initialize() throws IOException {
 		frmWarehouseManagementSystem = new JFrame();
+		frmWarehouseManagementSystem.setResizable(false);
 		frmWarehouseManagementSystem.setTitle("Warehouse Management System");
 		frmWarehouseManagementSystem.setBounds(100, 100, 715, 459);
 		frmWarehouseManagementSystem.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -167,20 +168,23 @@ public class InterfaceTest {
 		top = new DefaultMutableTreeNode("Groups of Items");
 		tree = new JTree(top);
 		model = (DefaultTreeModel) tree.getModel();
-		
+
 		jspt = new JScrollPane(tree);
+		sl_panel.putConstraint(SpringLayout.NORTH, jspt, 10, SpringLayout.NORTH, panel);
+		sl_panel.putConstraint(SpringLayout.WEST, jspt, 10, SpringLayout.WEST, panel);
+		sl_panel.putConstraint(SpringLayout.SOUTH, jspt, -109, SpringLayout.SOUTH, panel);
+		sl_panel.putConstraint(SpringLayout.EAST, jspt, 215, SpringLayout.WEST, panel);
 		jspt.setBorder(null);
 		tree.addTreeSelectionListener(new TreeSelectionListener() {
-			
+
 			@Override
 			public void valueChanged(TreeSelectionEvent e) {
 				if (isFreeTree == false)
 					return;
 				if (client == null)
-					return; 
+					return;
 				try {
 					client.sendCommandToServer("search");
-					System.out.println(e.getNewLeadSelectionPath().getLastPathComponent().toString());
 					String node = e.getNewLeadSelectionPath().getLastPathComponent().toString();
 					String response = client.sendMessageToServerAndGetResponse(node);
 					if (response.equalsIgnoreCase("")) {
@@ -198,26 +202,20 @@ public class InterfaceTest {
 					e1.printStackTrace();
 				}
 
-				}
-				
-			
+			}
+
 		});
 
-		tree.setToolTipText("");
 		tree.setBackground(Color.WHITE);
 		tree.setEditable(true);
-		sl_panel.putConstraint(SpringLayout.NORTH, jspt, 10, SpringLayout.NORTH, panel);
-		sl_panel.putConstraint(SpringLayout.WEST, jspt, 10, SpringLayout.WEST, panel);
-		sl_panel.putConstraint(SpringLayout.EAST, jspt, 215, SpringLayout.WEST, panel);
 		tree.setBorder(UIManager.getBorder("List.focusCellHighlightBorder"));
 		panel.add(jspt);
 
 		JButton button = new JButton("Add group");
-		sl_panel.putConstraint(SpringLayout.SOUTH, jspt, -23, SpringLayout.NORTH, button);
-		sl_panel.putConstraint(SpringLayout.NORTH, button, 352, SpringLayout.NORTH, panel);
-		sl_panel.putConstraint(SpringLayout.SOUTH, button, -32, SpringLayout.SOUTH, panel);
-		sl_panel.putConstraint(SpringLayout.WEST, button, 43, SpringLayout.WEST, panel);
-		sl_panel.putConstraint(SpringLayout.EAST, button, 181, SpringLayout.WEST, panel);
+		sl_panel.putConstraint(SpringLayout.NORTH, button, 16, SpringLayout.SOUTH, jspt);
+		sl_panel.putConstraint(SpringLayout.WEST, button, 41, SpringLayout.WEST, panel);
+		sl_panel.putConstraint(SpringLayout.SOUTH, button, -74, SpringLayout.SOUTH, panel);
+		sl_panel.putConstraint(SpringLayout.EAST, button, -46, SpringLayout.EAST, panel);
 		button.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		panel.add(button);
 		frmWarehouseManagementSystem.getContentPane().add(panel_2);
@@ -302,6 +300,25 @@ public class InterfaceTest {
 		panel_1.add(btnDeleteProduct);
 
 		JButton btnEditProduct = new JButton("Edit Product");
+		btnEditProduct.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				try {
+					if (client == null)
+						return;
+					if (textPane.getText().isEmpty())
+						return;
+					initializeEditProductDialog();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+
+			private void initializeEditProductDialog() throws IOException {
+			
+			}
+
+		});
+
 		sl_panel_1.putConstraint(SpringLayout.SOUTH, btnEditProduct, -40, SpringLayout.SOUTH, panel_1);
 		sl_panel_1.putConstraint(SpringLayout.NORTH, btnDeleteProduct, 0, SpringLayout.NORTH, btnEditProduct);
 		sl_panel_1.putConstraint(SpringLayout.EAST, btnEditProduct, 0, SpringLayout.EAST, panel_1);
@@ -390,6 +407,22 @@ public class InterfaceTest {
 		sl_panel_1.putConstraint(SpringLayout.EAST, jsp2, -10, SpringLayout.EAST, panel_1);
 		panel_1.add(jsp2);
 		springLayout.putConstraint(SpringLayout.WEST, panel_3, 6, SpringLayout.EAST, panel);
+
+		JButton btnNewButton = new JButton("Delete group");
+		sl_panel.putConstraint(SpringLayout.WEST, btnNewButton, 41, SpringLayout.WEST, panel);
+		sl_panel.putConstraint(SpringLayout.SOUTH, btnNewButton, -24, SpringLayout.SOUTH, panel);
+		sl_panel.putConstraint(SpringLayout.EAST, btnNewButton, 0, SpringLayout.EAST, button);
+		btnNewButton.setFont(new Font("Dialog", Font.PLAIN, 12));
+		panel.add(btnNewButton);
+
+		JButton btnGroupsInformation = new JButton("Group Info");
+		sl_panel.putConstraint(SpringLayout.NORTH, btnNewButton, 6, SpringLayout.SOUTH, btnGroupsInformation);
+		sl_panel.putConstraint(SpringLayout.NORTH, btnGroupsInformation, 6, SpringLayout.SOUTH, button);
+		sl_panel.putConstraint(SpringLayout.WEST, btnGroupsInformation, 0, SpringLayout.WEST, button);
+		sl_panel.putConstraint(SpringLayout.SOUTH, btnGroupsInformation, -49, SpringLayout.SOUTH, panel);
+		sl_panel.putConstraint(SpringLayout.EAST, btnGroupsInformation, -46, SpringLayout.EAST, panel);
+		btnGroupsInformation.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		panel.add(btnGroupsInformation);
 		springLayout.putConstraint(SpringLayout.SOUTH, panel_3, -10, SpringLayout.SOUTH,
 				frmWarehouseManagementSystem.getContentPane());
 		springLayout.putConstraint(SpringLayout.EAST, panel_3, -6, SpringLayout.WEST, panel_2);
@@ -489,24 +522,20 @@ public class InterfaceTest {
 		client.sendCommandToServer("groupnames");
 		String response = client.sendMessageToServerAndGetResponse("go");
 		String[] array = response.split(";");
-		System.out.println(response);
 		for (String groupName : array) {
 			if (groupName == null) {
 				continue;
 			}
-			System.out.println(category);
 			category = new DefaultMutableTreeNode(groupName);
 			model.insertNodeInto(category, top, top.getChildCount());
 			System.out.println(client.sendCommandToServer("groupnames1"));
 			String s1 = client.sendCommandToServer(groupName);
-			System.out.println(groupName);
 			String[] array1 = s1.split(";");
 			for (String productname : array1) {
 				if (productname == null)
 					continue;
 				product = new DefaultMutableTreeNode(productname);
 				model.insertNodeInto(product, category, category.getChildCount());
-				System.out.println(product.toString());
 			}
 			model.reload();
 			tree.repaint();
@@ -741,38 +770,48 @@ public class InterfaceTest {
 		contentPanel.add(jsp1);
 		textField_2.setColumns(10);
 
-		Label label_2 = new Label("Info:");
+		JTextArea label_2 = new JTextArea("Info:");
+		label_2.setBackground(UIManager.getColor("Button.background"));
+		label_2.setEditable(false);
 		sl_contentPanel.putConstraint(SpringLayout.NORTH, jsp1, 6, SpringLayout.SOUTH, label_2);
 		sl_contentPanel.putConstraint(SpringLayout.SOUTH, label_2, -81, SpringLayout.SOUTH, contentPanel);
 		sl_contentPanel.putConstraint(SpringLayout.WEST, label_2, 24, SpringLayout.WEST, contentPanel);
 		label_2.setFont(new Font("Dialog", Font.BOLD, 12));
 		contentPanel.add(label_2);
 
-		Label label = new Label("Product Name:");
+		JTextArea label = new JTextArea("Product Name:");
+		label.setBackground(UIManager.getColor("Button.background"));
+		label.setEditable(false);
 		sl_contentPanel.putConstraint(SpringLayout.WEST, label, 0, SpringLayout.WEST, comboBox);
 		label.setFont(new Font("Dialog", Font.BOLD, 12));
 		contentPanel.add(label);
 
-		Label label_1 = new Label("Manufacturer:");
+		JTextArea label_1 = new JTextArea("Manufacturer:");
+		label_1.setBackground(UIManager.getColor("Button.background"));
+		label_1.setEditable(false);
 		sl_contentPanel.putConstraint(SpringLayout.SOUTH, label, -6, SpringLayout.NORTH, label_1);
 		sl_contentPanel.putConstraint(SpringLayout.WEST, label_1, 0, SpringLayout.WEST, comboBox);
 		label_1.setFont(new Font("Dialog", Font.BOLD, 12));
 		contentPanel.add(label_1);
 
-		JLabel lblQuantity = new JLabel("Quantity:");
+		JTextArea lblQuantity = new JTextArea("Quantity:");
+		lblQuantity.setBackground(UIManager.getColor("Button.background"));
+		lblQuantity.setEditable(false);
 		sl_contentPanel.putConstraint(SpringLayout.EAST, lblQuantity, -206, SpringLayout.EAST, contentPanel);
 		lblQuantity.setFont(new Font("SansSerif", Font.BOLD, 12));
 		contentPanel.add(lblQuantity);
 
 		final JSpinner spinner = new JSpinner();
 		spinner.setToolTipText("Use spinner or input number");
-		spinner.setModel(new SpinnerNumberModel(new Integer(0), null, null, new Integer(10)));
+		spinner.setModel(new SpinnerNumberModel(new Integer(0), new Integer(0), null, new Integer(10)));
 		sl_contentPanel.putConstraint(SpringLayout.NORTH, spinner, 6, SpringLayout.SOUTH, lblQuantity);
 		sl_contentPanel.putConstraint(SpringLayout.WEST, spinner, 157, SpringLayout.WEST, contentPanel);
 		sl_contentPanel.putConstraint(SpringLayout.EAST, spinner, -189, SpringLayout.EAST, contentPanel);
 		contentPanel.add(spinner);
 
-		JLabel lblPrice = new JLabel("Price");
+		JTextArea lblPrice = new JTextArea("Price:");
+		lblPrice.setBackground(UIManager.getColor("Button.background"));
+		lblPrice.setEditable(false);
 		sl_contentPanel.putConstraint(SpringLayout.NORTH, lblPrice, 6, SpringLayout.SOUTH, spinner);
 		sl_contentPanel.putConstraint(SpringLayout.WEST, lblPrice, 10, SpringLayout.WEST, spinner);
 		lblPrice.setFont(new Font("SansSerif", Font.BOLD, 12));
@@ -784,6 +823,8 @@ public class InterfaceTest {
 		textField.setColumns(10);
 
 		final JSpinner spinner_1 = new JSpinner();
+		spinner_1.setToolTipText("Use spinner or input number");
+		spinner_1.setModel(new SpinnerNumberModel(new Integer(0), new Integer(0), null, new Integer(10)));
 		sl_contentPanel.putConstraint(SpringLayout.NORTH, spinner_1, 6, SpringLayout.SOUTH, lblPrice);
 		sl_contentPanel.putConstraint(SpringLayout.WEST, spinner_1, 0, SpringLayout.WEST, spinner);
 		sl_contentPanel.putConstraint(SpringLayout.EAST, spinner_1, 0, SpringLayout.EAST, comboBox);
@@ -792,7 +833,7 @@ public class InterfaceTest {
 		textField_1 = new JTextField();
 		sl_contentPanel.putConstraint(SpringLayout.NORTH, lblQuantity, 22, SpringLayout.SOUTH, textField_1);
 		sl_contentPanel.putConstraint(SpringLayout.NORTH, textField_1, 72, SpringLayout.NORTH, contentPanel);
-		sl_contentPanel.putConstraint(SpringLayout.SOUTH, textField, -10, SpringLayout.NORTH, textField_1);
+		sl_contentPanel.putConstraint(SpringLayout.SOUTH, textField, -2, SpringLayout.NORTH, textField_1);
 		sl_contentPanel.putConstraint(SpringLayout.SOUTH, label_1, 0, SpringLayout.SOUTH, textField_1);
 		sl_contentPanel.putConstraint(SpringLayout.EAST, textField_1, 0, SpringLayout.EAST, comboBox);
 		contentPanel.add(textField_1);
