@@ -225,11 +225,19 @@ public class ARMServer implements Runnable {
 				return;
 			}
 			String[] array = input.split(";");
+			if (isWhiteSpace(array[1])&&(!array[1].equalsIgnoreCase(" "))){
+				input = "";
+				dos.writeUTF("Can't use white space to rename");
+				return;
+			}
 			if(isFreeName(array[1], productNames)==false){
-				array[1]=" "; // щоб відредагувало усе, крім імені, якщо воно зайняте
+				input = "";
+				dos.writeUTF("Name is used");
+				return;
 			}
 				sql.editAllProductInfo(array[0],array[1],array[2],array[3],Double.parseDouble(array[4]));
 			dos.writeUTF("editing successfully ended");
+			productNames = sql.getProductNames().split(";");
 
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -286,6 +294,10 @@ public class ARMServer implements Runnable {
 					return;
 				}
 				String[] array = input.split(";");
+				if (isWhiteSpace(array[0])){
+					input = "";
+					dos.writeUTF("Can't create group with empty name");
+				}
 				if (isFreeName(array[0], groupNames) == false) {
 					input = "";
 					dos.writeUTF("Name is used, try to add it once more");
@@ -309,6 +321,20 @@ public class ARMServer implements Runnable {
 		}
 		return true;
 	}
+	
+	private boolean isWhiteSpace(String s){
+		char [] chrr = s.toCharArray();
+		int chrrlength = chrr.length;
+		int whiteSpaceChars = 0;
+		for (char c : chrr){
+			if (Character.isWhitespace(c))
+				whiteSpaceChars++;
+		}
+		if (whiteSpaceChars == chrrlength)
+			return true;
+		return false;
+	}
+	
 
 	private void addProduct() {
 		while (true) {
@@ -319,7 +345,7 @@ public class ARMServer implements Runnable {
 					return;
 				}
 				String[] array = input.split(";");
-				if (array[1].isEmpty()){
+				if (array[1].isEmpty()||(isWhiteSpace(array[1]))){
 					input = "";
 					dos.writeUTF("Can't create product with empty name");
 					continue;

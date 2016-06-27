@@ -391,7 +391,7 @@ public class InterfaceTest {
 							@Override
 							public void actionPerformed(ActionEvent e) {
 								JFrame parent = new JFrame();
-								if ((textField_1.getText().isEmpty())&&(textField_2.getText().isEmpty())&&(textField_1.getText().isEmpty())&&(spinner.getValue().toString().equals("-1"))){
+								if ((textField.getText().isEmpty())&&(textField_2.getText().isEmpty())&&(textField_1.getText().isEmpty())&&(spinner.getValue().toString().equals("-1"))){
 									JOptionPane.showMessageDialog(parent, "You didn't add new information. Closing...");
 									dialEdit.dispose();
 									return;
@@ -412,7 +412,7 @@ public class InterfaceTest {
 										+ textField_1.getText() + ";" + spinner.getValue();
 								try {
 									String response = client.sendMessageToServerAndGetResponse(s);
-									if (response.equalsIgnoreCase("Name is used, try to add it once more")) {
+									if (response.equalsIgnoreCase("Name is used")) {
 										dialEdit.setVisible(false);
 										textField.setText("");
 										textField_1.setText("");
@@ -422,7 +422,7 @@ public class InterfaceTest {
 										dialEdit.setVisible(true);
 										return;
 									}
-									if (response.equalsIgnoreCase("Can't create product with empty name")) {
+									if (response.equalsIgnoreCase("Can't use white space to rename")) {
 										dialEdit.setVisible(false);
 										textField.setText("");
 										textField_1.setText("");
