@@ -441,6 +441,8 @@ public class InterfaceTest {
 								} catch (IOException e1) {
 									e1.printStackTrace();
 								}
+								if (textField.getText().equals(" "))
+									textField.setText("  ");
 								if (textField_1.getText().isEmpty())
 									textField_1.setText(" ");
 								if (textField_2.getText().isEmpty())
@@ -520,6 +522,107 @@ public class InterfaceTest {
 		panel_1.add(btnEditProduct);
 
 		JButton btnSelladd = new JButton("Sell/Add Products");
+		btnSelladd.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (client == null)
+					return;
+				if (textPane.getText().equals(""))
+					return;
+				initializeChangeQuantity(textPane.getText());
+			}
+
+			private void initializeChangeQuantity(final String s) {
+				final JDialog dialogSetQuantity = new JDialog();
+				JPanel contentPanel = new JPanel();
+				final JSpinner spinner = new JSpinner();
+				dialogSetQuantity.setTitle("Change product quantity");
+				dialogSetQuantity.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+				dialogSetQuantity.setBounds(100, 100, 450, 212);
+				dialogSetQuantity.getContentPane().setLayout(new BorderLayout());
+				contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
+				dialogSetQuantity.getContentPane().add(contentPanel, BorderLayout.CENTER);
+				
+				JButton btnSell = new JButton("Sell");
+				btnSell.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						try {
+							if (spinner.getValue().toString().equals("0"))
+								return;
+							client.sendCommandToServer("changequantity");
+							String response = client.sendMessageToServerAndGetResponse(s+";"+"-"+spinner.getValue().toString());
+							JFrame jrm = new JFrame();
+							if (response.equalsIgnoreCase("Can't change quantity,too much to delete")){
+								JOptionPane.showMessageDialog(jrm, response);
+								return;
+							}
+							JOptionPane.showMessageDialog(jrm, response);
+							int updatedQuantity = Integer.parseInt(textPane_2.getText())-Integer.parseInt(spinner.getValue().toString());
+							textPane_2.setText(""+updatedQuantity);
+							dialogSetQuantity.dispose();
+						} catch (IOException e1) {
+							e1.printStackTrace();
+						}
+					
+					}
+				});
+				JButton btnAdd = new JButton("Add");
+				btnAdd.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						try {
+							JFrame jrm = new JFrame();
+							if (spinner.getValue().toString().equals("0"))
+								return;
+							client.sendCommandToServer("changequantity");
+							String response = client.sendMessageToServerAndGetResponse(s+";"+"+"+spinner.getValue().toString());
+							JOptionPane.showMessageDialog(jrm, response);
+							int updatedQuantity = Integer.parseInt(textPane_2.getText())+Integer.parseInt(spinner.getValue().toString());
+							textPane_2.setText(""+updatedQuantity);
+							dialogSetQuantity.dispose();
+						} catch (IOException e1) {
+							e1.printStackTrace();
+						}
+						
+					}
+				});
+				
+				
+				spinner.setToolTipText("Enter quantity value you want to sell/add");
+				spinner.setModel(new SpinnerNumberModel(new Integer(0), new Integer(0), null, new Integer(10)));
+				SpringLayout sl_contentPanel = new SpringLayout();
+				sl_contentPanel.putConstraint(SpringLayout.NORTH, spinner, 33, SpringLayout.NORTH, contentPanel);
+				sl_contentPanel.putConstraint(SpringLayout.WEST, spinner, 160, SpringLayout.WEST, contentPanel);
+				sl_contentPanel.putConstraint(SpringLayout.EAST, spinner, 253, SpringLayout.WEST, contentPanel);
+				sl_contentPanel.putConstraint(SpringLayout.NORTH, btnAdd, 87, SpringLayout.NORTH, contentPanel);
+				sl_contentPanel.putConstraint(SpringLayout.WEST, btnAdd, 259, SpringLayout.WEST, contentPanel);
+				sl_contentPanel.putConstraint(SpringLayout.EAST, btnAdd, 373, SpringLayout.WEST, contentPanel);
+				sl_contentPanel.putConstraint(SpringLayout.NORTH, btnSell, 87, SpringLayout.NORTH, contentPanel);
+				sl_contentPanel.putConstraint(SpringLayout.WEST, btnSell, 50, SpringLayout.WEST, contentPanel);
+				sl_contentPanel.putConstraint(SpringLayout.EAST, btnSell, 162, SpringLayout.WEST, contentPanel);
+				contentPanel.setLayout(sl_contentPanel);
+				contentPanel.add(btnSell);
+				contentPanel.add(btnAdd);
+				contentPanel.add(spinner);
+				{
+					JPanel buttonPane = new JPanel();
+					buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
+					dialogSetQuantity.getContentPane().add(buttonPane, BorderLayout.SOUTH);
+					{
+						JButton cancelButton = new JButton("Cancel");
+						cancelButton.setActionCommand("Cancel");
+						buttonPane.add(cancelButton);
+						cancelButton.addActionListener(new ActionListener() {
+							
+							@Override
+							public void actionPerformed(ActionEvent e) {
+								dialogSetQuantity.dispose();
+								
+							}
+						});
+					}
+				}
+				dialogSetQuantity.setVisible(true);
+			}
+		});
 		sl_panel_1.putConstraint(SpringLayout.WEST, btnSelladd, 6, SpringLayout.EAST, btnDeleteProduct);
 		sl_panel_1.putConstraint(SpringLayout.SOUTH, btnSelladd, -40, SpringLayout.SOUTH, panel_1);
 		sl_panel_1.putConstraint(SpringLayout.EAST, btnSelladd, -6, SpringLayout.WEST, btnEditProduct);
@@ -644,6 +747,13 @@ public class InterfaceTest {
 						client.sendCommandToServer("end");
 						countclickconnect = 0;
 						client = null;
+						top.removeAllChildren();
+						model.reload(top);
+						textPane.setText("");
+						textPane_1.setText("");
+						textPane_2.setText("");
+						textPane_3.setText("");
+						textPane_4.setText("");
 						return;
 					} catch (IOException e) {
 						e.printStackTrace();
@@ -1060,6 +1170,13 @@ public class InterfaceTest {
 			dialog.getRootPane().setDefaultButton(okButton);
 			okButton.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
+					if (comboBox.getSelectedItem().toString().equals("")){
+						JFrame parent = new JFrame();
+						dialog.setVisible(false);
+						JOptionPane.showMessageDialog(parent, "No groups created, cant add product without group!");
+						dialog.setVisible(true);
+						return;
+					}
 					try {
 						client.sendCommandToServer("addproduct");
 					} catch (IOException e1) {
