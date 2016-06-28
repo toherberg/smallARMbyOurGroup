@@ -10,7 +10,7 @@ import java.awt.FlowLayout;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
-import net.miginfocom.swing.MigLayout;
+
 import javax.swing.BoxLayout;
 import java.awt.CardLayout;
 import java.awt.GridLayout;
