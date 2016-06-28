@@ -10,7 +10,6 @@ import java.awt.FlowLayout;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
-
 import javax.swing.BoxLayout;
 import java.awt.CardLayout;
 import java.awt.GridLayout;
@@ -942,6 +941,7 @@ public class InterfaceTest {
 					client.sendCommandToServer("getgroupinfo");
 					String response = client.sendMessageToServerAndGetResponse(selectedGroupAtTree);
 					final String[] temparray = response.split("§");
+					System.out.println(temparray[0]);
 					textInformation.setText(temparray[1]);
 					JScrollPane jsp = new JScrollPane(textInformation);
 					sl_contentPanel.putConstraint(SpringLayout.NORTH, jsp, 24, SpringLayout.SOUTH, textField);
@@ -1002,7 +1002,7 @@ public class InterfaceTest {
 									if (textField.getText().isEmpty())
 										textField.setText(" ");
 									String response = client.sendMessageToServerAndGetResponse(
-											temparray[0] + "§" + textField.getText() + "§" + textInformation);
+											temparray[0] + "§" + textField.getText() + "§" + textInformation.getText());
 									if (response.equals("Can't change name to whitespace")) {
 										grInfoDialog.setVisible(false);
 										JOptionPane.showMessageDialog(framechange, response);

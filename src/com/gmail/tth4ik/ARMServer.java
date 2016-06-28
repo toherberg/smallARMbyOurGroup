@@ -250,7 +250,7 @@ public class ARMServer implements Runnable {
 				return;
 			}
 			String[] array = input.split("§");
-			if ((array[1] != " ") && (isWhiteSpace(array[1]))) {
+			if (isWhiteSpace(array[1]) && (!array[1].equalsIgnoreCase(" "))) {
 				dos.writeUTF("Can't change name to whitespace");
 				return;
 			}
