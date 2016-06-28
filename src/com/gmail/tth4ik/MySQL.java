@@ -137,7 +137,7 @@ public class MySQL {
 			while (res.next()) {
 				String name = res.getString("name");
 				String info = res.getString("info");
-				groupdata += res.getShort("groupID") + ";" + name + ";" + info + "\n";
+				groupdata += res.getShort("groupID") + "§" + name + "§" + info + "\n";
 			}
 			res.close();
 			st.close();
@@ -173,7 +173,7 @@ public class MySQL {
 			ResultSet res = st.executeQuery("SELECT name FROM Groups");
 			while (res.next()) {
 				String name = res.getString("name");
-				groupNames += name + ";";
+				groupNames += name + "§";
 			}
 			res.close();
 			st.close();
@@ -329,8 +329,8 @@ public class MySQL {
 				String manufacturer = res.getString("manufacturer");
 				int quantity = res.getInt("quantity");
 				double price = res.getDouble("price");
-				productData += res.getShort("groupID") + ";" + name + ";" + info + ";" + manufacturer + ";" + quantity
-						+ ";" + price + "\n";
+				productData += res.getShort("groupID") + "§" + name + "§" + info + "§" + manufacturer + "§" + quantity
+						+ "§" + price + "\n";
 			}
 			res.close();
 			st.close();
@@ -341,6 +341,7 @@ public class MySQL {
 		return productData;
 	}
 
+	/**Повертає імена усіх продуктів у БД*/
 	public String getProductNames() {
 		String productNames = "";
 		try {
@@ -348,7 +349,7 @@ public class MySQL {
 			ResultSet res = st.executeQuery("SELECT name FROM Products");
 			while (res.next()) {
 				String name = res.getString("name");
-				productNames += name + ";";
+				productNames += name + "§";
 			}
 			res.close();
 			st.close();
@@ -371,7 +372,7 @@ public class MySQL {
 				String manufacturer = res.getString("manufacturer");
 				int quantity = res.getInt("quantity");
 				double price = res.getDouble("price");
-				groupProductsData += name + ";" + info + ";" + manufacturer + ";" + quantity + ";" + price + "\n";
+				groupProductsData += name + "§" + info + "§" + manufacturer + "§" + quantity + "§" + price + "\n";
 			}
 			res.close();
 			st.close();
@@ -390,7 +391,7 @@ public class MySQL {
 			ResultSet res = st.executeQuery("SELECT * FROM Products WHERE groupID = '" + groupID + "';");
 			while (res.next()) {
 				String name = res.getString("name");
-				groupProductsNames += name + ";";
+				groupProductsNames += name + "§";
 			}
 
 			res.close();
@@ -402,6 +403,7 @@ public class MySQL {
 		return groupProductsNames;
 	}
 
+	/**Повертає форматовану інформацію-звіт про продукти певної групи*/
 	public String getGroupProductReport(int groupID) {
 		String groupProductsData = "";
 		double totalcost = 0;
@@ -429,6 +431,7 @@ public class MySQL {
 		return groupProductsData;
 	}
 
+	/**Повертає форматовану інформацію про усі продукти у БД*/
 	public String getProductReport() {
 		String reportText = "FULL REPORT ABOUT ALL PRODUCTS \n";
 		int counter = 1; // щоб красиво виглядав список
@@ -492,7 +495,7 @@ public class MySQL {
 				String manufacturer = res.getString("manufacturer");
 				int quantity = res.getInt("quantity");
 				double price = res.getDouble("price");
-				product += groupID + ";" + realName + ";" + info + ";" + manufacturer + ";" + quantity + ";" + price;
+				product += groupID + "§" + realName + "§" + info + "§" + manufacturer + "§" + quantity + "§" + price;
 			}
 			res.close();
 			st.close();

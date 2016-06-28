@@ -169,7 +169,7 @@ public class InterfaceTest {
 						return;
 					}
 					selectedGroupAtTree = null;
-					String[] array = response.split(";");
+					String[] array = response.split("§");
 					textPane.setText(array[1]);
 					textPane_1.setText(array[3]);
 					textPane_2.setText(array[4]);
@@ -256,7 +256,7 @@ public class InterfaceTest {
 								}
 								if (textFieldInfo.getText().isEmpty())
 									textFieldInfo.setText(" ");
-								String s = textFieldName.getText() + ";" + textFieldInfo.getText();
+								String s = textFieldName.getText() + "§" + textFieldInfo.getText();
 								try {
 									String response = client.sendMessageToServerAndGetResponse(s);
 									JFrame parent = new JFrame();
@@ -569,8 +569,8 @@ public class InterfaceTest {
 								if (textField.getText().isEmpty())
 									textField.setText(" ");
 								String s = "";
-								s += textPane.getText() + ";" + textField.getText() + ";" + textField_2.getText() + ";"
-										+ textField_1.getText() + ";" + spinner.getValue();
+								s += textPane.getText() + "§" + textField.getText() + "§" + textField_2.getText() + "§"
+										+ textField_1.getText() + "§" + spinner.getValue();
 								try {
 									String response = client.sendMessageToServerAndGetResponse(s);
 									if (response.equalsIgnoreCase("Name is used")) {
@@ -605,7 +605,7 @@ public class InterfaceTest {
 									} else {
 										res = client.sendMessageToServerAndGetResponse(textField.getText());
 									}
-									String[] array1 = res.split(";");
+									String[] array1 = res.split("§");
 									textPane.setText(array1[1]);
 									textPane_1.setText(array1[3]);
 									textPane_2.setText(array1[4]);
@@ -669,7 +669,7 @@ public class InterfaceTest {
 								return;
 							client.sendCommandToServer("changequantity");
 							String response = client
-									.sendMessageToServerAndGetResponse(s + ";" + "-" + spinner.getValue().toString());
+									.sendMessageToServerAndGetResponse(s + "§" + "-" + spinner.getValue().toString());
 							JFrame jrm = new JFrame();
 							if (response.equalsIgnoreCase("Can't change quantity,too much to delete")) {
 								JOptionPane.showMessageDialog(jrm, response);
@@ -695,7 +695,7 @@ public class InterfaceTest {
 								return;
 							client.sendCommandToServer("changequantity");
 							String response = client
-									.sendMessageToServerAndGetResponse(s + ";" + "+" + spinner.getValue().toString());
+									.sendMessageToServerAndGetResponse(s + "§" + "+" + spinner.getValue().toString());
 							JOptionPane.showMessageDialog(jrm, response);
 							int updatedQuantity = Integer.parseInt(textPane_2.getText())
 									+ Integer.parseInt(spinner.getValue().toString());
@@ -950,7 +950,7 @@ public class InterfaceTest {
 					if (response.equalsIgnoreCase("")) {
 						return;
 					}
-					String[] array = response.split(";");
+					String[] array = response.split("§");
 					textPane.setText(array[1]);
 					textPane_1.setText(array[3]);
 					textPane_2.setText(array[4]);
@@ -997,7 +997,7 @@ public class InterfaceTest {
 		tree = new JTree(top);
 		client.sendCommandToServer("groupnames");
 		String response = client.sendMessageToServerAndGetResponse("go");
-		String[] array = response.split(";");
+		String[] array = response.split("§");
 		for (String groupName : array) {
 			if (groupName == null) {
 				continue;
@@ -1006,7 +1006,7 @@ public class InterfaceTest {
 			model.insertNodeInto(category, top, top.getChildCount());
 			client.sendCommandToServer("groupnames1");
 			String s1 = client.sendCommandToServer(groupName);
-			String[] array1 = s1.split(";");
+			String[] array1 = s1.split("§");
 			for (String productname : array1) {
 				if (productname == null)
 					continue;
@@ -1109,7 +1109,7 @@ public class InterfaceTest {
 			String response = client.sendCommandToServer("go");
 			String[] array;
 			if (response != null) {
-				array = response.split(";");
+				array = response.split("§");
 				for (String name : array) {
 					if (name == null)
 						continue;
@@ -1231,7 +1231,7 @@ public class InterfaceTest {
 		sl_contentPanel.putConstraint(SpringLayout.EAST, comboBox, -189, SpringLayout.EAST, contentPanel);
 		client.sendCommandToServer("groupnames");
 		String response = client.sendMessageToServerAndGetResponse("go");
-		String[] array = response.split(";");
+		String[] array = response.split("§");
 		for (String group : array)
 			comboBox.addItem(group);
 		contentPanel.add(comboBox);
@@ -1343,8 +1343,8 @@ public class InterfaceTest {
 					if (textField_2.getText().isEmpty()) {
 						textField_2.setText(" ");
 					}
-					s = groupName + ";" + textField.getText() + ";" + textField_2.getText() + ";"
-							+ textField_1.getText() + ";" + spinner.getValue() + ";" + spinner_1.getValue();
+					s = groupName + "§" + textField.getText() + "§" + textField_2.getText() + "§"
+							+ textField_1.getText() + "§" + spinner.getValue() + "§" + spinner_1.getValue();
 					try {
 						String response = client.sendMessageToServerAndGetResponse(s);
 						JFrame parent = new JFrame();

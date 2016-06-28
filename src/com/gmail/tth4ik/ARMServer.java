@@ -55,8 +55,8 @@ public class ARMServer implements Runnable {
 		try {
 			dos = new DataOutputStream(connection.getOutputStream());
 			dis = new DataInputStream(connection.getInputStream());
-			groupNames = sql.getGroupNames().split(";");
-			productNames = sql.getProductNames().split(";");
+			groupNames = sql.getGroupNames().split("§");
+			productNames = sql.getProductNames().split("§");
 			while (true) {
 				if (input.equalsIgnoreCase("end")) {
 					System.out.println("Client disconnected");
@@ -157,7 +157,7 @@ public class ARMServer implements Runnable {
 				dos.writeUTF("process ended");
 				return;
 			}
-			String[] array = input.split(";");
+			String[] array = input.split("§");
 			int currentquantity = sql.getQuantityByName(array[0]);
 			if (array[1].charAt(0) == '+') {
 				sql.updateProductQuantity(array[0], currentquantity + Integer.parseInt(array[1].substring(1)));
@@ -204,13 +204,14 @@ public class ARMServer implements Runnable {
 				dos.writeUTF("process ended");
 				return;
 			}
-			String[] array = input.split(";");
+			String[] array = input.split("§");
 			if(isFreeName(array[1], groupNames)==false){
 				array[1]=" "; // щоб відредагувало усе, крім імені, якщо воно зайняте
 			}
 			System.out.println(array.length);
 			sql.updateGroupData(array[0], array[1], array[2]);
 			dos.writeUTF("editing successfully ended");
+			groupNames = sql.getGroupNames().split("§");
 
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -224,7 +225,7 @@ public class ARMServer implements Runnable {
 				dos.writeUTF("process ended");
 				return;
 			}
-			String[] array = input.split(";");
+			String[] array = input.split("§");
 			if (isWhiteSpace(array[1])&&(!array[1].equalsIgnoreCase(" "))){
 				input = "";
 				dos.writeUTF("Can't use white space to rename");
@@ -237,7 +238,7 @@ public class ARMServer implements Runnable {
 			}
 				sql.editAllProductInfo(array[0],array[1],array[2],array[3],Double.parseDouble(array[4]));
 			dos.writeUTF("editing successfully ended");
-			productNames = sql.getProductNames().split(";");
+			productNames = sql.getProductNames().split("§");
 
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -254,8 +255,8 @@ public class ARMServer implements Runnable {
 			sql.deleteGroupAndProducts(input);
 			dos.writeUTF("Group with number " + sql.getGroupID(input) + " named " + input
 					+ " with all products was sucessfully deleted from BD");
-			productNames = sql.getProductNames().split(";");
-			groupNames = sql.getGroupNames().split(";");
+			productNames = sql.getProductNames().split("§");
+			groupNames = sql.getGroupNames().split("§");
 
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -271,17 +272,13 @@ public class ARMServer implements Runnable {
 			}
 			sql.deleteProduct(input);
 			dos.writeUTF("Product named " + input + " was sucessfully deleted from BD");
-			productNames = sql.getProductNames().split(";");
+			productNames = sql.getProductNames().split("§");
 
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 	
-	private String getGroupNames(){
-		String groupNames = sql.getProductNames();
-		return groupNames;
-	}
 	
 
 	private void addGroup() {
@@ -293,7 +290,7 @@ public class ARMServer implements Runnable {
 					return;
 				}
 				System.out.println(input);
-				String[] array = input.split(";");
+				String[] array = input.split("§");
 				if (isWhiteSpace(array[0])){
 					input = "";
 					dos.writeUTF("Can't create group with empty name");
@@ -306,7 +303,7 @@ public class ARMServer implements Runnable {
 				}
 				sql.insertGroupData(array[0], array[1]);
 				dos.writeUTF("Group with name: " + array[0] + " and info: " + array[1] + " successfully added to DB");
-				groupNames = sql.getGroupNames().split(";");
+				groupNames = sql.getGroupNames().split("§");
 				return;
 
 			} catch (IOException e) {
@@ -345,7 +342,7 @@ public class ARMServer implements Runnable {
 					dos.writeUTF("process ended");
 					return;
 				}
-				String[] array = input.split(";");
+				String[] array = input.split("§");
 				if (array[1].isEmpty()||(isWhiteSpace(array[1]))){
 					input = "";
 					dos.writeUTF("Can't create product with empty name");
@@ -362,7 +359,7 @@ public class ARMServer implements Runnable {
 				dos.writeUTF("Product from group № " + groupID + " named " + array[1] + " with info: " + array[2]
 						+ " which manufatured by: " + array[3] + ", it's quantity: " + array[4] + " and price: "
 						+ array[5] + " was added to product list");
-				productNames = sql.getProductNames().split(";");
+				productNames = sql.getProductNames().split("§");
 				return;
 
 			} catch (IOException e) {
