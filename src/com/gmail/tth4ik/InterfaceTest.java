@@ -89,6 +89,7 @@ public class InterfaceTest {
 	JTextPane textPane_4;
 	JScrollPane jspt;
 	DefaultTreeModel model;
+	String selectedGroupAtTree;
 	private boolean isFreeTree = true;
 
 	/**
@@ -164,8 +165,10 @@ public class InterfaceTest {
 					String node = e.getNewLeadSelectionPath().getLastPathComponent().toString();
 					String response = client.sendMessageToServerAndGetResponse(node);
 					if (response.equalsIgnoreCase("")) {
+						selectedGroupAtTree = node.toString();
 						return;
 					}
+					selectedGroupAtTree = null;
 					String[] array = response.split(";");
 					textPane.setText(array[1]);
 					textPane_1.setText(array[3]);
@@ -704,6 +707,43 @@ public class InterfaceTest {
 		panel_1.add(jsp2);
 
 		JButton btnNewButton = new JButton("Delete group");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (client == null)
+					return;
+				if (selectedGroupAtTree==null)
+					return;
+				JFrame frm = new JFrame();
+				int n = JOptionPane.showConfirmDialog(
+					    frm,
+					    "Would you delete this group and all it's products from BD??",
+					    "Delete group",
+					    JOptionPane.YES_NO_OPTION);
+				if (n == 1)
+					return;
+				if (n==0){
+					try {
+						JFrame jrm = new JFrame();
+						client.sendCommandToServer("deletegroup");
+						String response = client.sendMessageToServerAndGetResponse(selectedGroupAtTree);
+						JOptionPane.showMessageDialog(jrm, response);
+						createNodes(top);
+						model.reload();
+						tree.repaint();
+						textPane.setText("");
+						textPane_1.setText("");
+						textPane_2.setText("");
+						textPane_3.setText("");
+						textPane_4.setText("");
+						panel_1.repaint();
+						return;
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					}
+				}
+				
+			}
+		});
 		sl_panel.putConstraint(SpringLayout.NORTH, btnNewButton, -43, SpringLayout.SOUTH, panel);
 		sl_panel.putConstraint(SpringLayout.WEST, btnNewButton, 41, SpringLayout.WEST, panel);
 		sl_panel.putConstraint(SpringLayout.SOUTH, btnNewButton, -24, SpringLayout.SOUTH, panel);
