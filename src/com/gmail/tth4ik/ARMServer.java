@@ -285,23 +285,24 @@ public class ARMServer implements Runnable {
 	
 
 	private void addGroup() {
-		while (true) {
 			try {
-				System.out.println("Input group info: ");
 				input = dis.readUTF();
+				System.out.println(input);
 				if (input.equalsIgnoreCase("end1")) {
 					dos.writeUTF("process ended");
 					return;
 				}
+				System.out.println(input);
 				String[] array = input.split(";");
 				if (isWhiteSpace(array[0])){
 					input = "";
 					dos.writeUTF("Can't create group with empty name");
+					return;
 				}
 				if (isFreeName(array[0], groupNames) == false) {
 					input = "";
 					dos.writeUTF("Name is used, try to add it once more");
-					continue;
+					return;
 				}
 				sql.insertGroupData(array[0], array[1]);
 				dos.writeUTF("Group with name: " + array[0] + " and info: " + array[1] + " successfully added to DB");
@@ -311,7 +312,7 @@ public class ARMServer implements Runnable {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-		}
+		
 	}
 
 	private boolean isFreeName(String string, String[] names) {

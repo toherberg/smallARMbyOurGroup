@@ -191,6 +191,119 @@ public class InterfaceTest {
 		panel.add(jspt);
 
 		JButton button = new JButton("Add group");
+		button.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (client == null)
+					return;
+				initializeDialogAddGroup();
+			}
+
+			private void initializeDialogAddGroup() {
+				final JDialog dialAddGr = new JDialog();
+				JPanel contentPanel = new JPanel();
+				dialAddGr.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+				dialAddGr.setTitle("Add group");
+				dialAddGr.setBounds(100, 100, 450, 269);
+				dialAddGr.getContentPane().setLayout(new BorderLayout());
+				contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
+				dialAddGr.getContentPane().add(contentPanel, BorderLayout.CENTER);
+				SpringLayout sl_contentPanel = new SpringLayout();
+				contentPanel.setLayout(sl_contentPanel);
+
+				JLabel lblGroupName = new JLabel("Group name:");
+				sl_contentPanel.putConstraint(SpringLayout.NORTH, lblGroupName, 23, SpringLayout.NORTH, contentPanel);
+				sl_contentPanel.putConstraint(SpringLayout.WEST, lblGroupName, 20, SpringLayout.WEST, contentPanel);
+				lblGroupName.setFont(new Font("Tahoma", Font.BOLD, 13));
+				contentPanel.add(lblGroupName);
+
+				JLabel lblInfo = new JLabel("Info:");
+				sl_contentPanel.putConstraint(SpringLayout.NORTH, lblInfo, 18, SpringLayout.SOUTH, lblGroupName);
+				sl_contentPanel.putConstraint(SpringLayout.WEST, lblInfo, 0, SpringLayout.WEST, lblGroupName);
+				sl_contentPanel.putConstraint(SpringLayout.EAST, lblInfo, -363, SpringLayout.EAST, contentPanel);
+				lblInfo.setFont(new Font("Tahoma", Font.BOLD, 13));
+				contentPanel.add(lblInfo);
+
+				final JTextField textFieldInfo = new JTextField();
+				textPane.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
+				JScrollPane jsp = new JScrollPane(textFieldInfo);
+				sl_contentPanel.putConstraint(SpringLayout.NORTH, jsp, 28, SpringLayout.SOUTH, lblGroupName);
+				sl_contentPanel.putConstraint(SpringLayout.WEST, jsp, 16, SpringLayout.EAST, lblInfo);
+				sl_contentPanel.putConstraint(SpringLayout.SOUTH, jsp, -24, SpringLayout.SOUTH, contentPanel);
+				jsp.setBorder(null);
+				contentPanel.add(jsp);
+
+				final JTextField textFieldName = new JTextField();
+				textFieldName.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
+				sl_contentPanel.putConstraint(SpringLayout.EAST, jsp, 0, SpringLayout.EAST, textFieldName);
+				sl_contentPanel.putConstraint(SpringLayout.WEST, textFieldName, 6, SpringLayout.EAST, lblGroupName);
+				sl_contentPanel.putConstraint(SpringLayout.SOUTH, textFieldName, 0, SpringLayout.SOUTH, lblGroupName);
+				sl_contentPanel.putConstraint(SpringLayout.EAST, textFieldName, -66, SpringLayout.EAST, contentPanel);
+				contentPanel.add(textFieldName);
+				{
+					JPanel buttonPane = new JPanel();
+					buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
+					dialAddGr.getContentPane().add(buttonPane, BorderLayout.SOUTH);
+					{
+						JButton okButton = new JButton("OK");
+						okButton.addActionListener(new ActionListener() {
+							public void actionPerformed(ActionEvent e) {
+								if (textFieldName.getText().isEmpty())
+									return;
+								try {
+									client.sendCommandToServer("addgroup");
+								} catch (IOException e1) {
+									e1.printStackTrace();
+								}
+								if (textFieldInfo.getText().isEmpty())
+									textFieldInfo.setText(" ");
+								String s = textFieldName.getText() + ";" + textFieldInfo.getText();
+								try {
+									String response = client.sendMessageToServerAndGetResponse(s);
+									JFrame parent = new JFrame();
+									if (response.equalsIgnoreCase("Can't create group with empty name")) {
+										dialAddGr.setVisible(false);
+										textFieldInfo.setText("");
+										textFieldName.setText("");
+										JOptionPane.showMessageDialog(parent, response);
+										dialAddGr.setVisible(true);
+										return;
+									}
+									if (response.equalsIgnoreCase("Name is used, try to add it once more")) {
+										dialAddGr.setVisible(false);
+										textFieldInfo.setText("");
+										textFieldName.setText("");
+										JOptionPane.showMessageDialog(parent, response);
+										client.sendCommandToServer("end1");
+										dialAddGr.setVisible(true);
+										return;
+									}
+									dialAddGr.dispose();
+									createNodes(top);
+									tree.repaint();
+									JOptionPane.showMessageDialog(parent, response);
+								} catch (IOException e1) {
+									e1.printStackTrace();
+								}
+							}
+						});
+						okButton.setActionCommand("OK");
+						buttonPane.add(okButton);
+						dialAddGr.getRootPane().setDefaultButton(okButton);
+					}
+					{
+						JButton cancelButton = new JButton("Cancel");
+						cancelButton.addActionListener(new ActionListener() {
+							public void actionPerformed(ActionEvent e) {
+								dialAddGr.dispose();
+							}
+						});
+						cancelButton.setActionCommand("Cancel");
+						buttonPane.add(cancelButton);
+					}
+				}
+				dialAddGr.setVisible(true);
+			}
+		});
 		sl_panel.putConstraint(SpringLayout.NORTH, button, 16, SpringLayout.SOUTH, jspt);
 		sl_panel.putConstraint(SpringLayout.WEST, button, 41, SpringLayout.WEST, panel);
 		sl_panel.putConstraint(SpringLayout.EAST, button, -46, SpringLayout.EAST, panel);
@@ -200,6 +313,7 @@ public class InterfaceTest {
 		panel_2.setLayout(sl_panel_2);
 
 		JButton btnAddProduct = new JButton("Add product");
+		btnAddProduct.setMnemonic('a');
 		sl_panel_2.putConstraint(SpringLayout.SOUTH, btnAddProduct, 71, SpringLayout.NORTH, panel_2);
 		btnAddProduct.setFont(new Font("Dialog", Font.PLAIN, 12));
 		btnAddProduct.addActionListener(new ActionListener() {
@@ -220,6 +334,7 @@ public class InterfaceTest {
 		panel_2.add(btnAddProduct);
 
 		JButton btnRefresh = new JButton("Refresh");
+		btnRefresh.setMnemonic('r');
 		sl_panel_2.putConstraint(SpringLayout.NORTH, btnRefresh, 17, SpringLayout.SOUTH, btnAddProduct);
 		sl_panel_2.putConstraint(SpringLayout.WEST, btnRefresh, 10, SpringLayout.WEST, panel_2);
 		sl_panel_2.putConstraint(SpringLayout.SOUTH, btnRefresh, 78, SpringLayout.SOUTH, btnAddProduct);
@@ -237,6 +352,7 @@ public class InterfaceTest {
 		panel_2.add(btnRefresh);
 
 		JButton btnGroupReport = new JButton("Group report");
+		btnGroupReport.setMnemonic('g');
 		sl_panel_2.putConstraint(SpringLayout.NORTH, btnGroupReport, 170, SpringLayout.NORTH, panel_2);
 		sl_panel_2.putConstraint(SpringLayout.EAST, btnGroupReport, -10, SpringLayout.EAST, panel_2);
 		btnGroupReport.addActionListener(new ActionListener() {
@@ -254,6 +370,7 @@ public class InterfaceTest {
 		panel_2.add(btnGroupReport);
 
 		JButton btnFullReport = new JButton("Full report");
+		btnFullReport.setMnemonic('f');
 		sl_panel_2.putConstraint(SpringLayout.NORTH, btnFullReport, 18, SpringLayout.SOUTH, btnGroupReport);
 		sl_panel_2.putConstraint(SpringLayout.WEST, btnFullReport, 8, SpringLayout.WEST, panel_2);
 		sl_panel_2.putConstraint(SpringLayout.SOUTH, btnFullReport, 46, SpringLayout.SOUTH, btnGroupReport);
@@ -271,6 +388,7 @@ public class InterfaceTest {
 		JPanel panel_3 = new JPanel();
 
 		JButton btnDeleteProduct = new JButton("Delete Product");
+		btnDeleteProduct.setMnemonic('d');
 		btnDeleteProduct.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if (client == null)
@@ -279,14 +397,11 @@ public class InterfaceTest {
 					return;
 				String toDelete = textPane.getText();
 				JFrame frm = new JFrame();
-				int n = JOptionPane.showConfirmDialog(
-					    frm,
-					    "Would you delete this product from BD??",
-					    "Delete product",
-					    JOptionPane.YES_NO_OPTION);
+				int n = JOptionPane.showConfirmDialog(frm, "Would you delete this product from BD??", "Delete product",
+						JOptionPane.YES_NO_OPTION);
 				if (n == 1)
 					return;
-				if (n==0){
+				if (n == 0) {
 					try {
 						JFrame jrm = new JFrame();
 						client.sendCommandToServer("deleteproduct");
@@ -305,13 +420,11 @@ public class InterfaceTest {
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
-					
+
 				}
 			}
 
-				
-			}
-		);
+		});
 		sl_panel_1.putConstraint(SpringLayout.WEST, btnDeleteProduct, 0, SpringLayout.WEST, panel_1);
 		sl_panel_1.putConstraint(SpringLayout.SOUTH, btnDeleteProduct, -40, SpringLayout.SOUTH, panel_1);
 		sl_panel_1.putConstraint(SpringLayout.EAST, btnDeleteProduct, 108, SpringLayout.WEST, panel_1);
@@ -319,6 +432,7 @@ public class InterfaceTest {
 		panel_1.add(btnDeleteProduct);
 
 		JButton btnEditProduct = new JButton("Edit Product");
+		btnEditProduct.setMnemonic('e');
 		sl_panel_1.putConstraint(SpringLayout.WEST, btnEditProduct, -102, SpringLayout.EAST, panel_1);
 		btnEditProduct.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -434,7 +548,9 @@ public class InterfaceTest {
 							@Override
 							public void actionPerformed(ActionEvent e) {
 								JFrame parent = new JFrame();
-								if ((textField.getText().isEmpty())&&(textField_2.getText().isEmpty())&&(textField_1.getText().isEmpty())&&(spinner.getValue().toString().equals("-1"))){
+								if ((textField.getText().isEmpty()) && (textField_2.getText().isEmpty())
+										&& (textField_1.getText().isEmpty())
+										&& (spinner.getValue().toString().equals("-1"))) {
 									JOptionPane.showMessageDialog(parent, "You didn't add new information. Closing...");
 									dialEdit.dispose();
 									return;
@@ -484,10 +600,9 @@ public class InterfaceTest {
 									JOptionPane.showMessageDialog(parent, response);
 									client.sendCommandToServer("search");
 									String res;
-									if (textField.getText().equalsIgnoreCase(" ")){
-									res = client.sendMessageToServerAndGetResponse(textPane.getText());
-									}
-									else{
+									if (textField.getText().equalsIgnoreCase(" ")) {
+										res = client.sendMessageToServerAndGetResponse(textPane.getText());
+									} else {
 										res = client.sendMessageToServerAndGetResponse(textField.getText());
 									}
 									String[] array1 = res.split(";");
@@ -525,6 +640,7 @@ public class InterfaceTest {
 		panel_1.add(btnEditProduct);
 
 		JButton btnSelladd = new JButton("Sell/Add Products");
+		btnSelladd.setMnemonic('s');
 		btnSelladd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (client == null)
@@ -544,7 +660,7 @@ public class InterfaceTest {
 				dialogSetQuantity.getContentPane().setLayout(new BorderLayout());
 				contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 				dialogSetQuantity.getContentPane().add(contentPanel, BorderLayout.CENTER);
-				
+
 				JButton btnSell = new JButton("Sell");
 				btnSell.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
@@ -552,20 +668,22 @@ public class InterfaceTest {
 							if (spinner.getValue().toString().equals("0"))
 								return;
 							client.sendCommandToServer("changequantity");
-							String response = client.sendMessageToServerAndGetResponse(s+";"+"-"+spinner.getValue().toString());
+							String response = client
+									.sendMessageToServerAndGetResponse(s + ";" + "-" + spinner.getValue().toString());
 							JFrame jrm = new JFrame();
-							if (response.equalsIgnoreCase("Can't change quantity,too much to delete")){
+							if (response.equalsIgnoreCase("Can't change quantity,too much to delete")) {
 								JOptionPane.showMessageDialog(jrm, response);
 								return;
 							}
 							JOptionPane.showMessageDialog(jrm, response);
-							int updatedQuantity = Integer.parseInt(textPane_2.getText())-Integer.parseInt(spinner.getValue().toString());
-							textPane_2.setText(""+updatedQuantity);
+							int updatedQuantity = Integer.parseInt(textPane_2.getText())
+									- Integer.parseInt(spinner.getValue().toString());
+							textPane_2.setText("" + updatedQuantity);
 							dialogSetQuantity.dispose();
 						} catch (IOException e1) {
 							e1.printStackTrace();
 						}
-					
+
 					}
 				});
 				JButton btnAdd = new JButton("Add");
@@ -576,19 +694,20 @@ public class InterfaceTest {
 							if (spinner.getValue().toString().equals("0"))
 								return;
 							client.sendCommandToServer("changequantity");
-							String response = client.sendMessageToServerAndGetResponse(s+";"+"+"+spinner.getValue().toString());
+							String response = client
+									.sendMessageToServerAndGetResponse(s + ";" + "+" + spinner.getValue().toString());
 							JOptionPane.showMessageDialog(jrm, response);
-							int updatedQuantity = Integer.parseInt(textPane_2.getText())+Integer.parseInt(spinner.getValue().toString());
-							textPane_2.setText(""+updatedQuantity);
+							int updatedQuantity = Integer.parseInt(textPane_2.getText())
+									+ Integer.parseInt(spinner.getValue().toString());
+							textPane_2.setText("" + updatedQuantity);
 							dialogSetQuantity.dispose();
 						} catch (IOException e1) {
 							e1.printStackTrace();
 						}
-						
+
 					}
 				});
-				
-				
+
 				spinner.setToolTipText("Enter quantity value you want to sell/add");
 				spinner.setModel(new SpinnerNumberModel(new Integer(0), new Integer(0), null, new Integer(10)));
 				SpringLayout sl_contentPanel = new SpringLayout();
@@ -614,11 +733,11 @@ public class InterfaceTest {
 						cancelButton.setActionCommand("Cancel");
 						buttonPane.add(cancelButton);
 						cancelButton.addActionListener(new ActionListener() {
-							
+
 							@Override
 							public void actionPerformed(ActionEvent e) {
 								dialogSetQuantity.dispose();
-								
+
 							}
 						});
 					}
@@ -711,17 +830,15 @@ public class InterfaceTest {
 			public void actionPerformed(ActionEvent e) {
 				if (client == null)
 					return;
-				if (selectedGroupAtTree==null)
+				if (selectedGroupAtTree == null)
 					return;
 				JFrame frm = new JFrame();
-				int n = JOptionPane.showConfirmDialog(
-					    frm,
-					    "Would you delete this group and all it's products from BD??",
-					    "Delete group",
-					    JOptionPane.YES_NO_OPTION);
+				int n = JOptionPane.showConfirmDialog(frm,
+						"Would you delete this group and all it's products from BD??", "Delete group",
+						JOptionPane.YES_NO_OPTION);
 				if (n == 1)
 					return;
-				if (n==0){
+				if (n == 0) {
 					try {
 						JFrame jrm = new JFrame();
 						client.sendCommandToServer("deletegroup");
@@ -741,7 +858,7 @@ public class InterfaceTest {
 						e1.printStackTrace();
 					}
 				}
-				
+
 			}
 		});
 		sl_panel.putConstraint(SpringLayout.NORTH, btnNewButton, -43, SpringLayout.SOUTH, panel);
@@ -752,6 +869,7 @@ public class InterfaceTest {
 		panel.add(btnNewButton);
 
 		JButton btnGroupsInformation = new JButton("Group Info");
+		btnGroupsInformation.setMnemonic('i');
 		sl_panel.putConstraint(SpringLayout.SOUTH, button, -6, SpringLayout.NORTH, btnGroupsInformation);
 		sl_panel.putConstraint(SpringLayout.NORTH, btnGroupsInformation, -68, SpringLayout.SOUTH, panel);
 		sl_panel.putConstraint(SpringLayout.WEST, btnGroupsInformation, 41, SpringLayout.WEST, panel);
@@ -761,6 +879,7 @@ public class InterfaceTest {
 		panel.add(btnGroupsInformation);
 
 		final JButton btnConnect = new JButton("Connect");
+		btnConnect.setMnemonic('c');
 		sl_panel_2.putConstraint(SpringLayout.NORTH, btnConnect, -59, SpringLayout.SOUTH, panel_2);
 		sl_panel_2.putConstraint(SpringLayout.WEST, btnConnect, 10, SpringLayout.WEST, panel_2);
 		sl_panel_2.putConstraint(SpringLayout.EAST, btnConnect, -10, SpringLayout.EAST, panel_2);
@@ -849,29 +968,24 @@ public class InterfaceTest {
 		btnSearch.setFont(new Font("Dialog", Font.PLAIN, 12));
 		panel_3.add(btnSearch);
 		GroupLayout groupLayout = new GroupLayout(frmWarehouseManagementSystem.getContentPane());
-		groupLayout.setHorizontalGroup(
-			groupLayout.createParallelGroup(Alignment.LEADING)
+		groupLayout.setHorizontalGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
-					.addComponent(panel, GroupLayout.PREFERRED_SIZE, 225, GroupLayout.PREFERRED_SIZE)
-					.addGap(3)
-					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addComponent(panel_1, GroupLayout.PREFERRED_SIZE, 342, GroupLayout.PREFERRED_SIZE)
-						.addGroup(groupLayout.createSequentialGroup()
-							.addGap(3)
-							.addComponent(panel_3, GroupLayout.PREFERRED_SIZE, 339, GroupLayout.PREFERRED_SIZE)))
-					.addGap(6)
-					.addComponent(panel_2, GroupLayout.PREFERRED_SIZE, 121, GroupLayout.PREFERRED_SIZE))
-		);
-		groupLayout.setVerticalGroup(
-			groupLayout.createParallelGroup(Alignment.LEADING)
-				.addComponent(panel, GroupLayout.PREFERRED_SIZE, 412, GroupLayout.PREFERRED_SIZE)
-				.addGroup(groupLayout.createSequentialGroup()
-					.addGap(10)
-					.addComponent(panel_1, GroupLayout.PREFERRED_SIZE, 317, GroupLayout.PREFERRED_SIZE)
-					.addGap(6)
-					.addComponent(panel_3, GroupLayout.PREFERRED_SIZE, 69, GroupLayout.PREFERRED_SIZE))
-				.addComponent(panel_2, GroupLayout.PREFERRED_SIZE, 412, GroupLayout.PREFERRED_SIZE)
-		);
+						.addComponent(panel, GroupLayout.PREFERRED_SIZE, 225, GroupLayout.PREFERRED_SIZE).addGap(3)
+						.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+								.addComponent(panel_1, GroupLayout.PREFERRED_SIZE, 342, GroupLayout.PREFERRED_SIZE)
+								.addGroup(groupLayout.createSequentialGroup().addGap(3).addComponent(panel_3,
+										GroupLayout.PREFERRED_SIZE, 339, GroupLayout.PREFERRED_SIZE)))
+						.addGap(6).addComponent(panel_2, GroupLayout.PREFERRED_SIZE, 121, GroupLayout.PREFERRED_SIZE)));
+		groupLayout
+				.setVerticalGroup(
+						groupLayout.createParallelGroup(Alignment.LEADING)
+								.addComponent(panel, GroupLayout.PREFERRED_SIZE, 412, GroupLayout.PREFERRED_SIZE)
+								.addGroup(groupLayout.createSequentialGroup().addGap(10)
+										.addComponent(panel_1, GroupLayout.PREFERRED_SIZE, 317,
+												GroupLayout.PREFERRED_SIZE)
+										.addGap(6).addComponent(panel_3, GroupLayout.PREFERRED_SIZE, 69,
+												GroupLayout.PREFERRED_SIZE))
+								.addComponent(panel_2, GroupLayout.PREFERRED_SIZE, 412, GroupLayout.PREFERRED_SIZE));
 		frmWarehouseManagementSystem.getContentPane().setLayout(groupLayout);
 	}
 
@@ -1210,7 +1324,7 @@ public class InterfaceTest {
 			dialog.getRootPane().setDefaultButton(okButton);
 			okButton.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
-					if (comboBox.getSelectedItem().toString().equals("")){
+					if (comboBox.getSelectedItem().toString().equals("")) {
 						JFrame parent = new JFrame();
 						dialog.setVisible(false);
 						JOptionPane.showMessageDialog(parent, "No groups created, cant add product without group!");
