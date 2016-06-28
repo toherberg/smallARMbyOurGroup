@@ -7,6 +7,11 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 
+/**
+ * Сервер нашої програми. Вміє читати повідомлення від клієнта та відповідно
+ * реагувати на них. Для цього використана структура switch-case.
+ */
+
 public class ARMServer implements Runnable {
 
 	Socket connection;
@@ -209,10 +214,12 @@ public class ARMServer implements Runnable {
 			e.printStackTrace();
 		}
 	}
-	
-	/*Отримує назву продукта, передає його методу управління БД, отримує від
-	 * нього інформацію і передає клієнту*/
-	
+
+	/*
+	 * Отримує назву продукта, передає його методу управління БД, отримує від
+	 * нього інформацію і передає клієнту
+	 */
+
 	private void searchGroup() {
 		try {
 			input = dis.readUTF();
@@ -243,7 +250,7 @@ public class ARMServer implements Runnable {
 				return;
 			}
 			String[] array = input.split("§");
-			if ((array[1]!=" ")&&(isWhiteSpace(array[1]))){
+			if ((array[1] != " ") && (isWhiteSpace(array[1]))) {
 				dos.writeUTF("Can't change name to whitespace");
 				return;
 			}

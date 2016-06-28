@@ -9,44 +9,45 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 
 /**
- * Тестовий клієнт, створений для тестування роботи сервера з базою даних.
- * Зчитує з клавіатури команди - надсилає їх серверу та отримує від нього
- * відповідні повідомлення
+ * Клас-клієнт нашої програми. Його екземпляр використовується у
+ * класі-користувацькому інтерфейсі. Однак є можливість використовувати метод
+ * main безпосередньо у класі клієнта. Він підключається до сервера і дозволяє
+ * працювати з сервером і базою даних у режимі командного рядка. Клієнт
+ * підключається до сервера та передає команди від користувача до сервера і
+ * навпаки
  */
 
 public class ARMClient {
-	
+
 	String fromuser = "";
 	String fromserver = "";
 	DataOutputStream dos;
 	DataInputStream dis;
 	Socket socket;
-	
+
 	public ARMClient() throws UnknownHostException, IOException {
 		socket = new Socket("localhost", 8315);
 		dos = new DataOutputStream(socket.getOutputStream());
 		dis = new DataInputStream(socket.getInputStream());
 		System.out.println("Client connected, streams opened. Ready to work");
 	}
-	
-	public String sendCommandToServer(String s) throws IOException{
+
+	public String sendCommandToServer(String s) throws IOException {
 		fromuser = s;
 		dos.writeUTF(fromuser);
 		fromserver = dis.readUTF();
 		return fromserver;
 
 	}
-	
-	
-	
-	public String sendMessageToServerAndGetResponse(String s) throws IOException{
+
+	public String sendMessageToServerAndGetResponse(String s) throws IOException {
 		fromuser = s;
 		dos.writeUTF(fromuser);
 		fromserver = dis.readUTF();
 		return fromserver;
 	}
-	
-	public void closeClient() throws IOException{
+
+	public void closeClient() throws IOException {
 		dos.close();
 		dis.close();
 		socket.close();

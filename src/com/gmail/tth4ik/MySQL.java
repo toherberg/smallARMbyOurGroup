@@ -7,6 +7,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+/**
+ * Клас для роботи нашої програми з базою даних. Має усі потрібні методи для
+ * додавання/редагування/видалення/оновлення інформації про групи/товари. А
+ * також отримувати усі потрібні дані з БД
+ */
+
 public class MySQL {
 	private Connection con;
 	private int currentId; // змінна для запису у неї поточного ІД групи, щоб
@@ -341,7 +347,7 @@ public class MySQL {
 		return productData;
 	}
 
-	/**Повертає імена усіх продуктів у БД*/
+	/** Повертає імена усіх продуктів у БД */
 	public String getProductNames() {
 		String productNames = "";
 		try {
@@ -403,7 +409,7 @@ public class MySQL {
 		return groupProductsNames;
 	}
 
-	/**Повертає форматовану інформацію-звіт про продукти певної групи*/
+	/** Повертає форматовану інформацію-звіт про продукти певної групи */
 	public String getGroupProductReport(int groupID) {
 		String groupProductsData = "";
 		double totalcost = 0;
@@ -431,7 +437,7 @@ public class MySQL {
 		return groupProductsData;
 	}
 
-	/**Повертає форматовану інформацію про усі продукти у БД*/
+	/** Повертає форматовану інформацію про усі продукти у БД */
 	public String getProductReport() {
 		String reportText = "FULL REPORT ABOUT ALL PRODUCTS \n";
 		int counter = 1; // щоб красиво виглядав список
@@ -505,9 +511,7 @@ public class MySQL {
 		}
 		return product;
 	}
-	
-	
-	
+
 	public String searchGroupByName(String name) {
 		String groupInfo = "";
 		try {
