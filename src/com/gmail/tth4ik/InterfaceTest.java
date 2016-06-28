@@ -978,6 +978,7 @@ public class InterfaceTest {
 									grInfoDialog.setVisible(false);
 									JOptionPane.showMessageDialog(framechange, "Nothing changed, try again");
 									grInfoDialog.setVisible(true);
+									return;
 								}
 								if (textField.getText().equalsIgnoreCase("")
 										&& textInformation.getText().equalsIgnoreCase("")) {
@@ -985,6 +986,7 @@ public class InterfaceTest {
 									JOptionPane.showMessageDialog(framechange,
 											"You didnt input new infomation, try again");
 									grInfoDialog.setVisible(true);
+									return;
 								}
 								try {
 									client.sendCommandToServer("editgroup");
