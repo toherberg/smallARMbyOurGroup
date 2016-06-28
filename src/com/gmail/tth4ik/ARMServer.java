@@ -79,7 +79,6 @@ public class ARMServer implements Runnable {
 				case "groupnames1":
 					dos.writeUTF("true");
 					String s = dis.readUTF();
-					System.out.println(s);
 					dos.writeUTF(sql.getGroupProductNames(sql.getGroupID(s)));
 					continue;
 				case "editgroup":
@@ -113,6 +112,10 @@ public class ARMServer implements Runnable {
 				case "fullreport":
 					dos.writeUTF(sql.getProductReport());
 					continue;
+				case "getgroupinfo":
+					dos.writeUTF("preparing");
+					searchGroup();
+					continue;
 				case "end":
 					dos.writeUTF("end");
 					break;
@@ -127,11 +130,13 @@ public class ARMServer implements Runnable {
 
 	}
 
+	/** Надсилає актуальний перелік імен груп */
 	private void sendGroupNames() throws IOException {
-		System.out.println(dis.readUTF());
+		dis.readUTF();
 		dos.writeUTF(sql.getGroupNames());
 	}
 
+	/** Забирає з БД і надсилає форматований звіт за певною групою */
 	private void makeGroupReport() {
 		String report = "";
 		try {
@@ -150,6 +155,10 @@ public class ARMServer implements Runnable {
 
 	}
 
+	/**
+	 * Отримує стрічку з потрібною інформацією і змінює кількість певного товару
+	 * на складі
+	 */
 	private void changeQuantity() {
 		try {
 			input = dis.readUTF();
@@ -167,7 +176,7 @@ public class ARMServer implements Runnable {
 			if (array[1].charAt(0) == '-') {
 				if (currentquantity - Integer.parseInt(array[1].substring(1)) >= 0) {
 					sql.updateProductQuantity(array[0], currentquantity - Integer.parseInt(array[1].substring(1)));
-					dos.writeUTF("Sucessfully sold product");
+					dos.writeUTF("Successfully sold product");
 					return;
 				}
 				dos.writeUTF("Can't change quantity,too much to delete");
@@ -179,6 +188,10 @@ public class ARMServer implements Runnable {
 
 	}
 
+	/**
+	 * Отримує назву продукта, передає його методу управління БД, отримує від
+	 * нього інформацію і передає клієнту
+	 */
 	private void searchProduct() {
 		try {
 			input = dis.readUTF();
@@ -186,9 +199,9 @@ public class ARMServer implements Runnable {
 				dos.writeUTF("process ended");
 				return;
 			}
-			if (sql.searchProductByName(input).equalsIgnoreCase("false")){
-			dos.writeUTF(input);
-			return;
+			if (sql.searchProductByName(input).equalsIgnoreCase("false")) {
+				dos.writeUTF(input);
+				return;
 			}
 			dos.writeUTF(sql.searchProductByName(input));
 
@@ -196,7 +209,32 @@ public class ARMServer implements Runnable {
 			e.printStackTrace();
 		}
 	}
+	
+	/*Отримує назву продукта, передає його методу управління БД, отримує від
+	 * нього інформацію і передає клієнту*/
+	
+	private void searchGroup() {
+		try {
+			input = dis.readUTF();
+			if (input.equalsIgnoreCase("end1")) {
+				dos.writeUTF("process ended");
+				return;
+			}
+			if (sql.searchGroupByName(input).equalsIgnoreCase("false")) {
+				dos.writeUTF(input);
+				return;
+			}
+			dos.writeUTF(sql.searchGroupByName(input));
 
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * Метод сервера для редагування групи - фактично з'єднує клієнта і БД і
+	 * дозволяє їм обмінятися потрібними повідомленнями
+	 */
 	private void editGroup() {
 		try {
 			input = dis.readUTF();
@@ -205,8 +243,13 @@ public class ARMServer implements Runnable {
 				return;
 			}
 			String[] array = input.split("§");
-			if(isFreeName(array[1], groupNames)==false){
-				array[1]=" "; // щоб відредагувало усе, крім імені, якщо воно зайняте
+			if ((array[1]!=" ")&&(isWhiteSpace(array[1]))){
+				dos.writeUTF("Can't change name to whitespace");
+				return;
+			}
+			if (isFreeName(array[1], groupNames) == false) {
+				dos.writeUTF("Name is used");
+				return;
 			}
 			System.out.println(array.length);
 			sql.updateGroupData(array[0], array[1], array[2]);
@@ -218,6 +261,10 @@ public class ARMServer implements Runnable {
 		}
 	}
 
+	/**
+	 * Редагування продукта з'єднує клієнта і БД і дозволяє їм обмінятися
+	 * потрібними повідомленнями, щоб внести потрібні зміни
+	 */
 	private void editProduct() {
 		try {
 			input = dis.readUTF();
@@ -226,17 +273,17 @@ public class ARMServer implements Runnable {
 				return;
 			}
 			String[] array = input.split("§");
-			if (isWhiteSpace(array[1])&&(!array[1].equalsIgnoreCase(" "))){
+			if (isWhiteSpace(array[1]) && (!array[1].equalsIgnoreCase(" "))) {
 				input = "";
 				dos.writeUTF("Can't use white space to rename");
 				return;
 			}
-			if(isFreeName(array[1], productNames)==false){
+			if (isFreeName(array[1], productNames) == false) {
 				input = "";
 				dos.writeUTF("Name is used");
 				return;
 			}
-				sql.editAllProductInfo(array[0],array[1],array[2],array[3],Double.parseDouble(array[4]));
+			sql.editAllProductInfo(array[0], array[1], array[2], array[3], Double.parseDouble(array[4]));
 			dos.writeUTF("editing successfully ended");
 			productNames = sql.getProductNames().split("§");
 
@@ -245,6 +292,10 @@ public class ARMServer implements Runnable {
 		}
 	}
 
+	/**
+	 * Читає ім'я групи і видаляє з бази даних групу за цим ім'ям. Оновлює
+	 * перелік імен груп
+	 */
 	private void deleteGroup() {
 		try {
 			input = dis.readUTF();
@@ -263,6 +314,7 @@ public class ARMServer implements Runnable {
 		}
 	}
 
+	/** Отримує ім'я і за ним видаляє продукт із БД */
 	private void deleteProduct() {
 		try {
 			input = dis.readUTF();
@@ -278,40 +330,47 @@ public class ARMServer implements Runnable {
 			e.printStackTrace();
 		}
 	}
-	
-	
 
+	/**
+	 * Додає групу у БД. Отримує від клієнта усі потрібні дані. Надсилає у
+	 * відповідь повідомлення про успішну/неуспішну операцію, повідомляє про
+	 * помилки
+	 */
 	private void addGroup() {
-			try {
-				input = dis.readUTF();
-				System.out.println(input);
-				if (input.equalsIgnoreCase("end1")) {
-					dos.writeUTF("process ended");
-					return;
-				}
-				System.out.println(input);
-				String[] array = input.split("§");
-				if (isWhiteSpace(array[0])){
-					input = "";
-					dos.writeUTF("Can't create group with empty name");
-					return;
-				}
-				if (isFreeName(array[0], groupNames) == false) {
-					input = "";
-					dos.writeUTF("Name is used, try to add it once more");
-					return;
-				}
-				sql.insertGroupData(array[0], array[1]);
-				dos.writeUTF("Group with name: " + array[0] + " and info: " + array[1] + " successfully added to DB");
-				groupNames = sql.getGroupNames().split("§");
+		try {
+			input = dis.readUTF();
+			System.out.println(input);
+			if (input.equalsIgnoreCase("end1")) {
+				dos.writeUTF("process ended");
 				return;
-
-			} catch (IOException e) {
-				e.printStackTrace();
 			}
-		
+			System.out.println(input);
+			String[] array = input.split("§");
+			if (isWhiteSpace(array[0])) {
+				input = "";
+				dos.writeUTF("Can't create group with empty name");
+				return;
+			}
+			if (isFreeName(array[0], groupNames) == false) {
+				input = "";
+				dos.writeUTF("Name is used");
+				return;
+			}
+			sql.insertGroupData(array[0], array[1]);
+			dos.writeUTF("Group with name: " + array[0] + " and info: " + array[1] + " successfully added to DB");
+			groupNames = sql.getGroupNames().split("§");
+			return;
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
 	}
 
+	/**
+	 * Метод для перевірки чи не було ще використане це ім'я раніше (продукта
+	 * або групи)
+	 */
 	private boolean isFreeName(String string, String[] names) {
 		for (int i = 0; i < names.length; i++) {
 			if (names[i].equalsIgnoreCase(string))
@@ -319,12 +378,17 @@ public class ARMServer implements Runnable {
 		}
 		return true;
 	}
-	
-	private boolean isWhiteSpace(String s){
-		char [] chrr = s.toCharArray();
+
+	/**
+	 * Для імен груп і товарів. Метод перевіряє чи отримана стрічка - не набір
+	 * пробілів. Створений, щоб уникати появи таких груп і товарів (з пустими
+	 * назвами)
+	 */
+	private boolean isWhiteSpace(String s) {
+		char[] chrr = s.toCharArray();
 		int chrrlength = chrr.length;
 		int whiteSpaceChars = 0;
-		for (char c : chrr){
+		for (char c : chrr) {
 			if (Character.isWhitespace(c))
 				whiteSpaceChars++;
 		}
@@ -332,8 +396,11 @@ public class ARMServer implements Runnable {
 			return true;
 		return false;
 	}
-	
 
+	/**
+	 * Отримує від клієнта потрібні дані, додає продукт у БД, надсилає клієнту
+	 * повідомлення про успішну/неуспішну операцію, інформацію про помилки
+	 */
 	private void addProduct() {
 		while (true) {
 			try {
@@ -343,19 +410,19 @@ public class ARMServer implements Runnable {
 					return;
 				}
 				String[] array = input.split("§");
-				if (array[1].isEmpty()||(isWhiteSpace(array[1]))){
+				if (array[1].isEmpty() || (isWhiteSpace(array[1]))) {
 					input = "";
 					dos.writeUTF("Can't create product with empty name");
 					continue;
 				}
 				if (isFreeName(array[1], productNames) == false) {
 					input = "";
-					dos.writeUTF("Name is used, try to add it once more");
+					dos.writeUTF("Name is used");
 					continue;
 				}
 				int groupID = sql.getGroupID(array[0]);
-				sql.insertProductData(groupID, array[1], array[2], array[3],
-						Integer.parseInt(array[4]), Double.parseDouble(array[5]));
+				sql.insertProductData(groupID, array[1], array[2], array[3], Integer.parseInt(array[4]),
+						Double.parseDouble(array[5]));
 				dos.writeUTF("Product from group № " + groupID + " named " + array[1] + " with info: " + array[2]
 						+ " which manufatured by: " + array[3] + ", it's quantity: " + array[4] + " and price: "
 						+ array[5] + " was added to product list");

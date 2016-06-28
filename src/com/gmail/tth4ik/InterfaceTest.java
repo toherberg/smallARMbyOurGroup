@@ -187,7 +187,7 @@ public class InterfaceTest {
 
 		tree.setBackground(Color.WHITE);
 		tree.setEditable(true);
-		tree.setBorder(UIManager.getBorder("List.focusCellHighlightBorder"));
+		tree.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
 		panel.add(jspt);
 
 		JButton button = new JButton("Add group");
@@ -223,13 +223,13 @@ public class InterfaceTest {
 				lblInfo.setFont(new Font("Tahoma", Font.BOLD, 13));
 				contentPanel.add(lblInfo);
 
-				final JTextField textFieldInfo = new JTextField();
-				textPane.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
+				final JTextArea textFieldInfo = new JTextArea();
 				JScrollPane jsp = new JScrollPane(textFieldInfo);
+				jsp.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
 				sl_contentPanel.putConstraint(SpringLayout.NORTH, jsp, 28, SpringLayout.SOUTH, lblGroupName);
 				sl_contentPanel.putConstraint(SpringLayout.WEST, jsp, 16, SpringLayout.EAST, lblInfo);
 				sl_contentPanel.putConstraint(SpringLayout.SOUTH, jsp, -24, SpringLayout.SOUTH, contentPanel);
-				jsp.setBorder(null);
+				textFieldInfo.setLineWrap(true);
 				contentPanel.add(jsp);
 
 				final JTextField textFieldName = new JTextField();
@@ -268,7 +268,7 @@ public class InterfaceTest {
 										dialAddGr.setVisible(true);
 										return;
 									}
-									if (response.equalsIgnoreCase("Name is used, try to add it once more")) {
+									if (response.equalsIgnoreCase("Name is used")) {
 										dialAddGr.setVisible(false);
 										textFieldInfo.setText("");
 										textFieldName.setText("");
@@ -344,6 +344,11 @@ public class InterfaceTest {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					createNodes(top);
+					textPane.setText("");
+					textPane_1.setText("");
+					textPane_2.setText("");
+					textPane_3.setText("");
+					textPane_4.setText("");
 				} catch (IOException e1) {
 					e1.printStackTrace();
 				}
@@ -788,12 +793,14 @@ public class InterfaceTest {
 		panel_1.add(label_4);
 
 		textPane = new JTextPane();
+		textPane.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
 		sl_panel_1.putConstraint(SpringLayout.WEST, textPane, -205, SpringLayout.EAST, panel_1);
 		textPane.setEditable(false);
 		sl_panel_1.putConstraint(SpringLayout.EAST, textPane, -10, SpringLayout.EAST, panel_1);
 		panel_1.add(textPane);
 
 		textPane_1 = new JTextPane();
+		textPane_1.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
 		sl_panel_1.putConstraint(SpringLayout.NORTH, textPane_1, 51, SpringLayout.NORTH, panel_1);
 		sl_panel_1.putConstraint(SpringLayout.SOUTH, textPane, -6, SpringLayout.NORTH, textPane_1);
 		textPane_1.setEditable(false);
@@ -802,6 +809,7 @@ public class InterfaceTest {
 		panel_1.add(textPane_1);
 
 		textPane_2 = new JTextPane(); //
+		textPane_2.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
 		sl_panel_1.putConstraint(SpringLayout.NORTH, textPane_2, 7, SpringLayout.SOUTH, textPane_1);
 		sl_panel_1.putConstraint(SpringLayout.WEST, textPane_2, 19, SpringLayout.EAST, label_2);
 		sl_panel_1.putConstraint(SpringLayout.EAST, textPane_2, -10, SpringLayout.EAST, panel_1);
@@ -809,6 +817,7 @@ public class InterfaceTest {
 		panel_1.add(textPane_2);
 
 		textPane_3 = new JTextPane();
+		textPane_3.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
 		sl_panel_1.putConstraint(SpringLayout.NORTH, textPane_3, 8, SpringLayout.SOUTH, textPane_2);
 		sl_panel_1.putConstraint(SpringLayout.WEST, textPane_3, 19, SpringLayout.EAST, label_3);
 		sl_panel_1.putConstraint(SpringLayout.EAST, textPane_3, -10, SpringLayout.EAST, panel_1);
@@ -816,6 +825,7 @@ public class InterfaceTest {
 		panel_1.add(textPane_3);
 
 		textPane_4 = new JTextPane();
+		textPane_4.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
 		textPane_4.setEditable(false);
 		JScrollPane jsp2 = new JScrollPane(textPane_4);
 		sl_panel_1.putConstraint(SpringLayout.NORTH, jsp2, 10, SpringLayout.SOUTH, textPane_3);
@@ -869,6 +879,169 @@ public class InterfaceTest {
 		panel.add(btnNewButton);
 
 		JButton btnGroupsInformation = new JButton("Group Info");
+		btnGroupsInformation.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (client == null)
+					return;
+				if (selectedGroupAtTree == null)
+					return;
+				try {
+					initializeGroupInfoDialog();
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+			}
+
+			private void initializeGroupInfoDialog() throws IOException {
+				final JDialog grInfoDialog = new JDialog();
+				final JPanel contentPanel = new JPanel();
+				grInfoDialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+				grInfoDialog.setTitle("Group Information");
+				grInfoDialog.setBounds(100, 100, 450, 300);
+				grInfoDialog.getContentPane().setLayout(new BorderLayout());
+				contentPanel.setToolTipText(
+						"Click on \"Edit\" button and than on \"Save changes\" to change information about group");
+				contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
+				grInfoDialog.getContentPane().add(contentPanel, BorderLayout.CENTER);
+				SpringLayout sl_contentPanel = new SpringLayout();
+				contentPanel.setLayout(sl_contentPanel);
+				{
+					final JLabel lblName = new JLabel("Name:");
+					sl_contentPanel.putConstraint(SpringLayout.NORTH, lblName, 10, SpringLayout.NORTH, contentPanel);
+					sl_contentPanel.putConstraint(SpringLayout.WEST, lblName, 27, SpringLayout.WEST, contentPanel);
+					sl_contentPanel.putConstraint(SpringLayout.SOUTH, lblName, 45, SpringLayout.NORTH, contentPanel);
+					lblName.setFont(new Font("Dialog", Font.BOLD, 14));
+					contentPanel.add(lblName);
+
+					final JLabel lblInfo = new JLabel("Info:");
+					sl_contentPanel.putConstraint(SpringLayout.NORTH, lblInfo, 17, SpringLayout.SOUTH, lblName);
+					sl_contentPanel.putConstraint(SpringLayout.WEST, lblInfo, 27, SpringLayout.WEST, contentPanel);
+					lblInfo.setFont(new Font("Dialog", Font.BOLD, 14));
+					contentPanel.add(lblInfo);
+
+					final JTextField textField = new JTextField();
+					textField.setText(selectedGroupAtTree);
+					sl_contentPanel.putConstraint(SpringLayout.WEST, textField, 92, SpringLayout.WEST, contentPanel);
+					sl_contentPanel.putConstraint(SpringLayout.EAST, textField, -91, SpringLayout.EAST, contentPanel);
+					sl_contentPanel.putConstraint(SpringLayout.EAST, lblName, -11, SpringLayout.WEST, textField);
+					sl_contentPanel.putConstraint(SpringLayout.NORTH, textField, 8, SpringLayout.NORTH, lblName);
+					textField.setBackground(Color.WHITE);
+					textField.setEditable(false);
+					textField.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
+					contentPanel.add(textField);
+					textField.setColumns(10);
+
+					final JTextPane textInformation = new JTextPane();
+					client.sendCommandToServer("getgroupinfo");
+					String response = client.sendMessageToServerAndGetResponse(selectedGroupAtTree);
+					final String[] temparray = response.split("§");
+					textInformation.setText(temparray[1]);
+					JScrollPane jsp = new JScrollPane(textInformation);
+					sl_contentPanel.putConstraint(SpringLayout.NORTH, jsp, 24, SpringLayout.SOUTH, textField);
+					sl_contentPanel.putConstraint(SpringLayout.EAST, lblInfo, -16, SpringLayout.WEST, jsp);
+					sl_contentPanel.putConstraint(SpringLayout.WEST, jsp, 92, SpringLayout.WEST, contentPanel);
+					sl_contentPanel.putConstraint(SpringLayout.EAST, jsp, 0, SpringLayout.EAST, textField);
+					textInformation.setEditable(false);
+					textInformation.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
+					contentPanel.add(jsp);
+
+					JButton btnEdit = new JButton("Edit");
+					btnEdit.addActionListener(new ActionListener() {
+						public void actionPerformed(ActionEvent e) {
+							textField.setEditable(true);
+							textInformation.setEditable(true);
+							textField.setText("");
+							textInformation.setText("");
+						}
+					});
+					sl_contentPanel.putConstraint(SpringLayout.NORTH, btnEdit, 76, SpringLayout.SOUTH, lblInfo);
+					sl_contentPanel.putConstraint(SpringLayout.WEST, btnEdit, 10, SpringLayout.WEST, contentPanel);
+					sl_contentPanel.putConstraint(SpringLayout.SOUTH, btnEdit, -61, SpringLayout.SOUTH, contentPanel);
+					btnEdit.setToolTipText("Click on this and than start to edit information");
+					contentPanel.add(btnEdit);
+
+					JButton btnNewButton = new JButton("Save changes");
+
+					{
+						sl_contentPanel.putConstraint(SpringLayout.SOUTH, jsp, -40, SpringLayout.NORTH, btnNewButton);
+						sl_contentPanel.putConstraint(SpringLayout.NORTH, btnNewButton, 6, SpringLayout.SOUTH, btnEdit);
+						sl_contentPanel.putConstraint(SpringLayout.WEST, btnNewButton, 10, SpringLayout.WEST,
+								contentPanel);
+						contentPanel.add(btnNewButton);
+						btnNewButton.addActionListener(new ActionListener() {
+
+							@Override
+							public void actionPerformed(ActionEvent e) {
+								JFrame framechange = new JFrame();
+								if ((textInformation.getText().equalsIgnoreCase(temparray[1]))
+										&& (textField.getText().equalsIgnoreCase(temparray[0]))) {
+									grInfoDialog.setVisible(false);
+									JOptionPane.showMessageDialog(framechange, "Nothing changed, try again");
+									grInfoDialog.setVisible(true);
+								}
+								if (textField.getText().equalsIgnoreCase("")
+										&& textInformation.getText().equalsIgnoreCase("")) {
+									grInfoDialog.setVisible(false);
+									JOptionPane.showMessageDialog(framechange,
+											"You didnt input new infomation, try again");
+									grInfoDialog.setVisible(true);
+								}
+								try {
+									client.sendCommandToServer("editgroup");
+									if (textInformation.getText().isEmpty())
+										textInformation.setText(" ");
+									if (textField.getText().isEmpty())
+										textField.setText(" ");
+									String response = client.sendMessageToServerAndGetResponse(
+											temparray[0] + "§" + textField.getText() + "§" + textInformation);
+									if (response.equals("Can't change name to whitespace")) {
+										grInfoDialog.setVisible(false);
+										JOptionPane.showMessageDialog(framechange, response);
+										grInfoDialog.setVisible(true);
+										return;
+									}
+									if (response.equals("Name is used")) {
+										grInfoDialog.setVisible(false);
+										JOptionPane.showMessageDialog(framechange, response);
+										grInfoDialog.setVisible(true);
+										return;
+									}
+									grInfoDialog.dispose();
+									JOptionPane.showMessageDialog(framechange, response);
+									createNodes(top);
+									return;
+								} catch (IOException e1) {
+
+									e1.printStackTrace();
+								}
+
+							}
+						});
+					}
+					{
+						JButton btnCancel = new JButton("Cancel");
+						sl_contentPanel.putConstraint(SpringLayout.SOUTH, btnCancel, -30, SpringLayout.SOUTH,
+								contentPanel);
+						sl_contentPanel.putConstraint(SpringLayout.EAST, btnCancel, -10, SpringLayout.EAST,
+								contentPanel);
+						contentPanel.add(btnCancel);
+						btnCancel.addActionListener(new ActionListener() {
+
+							@Override
+							public void actionPerformed(ActionEvent arg0) {
+								textField.setEditable(true);
+								textInformation.setEditable(true);
+								grInfoDialog.dispose();
+
+							}
+						});
+					}
+
+					grInfoDialog.setVisible(true);
+				}
+
+			}
+		});
 		btnGroupsInformation.setMnemonic('i');
 		sl_panel.putConstraint(SpringLayout.SOUTH, button, -6, SpringLayout.NORTH, btnGroupsInformation);
 		sl_panel.putConstraint(SpringLayout.NORTH, btnGroupsInformation, -68, SpringLayout.SOUTH, panel);
@@ -927,6 +1100,7 @@ public class InterfaceTest {
 		panel_3.setLayout(sl_panel_3);
 
 		final JTextField textField = new JTextField();
+		textField.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
 		sl_panel_3.putConstraint(SpringLayout.NORTH, textField, 20, SpringLayout.NORTH, panel_3);
 		sl_panel_3.putConstraint(SpringLayout.WEST, textField, 0, SpringLayout.WEST, panel_3);
 		sl_panel_3.putConstraint(SpringLayout.SOUTH, textField, -23, SpringLayout.SOUTH, panel_3);
@@ -989,6 +1163,10 @@ public class InterfaceTest {
 		frmWarehouseManagementSystem.getContentPane().setLayout(groupLayout);
 	}
 
+	/**
+	 * Метод, який генерує гілки дерева груп-товарів. Використовується для
+	 * завантаження при початку роботи, для оновлення під час роботи тощо
+	 */
 	private void createNodes(DefaultMutableTreeNode top) throws IOException {
 		isFreeTree = false;
 		if (client == null)
@@ -1021,6 +1199,10 @@ public class InterfaceTest {
 		}
 	}
 
+	/**
+	 * Метод ініціалізовує діалогове вікно, у якому можна згенерувати повний
+	 * звіт по БД
+	 */
 	public void initializeDialogReportF() {
 		JDialog dialGroupF = new JDialog();
 		JPanel contentPanel = new JPanel();
@@ -1088,6 +1270,10 @@ public class InterfaceTest {
 		}
 	}
 
+	/**
+	 * Метод ініціалізовує діалогове вікно, у якому можна згенерувати звіт по
+	 * певній групі
+	 */
 	public void initalizeJDialogReportG() throws IOException {
 		JDialog dialGroupR = new JDialog();
 		JPanel contentPanel = new JPanel();
@@ -1181,6 +1367,10 @@ public class InterfaceTest {
 		dialGroupR.setVisible(true);
 	}
 
+	/**
+	 * Отримує на вхід повний звіт по БД, генерує назву файлу, створює
+	 * унікальний файл і записує у нього звіт і зберігає локально
+	 */
 	private void writeFullReport(String report) throws IOException {
 		Date date = new Date();
 		@SuppressWarnings("deprecation")
@@ -1195,6 +1385,10 @@ public class InterfaceTest {
 		date = null;
 	}
 
+	/**
+	 * Отримує на вхід груповий звіт, назву групи, генерує назву файлу, створює
+	 * унікальний файл і записує у нього звіт і зберігає локально
+	 */
 	private void writeGroupReport(String report, String groupName) throws IOException {
 		Date date = new Date();
 		@SuppressWarnings("deprecation")
@@ -1209,6 +1403,10 @@ public class InterfaceTest {
 		date = null;
 	}
 
+	/**
+	 * Метод ініціалізовує діалогове вікно, у якому можна провести операцію
+	 * додавання нового продукта до БД
+	 */
 	public void initalizeJDialogAddingP() throws IOException {
 		final JDialog dialog = new JDialog();
 		JPanel contentPanel = new JPanel();
@@ -1357,7 +1555,7 @@ public class InterfaceTest {
 							dialog.setVisible(true);
 							return;
 						}
-						if (response.equalsIgnoreCase("Name is used, try to add it once more")) {
+						if (response.equalsIgnoreCase("Name is used")) {
 							dialog.setVisible(false);
 							textField_1.setText("");
 							textField_2.setText("");
@@ -1365,7 +1563,7 @@ public class InterfaceTest {
 							client.sendCommandToServer("end1");
 							dialog.setVisible(true);
 							return;
-						}
+						}					
 						dialog.dispose();
 						createNodes(top);
 						tree.repaint();

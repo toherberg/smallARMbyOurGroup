@@ -505,5 +505,32 @@ public class MySQL {
 		}
 		return product;
 	}
+	
+	
+	
+	public String searchGroupByName(String name) {
+		String groupInfo = "";
+		try {
+			Statement st = con.createStatement();
+			ResultSet res = st.executeQuery("SELECT * FROM Groups WHERE name = '" + name.toUpperCase() + "';");
+			if (res == null) {
+				groupInfo = "false";
+				return groupInfo;
+			}
+
+			while (res.next()) {
+				String realName = res.getString("name");
+				String info = res.getString("info");
+
+				groupInfo += realName + "§" + info;
+			}
+			res.close();
+			st.close();
+		} catch (SQLException e) {
+			System.out.println("Не вірний SQL запит на вибірку даних");
+			e.printStackTrace();
+		}
+		return groupInfo;
+	}
 
 }
